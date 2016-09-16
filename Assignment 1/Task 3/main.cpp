@@ -249,19 +249,20 @@ void keyboardListener(unsigned char key, int x,int y){
 	}
 }
 
-void drawTorus(int numc, int numt,double outeradius,double inneradius){
-    int i, j, k;
-    double s, t, x, y, z, twopi;
-    twopi = 2 * (double)M_PI;
-    for (int i = 0; i < numc; i++) {
-            glBegin(GL_QUADS);
-            for (int j = 0; j <= numt; j++) {
-                for (k = 1; k >= 0; k--) {
-                        s = (i + k) % numc + 0.9;
-                        t = j % numt;
-                        x = (1+.1*cos(s*twopi/numc))*cos(t*twopi/(double)numt);
-                        y = (1+.1*cos(s*twopi/numc))*sin(t*twopi/(double)numt);
-                        z = .1 * sin(s * twopi / numc);
+void drawTorus(int stacks, int slices,double outeradius,double inneradius){
+/*
+https://www.opengl.org/discussion_boards/showthread.php/138775-Torus
+*/
+
+    for (int i = 0; i < stacks; i++) {
+            glBegin(GL_QUAD_STRIP);
+            for (int j = 0; j <= slices; j++) {
+                for (int k = 1; k >= 0; k--) {
+                        double s = (i + k) % stacks + 0.9;
+                        double t = j % slices;
+                        double x = (1+.1*cos(s*2*M_PI/stacks))*cos(t*2*M_PI/(double)slices);
+                        double y = (1+.1*cos(s*2*M_PI/stacks))*sin(t*2*M_PI/(double)slices);
+                        double z = .1 * sin(s * 2*M_PI / stacks);
                         if((i+k)%10<5)  glColor3f(1,1,1);
                         else  glColor3f(0,0,0);
                        // cout<<x<<" "<<y<<" "<<z<<endl ;
@@ -358,7 +359,7 @@ void display(){
 	//2. where is the camera looking?
 	//3. Which direction is the camera's UP direction?
 
-	gluLookAt(pos.x,pos.y,pos.z, pos.x+l.x,pos.y+l.y,pos.z+l.z,u.x,u.y,u.z);
+	gluLookAt(pos.x-30,pos.y-30,pos.z+50, pos.x+l.x-30,pos.y+l.y-30,pos.z+l.z+50,u.x,u.y,u.z);
 	//gluLookAt(200*cos(cameraAngle), 200*sin(cameraAngle), cameraHeight,		0,0,0,		0,0,1);
 	//gluLookAt(0,0,200,	0,0,0,	0,1,0);
 
