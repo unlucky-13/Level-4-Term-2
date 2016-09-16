@@ -1,0 +1,32 @@
+# depslib dependency file v1.0
+1473859527 source:/media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task 1/main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<glut.h>
+
+1392007564 /media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task 1/OpenGL/include/glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1473861902 source:/media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task1 Fully Controllable Camera/main.cpp
+	<stdio.h>
+	<stdlib.h>
+	<math.h>
+	<glut.h>
+
+1392007564 /media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task1 Fully Controllable Camera/OpenGL/include/glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1474007217 source:/media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task 3/main.cpp
+	<bits/stdc++.h>
+	<glut.h>
+
+1392007564 /media/mazharul/40A23C7AA23C770E/Google Drive/STUDY/L4 T2/OpenGL/Task 3/OpenGL/include/glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
