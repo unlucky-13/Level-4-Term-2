@@ -40,10 +40,10 @@ public class ReadXMLFile {
 
             BufferedReader bf = new BufferedReader(new FileReader(stop_word_filename));
             String line = null;
-            int count= 0 ;
+          //  int count= 0 ;
             while ((line = bf.readLine()) != null) {
-                count++ ;
-                if(count<start) continue ; 
+               // count++ ;
+              //  if(count<start) continue ; 
                 StringTokenizer stk = new StringTokenizer(line, ",");
                 while (stk.hasMoreTokens()) {
                     String word = (String) stk.nextElement();
@@ -93,15 +93,20 @@ public class ReadXMLFile {
 
     LinkedList<ClassDictionary> read() {
         LinkedList<ClassDictionary> dict_list = new LinkedList<>();
+        int count=0 ;
         try {
          //   System.out.println("Row Read is ->" + row_read);
+            
             String inputFile = filename;
             BufferedReader br = new BufferedReader(new FileReader(inputFile));
            
             String line;
+            
             while ((line = br.readLine()) != null && dict_list.size()<row_read) {
-                
-                // new sample data
+                count++ ;
+                if(count<start) continue;
+                    
+// new sample data
                 ClassDictionary classDictionary = new ClassDictionary(filename, fileID);
                 if (line.indexOf("<row") != -1) {
                     String[] parts = line.split("&lt;p&gt;");
@@ -111,7 +116,7 @@ public class ReadXMLFile {
                         temp[0] = temp[0].trim().toLowerCase();
                         temp[0] = replacePunctuations(temp[0]);
                         temp[0] = temp[0].replaceAll("\\s+", " "); //all whitespaces and non-visible characters 
-                        temp[0] = temp[0].replace("(^-?0\\.[0-9]*[1-9]+[0-9]*$)|(^-?[1-9]+[0-9]*((\\.[0-9]*[1-9]+[0-9]*$)|(\\.[0-9]+)))|(^-?[1-9]+[0-9]*$)|(^0$){1}", " ") ;
+                        temp[0] = temp[0].replace("(^-?0\\.[0-9]*[1-9]+[0-9]*$)|(^-?[1-9]+[0-9]*((\\.[0-9]*[1-9]+[0-9]*$)|(\\.[0-9]+)))|(^-?[1-9]+[0-9]*$)|(^0$){1}", " ") ; // exclude all numbers
                         // numbers are also excluded codes to be written
                         // System.out.println(temp[0]+"-----") ;
                         String[] words = temp[0].split(" ");
