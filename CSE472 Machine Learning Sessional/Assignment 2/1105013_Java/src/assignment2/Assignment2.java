@@ -22,6 +22,7 @@ public class Assignment2 {
      * @param args the command line arguments
      */
     TreeMap<String, Integer> dictionary;
+    //read this from the file
     String excludeWords[] = {
         "a", "an", "the", // article
         "very", // adverb
@@ -33,7 +34,7 @@ public class Assignment2 {
 
     public Assignment2() {
         dictionary = null;
-        dir = "C:\\Users\\gigabyte\\Documents\\NetBeansProjects\\Assignment2\\Data\\";
+        dir = "Data\\";
     }
 
     boolean DoNotExcludIT(String str) {
@@ -148,10 +149,10 @@ public class Assignment2 {
         int type = -1;
         int TestVal;
         int k=0 ;
-        int minimum_hamming_distance[] = new int[K+1] ;
+        int minimum_Euclidian_distance[] = new int[K+1] ;
         int types[] = new int[K+1] ;
         for(int i=0;i<K;i++){
-            minimum_hamming_distance[i]=Integer.MAX_VALUE ;
+            minimum_Euclidian_distance[i]=Integer.MAX_VALUE ;
             types[i]=-1 ;
         }
         
@@ -184,8 +185,8 @@ public class Assignment2 {
                 temp += (TestVal * TestVal);
             }
             for(int I=0;I<K;I++){
-                if(minimum_hamming_distance[I]>temp){
-                    minimum_hamming_distance[I]=temp ;
+                if(minimum_Euclidian_distance[I]>temp){
+                    minimum_Euclidian_distance[I]=temp ;
                     types[I]=k ;
                     break ;
                 }
@@ -207,6 +208,21 @@ public class Assignment2 {
            }
        }
         return type;
+    }
+    public void Cosine_TD_IDF(LinkedList<TreeMap<String, Integer>> TrainDictionary, TreeMap<String, Integer> TestDic,int K){
+        int type = -1;
+        int TestVal;
+        int k=0 ;
+        double minimum_Cosine_distance[] = new double[K+1] ;
+        int types[] = new int[K+1] ;
+        for(int i=0;i<K;i++){
+            minimum_Cosine_distance[i]=Double.MAX_VALUE ;
+            types[i]=-1 ;
+        }
+        for(int i=0;i<TrainDictionary.size();i++){
+            
+        }
+        
     }
 
     public void TestData(LinkedList<TreeMap<String, Integer>> TrainDictionaryList,int K) {
@@ -248,7 +264,7 @@ public class Assignment2 {
                 }
 
             } catch (Exception ex) {
-                System.out.println("Hello"+ex.toString()) ;
+                System.out.println("Here is an exception"+ex.toString()) ;
             }
             System.out.println(right + " " + wrong);
           //  break ;

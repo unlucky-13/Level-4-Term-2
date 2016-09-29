@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html itemscope="" itemtype="http://schema.org/QAPage"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<title>algorithm - ID3 Decision Tree in python - Code Review Stack Exchange</title>
+    <link rel="shortcut icon" href="http://cdn.sstatic.net/Sites/codereview/img/favicon.ico?v=00b9e479193f">
+    <link rel="apple-touch-icon image_src" href="http://cdn.sstatic.net/Sites/codereview/img/apple-touch-icon.png?v=0a72875519a4">
+    <link rel="search" type="application/opensearchdescription+xml" title="Code Review Stack Exchange" href="http://codereview.stackexchange.com/opensearch.xml">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@StackCodeReview">
+    <meta name="twitter:domain" content="codereview.stackexchange.com">
+    <meta property="og:type" content="website">
+
+    <meta property="og:image" itemprop="image primaryImageOfPage" content="http://cdn.sstatic.net/Sites/codereview/img/apple-touch-icon@2.png?v=a4f1c838ba2c&amp;a">
+    <meta name="twitter:title" property="og:title" itemprop="title name" content="ID3 Decision Tree in python">
+    <meta name="twitter:description" property="og:description" itemprop="description" content="I've been working my way through Pedro Domingos' machine learning course videos (although the course is not currently active). His first homework assignment starts with coding up a decision tree (I...">
+    <meta property="og:url" content="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python">
+    <link rel="canonical" href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python">
+
+    
+    
+    <script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/quant.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/beacon.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/analytics.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/jquery.js"></script>
+    <script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/stub.js"></script>
+    <link rel="stylesheet" type="text/css" href="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/all.css">
+
+            <link rel="alternate" type="application/atom+xml" title="Feed for question 'ID3 Decision Tree in python'" href="http://codereview.stackexchange.com/feeds/question/109089">
+            <meta name="twitter:app:country" content="US">
+            <meta name="twitter:app:name:iphone" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:iphone" content="871299723">
+            <meta name="twitter:app:url:iphone" content="se-zaphod://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python">
+            <meta name="twitter:app:name:ipad" content="Stack Exchange iOS">
+            <meta name="twitter:app:id:ipad" content="871299723">
+            <meta name="twitter:app:url:ipad" content="se-zaphod://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python">
+            <meta name="twitter:app:name:googleplay" content="Stack Exchange Android">
+            <meta name="twitter:app:url:googleplay" content="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python">
+            <meta name="twitter:app:id:googleplay" content="com.stackexchange.marvin">
+        <script>
+        
+            StackExchange.ready(function () {
+                    
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.initSnippetRenderer();
+                    });
+                    
+
+                StackExchange.using("postValidation", function () {
+                    StackExchange.postValidation.initOnBlurAndSubmit($('#post-form'), 2, 'answer');
+                });
+
+                
+                StackExchange.question.init({showAnswerHelp:true,totalCommentCount:0,shownCommentCount:0,highlightColor:'#F4A83D',backgroundColor:'#FFF',questionId:109089});
+
+                styleCode();
+
+                    StackExchange.realtime.subscribeToQuestion('196', '109089');
+                                                                    StackExchange.using("gps", function () { StackExchange.gps.trackOutboundClicks('#content', '.post-text'); });
+
+            });
+        </script>
+
+                <script type="text/x-mathjax-config;executed=true">
+                    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+                                        tex2jax: { inlineMath: [ ["\\$", "\\$"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+                                        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+                                        messageStyle: "none"
+                });
+                </script>        
+            <script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/MathJax.js"></script>  
+
+    <script>
+        StackExchange.ready(function () {
+            StackExchange.realtime.init('wss://qa.sockets.stackexchange.com,ws://qa.sockets.stackexchange.com');
+            StackExchange.realtime.subscribeToReputationNotifications('196');
+                StackExchange.realtime.subscribeToTopBarNotifications('196');
+        });
+    </script>
+    <script>
+        StackExchange.init({"locale":"en","stackAuthUrl":"https://stackauth.com","networkMetaHostname":"meta.stackexchange.com","serverTime":1472807738,"routeName":"Questions/Show","site":{"name":"Code Review Stack Exchange","description":"Q&A for peer programmer code reviews","isNoticesTabEnabled":true,"recaptchaPublicKey":"6LdsB7sSAAAAAAzjgEF_Hd8vXv-C42sa_KyofaGR","recaptchaAudioLang":"en","enableNewTagCreationWarning":false,"insertSpaceAfterNameTabCompletion":false,"id":196,"enableInsertDocLinkDialog":false,"enableSocialMediaInSharePopup":true},"user":{"fkey":"c1bb4e4272c0f7802cb89fbb1a9dac70","rep":0,"isAnonymous":true,"isAnonymousNetworkWide":true},"realtime":{"newest":true,"active":true,"tagged":true}}, {"site":{"allowImageUploads":true,"enableUserHovercards":true,"styleCode":true},"tags":{},"accounts":{"currentPasswordRequiredForChangingStackIdPassword":true},"flags":{"allowRetractingFlags":true},"snippets":{"snippetsEnabled":true,"renderDomain":"stacksnippets.net"},"markdown":{"asteriskIntraWordEmphasis":true}});
+        StackExchange.using.setCacheBreakers({"js/prettify-full.en.js":"ef7a68a0bc17","js/moderator.en.js":"e5dd8dc1e440","js/full-anon.en.js":"330f2ed535b5","js/full.en.js":"fa8b61b8d79e","js/wmd.en.js":"dc51078c84ec","js/third-party/jquery.autocomplete.min.js":"e5f01e97f7c3","js/third-party/jquery.autocomplete.min.en.js":"","js/mobile.en.js":"71d3e40fd6df","js/help.en.js":"b50417081cc4","js/tageditor.en.js":"9c6df10dabc4","js/tageditornew.en.js":"eb833838608a","js/inline-tag-editing.en.js":"4fa1a4a3339e","js/revisions.en.js":"47de10a8358f","js/review.en.js":"a3925b099cbc","js/tagsuggestions.en.js":"d1ff9b84abe5","js/post-validation.en.js":"a1a0b64e308a","js/explore-qlist.en.js":"2a9a628fca7f","js/events.en.js":"7c61531eddb2","js/keyboard-shortcuts.en.js":"1150154e6cd8","js/external-editor.en.js":"683ce04845f3","js/mathjax-editing.en.js":"e2802f0c3d16","js/external-editor.en.js":"683ce04845f3","js/snippet-javascript.en.js":"584357a9d52b","js/snippet-javascript-codemirror.en.js":"0271a26626ba"});
+        StackExchange.using("gps", function() {
+             StackExchange.gps.init(true);
+        });
+    </script>
+    
+        <script>
+            StackExchange.ready(function () {
+                $('#nav-tour').click(function () {
+                    StackExchange.using("gps", function() {
+                        StackExchange.gps.track("aboutpage.click", { aboutclick_location: "headermain" }, true);
+                    });
+                });
+            });
+        </script>
+<script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/full-anon.js" async=""></script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/snippet-javascript.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/post-validation.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/prettify-full.js" async=""></script><script src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/external-editor.js" async=""></script><style type="text/css">.MathJax_Display {text-align: center; margin: 1em 0em; position: relative; display: block!important; text-indent: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; width: 100%}
+.MathJax .merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MathJax .MJX-monospace {font-family: monospace}
+.MathJax .MJX-sans-serif {font-family: sans-serif}
+#MathJax_Tooltip {background-color: InfoBackground; color: InfoText; border: 1px solid black; box-shadow: 2px 2px 5px #AAAAAA; -webkit-box-shadow: 2px 2px 5px #AAAAAA; -moz-box-shadow: 2px 2px 5px #AAAAAA; -khtml-box-shadow: 2px 2px 5px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true'); padding: 3px 4px; z-index: 401; position: absolute; left: 0; top: 0; width: auto; height: auto; display: none}
+.MathJax {display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+.MathJax:focus, body :focus .MathJax {display: inline-table}
+.MathJax img, .MathJax nobr, .MathJax a {border: 0; padding: 0; margin: 0; max-width: none; max-height: none; min-width: 0; min-height: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+img.MathJax_strut {border: 0!important; padding: 0!important; margin: 0!important; vertical-align: 0!important}
+.MathJax span {display: inline; position: static; border: 0; padding: 0; margin: 0; vertical-align: 0; line-height: normal; text-decoration: none}
+.MathJax nobr {white-space: nowrap!important}
+.MathJax img {display: inline!important; float: none!important}
+.MathJax * {transition: none; -webkit-transition: none; -moz-transition: none; -ms-transition: none; -o-transition: none}
+.MathJax_Processing {visibility: hidden; position: fixed; width: 0; height: 0; overflow: hidden}
+.MathJax_Processed {display: none!important}
+.MathJax_ExBox {display: block!important; overflow: hidden; width: 1px; height: 60ex; min-height: 0; max-height: none}
+.MathJax .MathJax_EmBox {display: block!important; overflow: hidden; width: 1px; height: 60em; min-height: 0; max-height: none}
+.MathJax .MathJax_HitBox {cursor: text; background: white; opacity: 0; filter: alpha(opacity=0)}
+.MathJax .MathJax_HitBox * {filter: none; opacity: 1; background: transparent}
+#MathJax_Tooltip * {filter: none; opacity: 1; background: transparent}
+@font-face {font-family: MathJax_Blank; src: url('about:blank')}
+.MathJax .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style></head>
+<body class="question-page new-topbar"><div style="visibility: hidden; overflow: hidden; position: absolute; top: 0px; height: 1px; width: auto; padding: 0px; border: 0px none; margin: 0px; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal;"><div id="MathJax_Hidden"></div></div><div style="display: none;" id="MathJax_Message"></div>
+    <noscript><div id="noscript-padding"></div></noscript>
+    
+
+
+
+
+    <div id="notify-container"></div>
+    <div id="custom-header"></div>
+
+
+
+
+
+<div class="topbar">
+    <div class="topbar-wrapper">
+
+        <div class="js-topbar-dialog-corral">
+
+
+<div class="topbar-dialog siteSwitcher-dialog dno">
+    <div class="header">
+        <h3><a href="http://codereview.stackexchange.com/">current community</a></h3>
+    </div>
+    <div class="modal-content current-site-container">
+        <ul class="current-site">
+                <li>
+                        <div class="related-links">
+                    <a href="http://chat.stackexchange.com/?tab=site&amp;host=codereview.stackexchange.com" class="js-gps-track" data-gps-track="site_switcher.click({ item_type:6 })">chat</a>
+            </div>
+
+
+
+
+    <a href="http://codereview.stackexchange.com/" class="current-site-link site-link js-gps-track" data-id="196" data-gps-track="
+        site_switcher.click({ item_type:3 })">
+        <div class="site-icon favicon favicon-codereview" title="Code Review"></div>
+        Code Review
+    </a>
+
+                </li>
+                <li class="related-site">
+                        <div class="L-shaped-icon-container">
+        <span class="L-shaped-icon"></span>
+    </div>
+
+                    
+
+
+
+    <a href="http://meta.codereview.stackexchange.com/" class="site-link js-gps-track" data-id="198" data-gps-track="
+            site.switch({ target_site:198, item_type:3 }),
+        site_switcher.click({ item_type:4 })">
+        <div class="site-icon favicon favicon-codereviewmeta" title="Code Review Meta"></div>
+        Code Review Meta
+    </a>
+
+                </li>
+        </ul>
+    </div>
+    <div class="header" id="your-communities-header">
+        <h3>
+your communities        </h3>
+            
+    </div>
+    <div class="modal-content" id="your-communities-section">
+            
+            <div class="call-to-login">
+<a href="https://codereview.stackexchange.com/users/signup?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:10 })">Sign up</a> or <a href="https://codereview.stackexchange.com/users/login?ssrc=site_switcher&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python" class="login-link js-gps-track" data-gps-track="site_switcher.click({ item_type:11 })">log in</a> to customize your list.
+            </div>
+    </div>
+    <div class="header">
+        <h3><a href="http://stackexchange.com/sites">more stack exchange communities</a></h3>
+        <a href="http://blog.stackoverflow.com/" class="fr">company blog</a>
+    </div>
+    <div class="modal-content">
+            <div class="child-content"></div>
+    </div>
+</div>
+        </div>
+
+        <div class="network-items">
+                <a href="http://stackexchange.com/" class="topbar-icon icon-site-switcher yes-hover js-site-switcher-button js-gps-track" data-gps-track="site_switcher.show" title="A list of all 160 Stack Exchange sites">
+                    <span class="hidden-text">Stack Exchange</span>
+                </a>
+
+    <a href="#" class="topbar-icon icon-inbox yes-hover js-inbox-button" title="Recent inbox messages">
+        <span class="hidden-text">Inbox</span>
+        <span class="unread-count" style="display:none"></span>
+    </a>
+    <a href="#" class="topbar-icon icon-achievements yes-hover js-achievements-button " data-unread-class="" title="Recent achievements: reputation, badges, and privileges earned">
+        <span class="hidden-text">Reputation and Badges</span>
+        <span class="unread-count" style="display:none">
+            
+        </span>
+    </a>
+        </div>
+
+        <div class="topbar-links">
+
+                <div class="links-container">
+                <span class="topbar-menu-links">
+                                    <a href="https://codereview.stackexchange.com/users/signup?ssrc=head&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python" class="login-link">sign up</a>
+                                <a href="https://codereview.stackexchange.com/users/login?ssrc=head&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python" class="login-link">log in</a>
+
+                            <a href="http://codereview.stackexchange.com/tour">tour</a>
+        <a href="#" class="icon-help js-help-button" title="Help Center and other resources">
+            help
+            <span class="triangle"></span>
+        </a>
+    <div class="topbar-dialog help-dialog js-help-dialog dno">
+        <div class="modal-content">
+            <ul>
+                                    <li>
+                        <a href="http://codereview.stackexchange.com/tour" class="js-gps-track" data-gps-track="help_popup.click({ item_type:1 })">
+                            Tour
+                            <span class="item-summary">
+                                Start here for a quick overview of the site
+                            </span>
+                        </a>
+                    </li>
+                <li>
+                    <a href="http://codereview.stackexchange.com/help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:4 })">
+                        Help Center
+                        <span class="item-summary">
+                            Detailed answers to any questions you might have
+                        </span>
+                    </a>
+                </li>
+                        <li>
+                            <a href="http://meta.codereview.stackexchange.com/" class="js-gps-track" data-gps-track="help_popup.click({ item_type:2 })">
+                                Meta
+                                <span class="item-summary">
+                                    Discuss the workings and policies of this site
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://stackoverflow.com/company/about" class="js-gps-track" data-gps-track="help_popup.click({ item_type:6 })">
+                                About Us
+                                <span class="item-summary">
+                                    Learn more about Stack Overflow the company
+                                </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://business.stackoverflow.com/?ref=topbar_help" class="js-gps-track" data-gps-track="help_popup.click({ item_type:7 })">
+                                Business
+                                <span class="item-summary">
+                                    Learn more about hiring developers or posting ads with us
+                                </span>
+                            </a>
+                        </li>
+            </ul>
+        </div>
+    </div>
+                                            </span>
+                </div>
+
+            <div class="search-container">
+                <form id="search" action="/search" method="get" autocomplete="off">
+                    <input name="q" placeholder="Search Q&amp;A" tabindex="1" autocomplete="off" maxlength="240" type="text">
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+    <script>
+        StackExchange.ready(function() { StackExchange.topbar.init(); });
+    </script>
+
+    <div class="container">
+        <div id="header">
+            <br class="cbt">
+            <div id="hlogo">
+                <a href="http://codereview.stackexchange.com/">
+                    Code Review
+                </a>
+            </div>
+            <div id="hmenus">
+                <div class="nav mainnavs">
+                    <ul>
+                        <li class="youarehere"><a id="nav-questions" href="http://codereview.stackexchange.com/questions">Questions</a></li>
+                                                <li><a id="nav-tags" href="http://codereview.stackexchange.com/tags">Tags</a></li>
+                        <li><a id="nav-users" href="http://codereview.stackexchange.com/users">Users</a></li>
+                        <li><a id="nav-badges" href="http://codereview.stackexchange.com/help/badges">Badges</a></li>
+                        <li><a id="nav-unanswered" href="http://codereview.stackexchange.com/unanswered">Unanswered</a></li>
+                    </ul>
+                </div>
+                <div class="nav askquestion">
+                    <ul>
+                        <li>
+                            <a id="nav-askquestion" href="http://codereview.stackexchange.com/questions/ask">Ask Question</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+
+
+
+        <div id="content" class="snippet-hidden">
+            
+
+<div itemscope="" itemtype="http://schema.org/Question">
+    <link itemprop="image" href="http://cdn.sstatic.net/Sites/codereview/img/apple-touch-icon.png?v=0a72875519a4">
+
+
+    <div id="herobox">
+        <div id="hero-content">
+                <div id="close"><a title="click to minimize">_</a></div>
+            <div id="blurb">
+                Code Review Stack Exchange is a question and answer site
+ for peer programmer code reviews. Join them; it only takes a minute:
+                <br>
+                <br>
+                <a href="http://codereview.stackexchange.com/users/signup?ssrc=hero&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python" id="tell-me-more" class="button">Sign up</a>
+            </div>
+            <div id="desc">
+                <b>Here's how it works:</b>
+                <ol id="hiw">
+                    <li id="q">Anybody can ask a question
+                    </li>
+                    <li id="an">Anybody can answer
+                    </li>
+                    <li id="b">The best answers are voted up and rise to the top
+                    </li>
+                </ol>
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+<script>
+    StackExchange.ready(function () {
+
+        var location = 0;
+        if ($("body").hasClass("questions-page")) {
+            location = 1;;
+        } else if ($("body").hasClass("question-page")) {
+            location = 1;;
+        } else if ($("body").hasClass("faq-page")) {
+            location = 5;;
+        } else if ($("body").hasClass("home-page")) {
+            location = 3;;
+        }
+
+        $('#tell-me-more').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: 'cta', location: location }, true);
+            });
+        });
+        $('#herobox #close').click(function () {
+            StackExchange.using("gps", function () {
+                StackExchange.gps.track("hero.action", { hero_action_type: "minimize", location: location }, true);
+            });
+            $.cookie("hero", "mini", { path: "/", expires: 365 });
+            $.ajax({
+                url: "/hero-mini",
+                success: function (data) {
+                    $("#herobox").fadeOut("fast", function () {
+                        $("#herobox").replaceWith(data);
+                        $("#herobox-mini").fadeIn("fast");
+                    });
+                }
+            });
+            return false;
+        });
+    });
+
+</script>			<div id="question-header">
+                <h1 itemprop="name"><a href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python" class="question-hyperlink">ID3 Decision Tree in python</a></h1>
+		</div>
+			<div id="mainbar">
+
+			
+
+<div class="question" data-questionid="109089" id="question">
+
+        <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="109089" type="hidden">
+        <a class="vote-up-off" title="This question shows research effort; it is useful and clear">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">3</span>
+        <a class="vote-down-off" title="This question does not show any research effort; it is unclear or not useful">down vote</a>
+
+        <a class="star-off" href="#">favorite</a>
+        <div class="favoritecount"><b>1</b></div>
+
+
+</div>
+
+            </td>
+            
+<td class="postcell">
+<div>
+    <div class="post-text" itemprop="text">
+
+<p>I've been working my way through <a href="https://www.coursera.org/course/machlearning" rel="nofollow">Pedro Domingos' machine learning course</a>
+ videos (although the course is not currently active). His first 
+homework assignment starts with coding up a decision tree (ID3). The 
+decision tree is used in subsequent assignments (where bagging and 
+boosting methods are to be applied over it).</p>
+
+<p>My concern is that my base decision tree implementation is running at
+ a little over 60% accuracy which seems very low to me. The hypothesis 
+test based pruning doesn't seem to be making much of a difference 
+either. Given that most of the subsequent assignments rely on this code,
+ it's frustrating not to be sure it's working properly.</p>
+
+<p>I've written and re-written this class many times now and can't 
+figure out where I'm going wrong (if I am). The parts of the code that 
+most concern me are my information gain calculations and the chi-square 
+based hypothesis test but it's very possible I missed something obvious 
+somewhere else.</p>
+
+<pre style="" class="lang-py prettyprint prettyprinted"><code><span class="kwd">import</span><span class="pln"> numpy </span><span class="kwd">as</span><span class="pln"> np
+</span><span class="kwd">import</span><span class="pln"> scipy</span><span class="pun">.</span><span class="pln">stats </span><span class="kwd">as</span><span class="pln"> st
+
+
+</span><span class="kwd">def</span><span class="pln"> entropy</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">):</span><span class="pln">
+    </span><span class="str">"""
+    Calculate Shannon entropy
+    :param attribute_data: data from a single feature/attribute
+    :return: a float representing the Shannon entropy
+    """</span><span class="pln">
+    _</span><span class="pun">,</span><span class="pln"> val_freqs </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">unique</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">,</span><span class="pln"> return_counts</span><span class="pun">=</span><span class="kwd">True</span><span class="pun">)</span><span class="pln">
+    </span><span class="com"># probabilities for each unique attribute value</span><span class="pln">
+    val_probs </span><span class="pun">=</span><span class="pln"> val_freqs </span><span class="pun">/</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> </span><span class="pun">-</span><span class="pln">val_probs</span><span class="pun">.</span><span class="pln">dot</span><span class="pun">(</span><span class="pln">np</span><span class="pun">.</span><span class="pln">log</span><span class="pun">(</span><span class="pln">val_probs</span><span class="pun">))</span><span class="pln">
+
+
+</span><span class="kwd">def</span><span class="pln"> info_gain</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">):</span><span class="pln">
+    </span><span class="str">"""
+    Calculate information gain
+    :param attribute_data: data from single attribute
+    :param labels:
+    :return: a float representing information gain
+    """</span><span class="pln">
+    attr_val_counts </span><span class="pun">=</span><span class="pln"> get_count_dict</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">)</span><span class="pln">
+    total_count </span><span class="pun">=</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln">
+    EA </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.0</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> attr_val</span><span class="pun">,</span><span class="pln"> attr_val_count </span><span class="kwd">in</span><span class="pln"> attr_val_counts</span><span class="pun">.</span><span class="pln">items</span><span class="pun">():</span><span class="pln">
+        EA </span><span class="pun">+=</span><span class="pln"> attr_val_count </span><span class="pun">*</span><span class="pln"> entropy</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">[</span><span class="pln">attribute_data </span><span class="pun">==</span><span class="pln"> attr_val</span><span class="pun">])</span><span class="pln">
+
+    </span><span class="kwd">return</span><span class="pln"> entropy</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> EA </span><span class="pun">/</span><span class="pln"> total_count
+
+
+</span><span class="kwd">def</span><span class="pln"> get_count_dict</span><span class="pun">(</span><span class="pln">data</span><span class="pun">):</span><span class="pln">
+    </span><span class="str">"""
+    Return the unique values and their frequencies as a dictionary
+    :param data: a 1-D numpy array
+    :return:
+    """</span><span class="pln">
+    data_values</span><span class="pun">,</span><span class="pln"> data_freqs </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">unique</span><span class="pun">(</span><span class="pln">data</span><span class="pun">,</span><span class="pln"> return_counts</span><span class="pun">=</span><span class="kwd">True</span><span class="pun">)</span><span class="pln">
+    </span><span class="kwd">return</span><span class="pln"> dict</span><span class="pun">(</span><span class="pln">zip</span><span class="pun">(</span><span class="pln">data_values</span><span class="pun">,</span><span class="pln"> data_freqs</span><span class="pun">))</span><span class="pln">
+
+
+</span><span class="kwd">def</span><span class="pln"> hypothesis_test</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> p_threshold</span><span class="pun">=</span><span class="kwd">None</span><span class="pun">,</span><span class="pln"> return_p_value</span><span class="pun">=</span><span class="kwd">False</span><span class="pun">):</span><span class="pln">
+    </span><span class="str">"""
+    Perform a chi-square test on the values for an attribute and their corresponding labels
+    :param attribute_data:
+    :param labels:
+    :param p_threshold:
+    :param return_p_value:
+    :return: True/False for p value exceeding threshold and optionally the p value tested
+    """</span><span class="pln">
+    </span><span class="com"># Get label frequencies</span><span class="pln">
+    label_counts </span><span class="pun">=</span><span class="pln"> get_count_dict</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln">
+    </span><span class="com"># Get attribute value frequencies</span><span class="pln">
+    attr_val_counts </span><span class="pun">=</span><span class="pln"> get_count_dict</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">)</span><span class="pln">
+    </span><span class="com"># Calculate length of data (outside of loops below)</span><span class="pln">
+    total_count </span><span class="pun">=</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln">
+
+    </span><span class="com"># k and m will be used for degrees of freedom in chi-squared call</span><span class="pln">
+    </span><span class="com"># k unique classes</span><span class="pln">
+    k </span><span class="pun">=</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">label_counts</span><span class="pun">)</span><span class="pln">
+    </span><span class="com"># m unique attribute values</span><span class="pln">
+    m </span><span class="pun">=</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">attr_val_counts</span><span class="pun">)</span><span class="pln">
+
+    statistic </span><span class="pun">=</span><span class="pln"> </span><span class="lit">0.0</span><span class="pln">
+    </span><span class="kwd">for</span><span class="pln"> attr_val</span><span class="pun">,</span><span class="pln"> attr_val_count </span><span class="kwd">in</span><span class="pln"> attr_val_counts</span><span class="pun">.</span><span class="pln">items</span><span class="pun">():</span><span class="pln">
+        attr_val_ratio </span><span class="pun">=</span><span class="pln"> attr_val_count </span><span class="pun">/</span><span class="pln"> total_count
+        </span><span class="com"># Get corresponding label frequencies within this attribute value</span><span class="pln">
+        label_counts_attr_val </span><span class="pun">=</span><span class="pln"> get_count_dict</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">[</span><span class="pln">attribute_data </span><span class="pun">==</span><span class="pln"> attr_val</span><span class="pun">])</span><span class="pln">
+        </span><span class="kwd">for</span><span class="pln"> label_attr_val</span><span class="pun">,</span><span class="pln"> label_count_attr_val </span><span class="kwd">in</span><span class="pln"> label_counts_attr_val</span><span class="pun">.</span><span class="pln">items</span><span class="pun">():</span><span class="pln">
+            </span><span class="com"># Expected label count is the probability of the attribute value by the</span><span class="pln">
+            </span><span class="com"># probability of the label within the attribute</span><span class="pln">
+            exp_label_count_attr_val </span><span class="pun">=</span><span class="pln"> attr_val_ratio </span><span class="pun">*</span><span class="pln"> label_counts</span><span class="pun">[</span><span class="pln">label_attr_val</span><span class="pun">]</span><span class="pln">
+            </span><span class="com"># Calculate the Chi-square statistic</span><span class="pln">
+            statistic </span><span class="pun">+=</span><span class="pln"> </span><span class="pun">(</span><span class="pln">label_count_attr_val </span><span class="pun">-</span><span class="pln"> exp_label_count_attr_val</span><span class="pun">)**</span><span class="lit">2</span><span class="pln"> </span><span class="pun">/</span><span class="pln"> exp_label_count_attr_val
+
+    </span><span class="com"># Calculate the p value from the chi-square distribution CDF</span><span class="pln">
+    p_value </span><span class="pun">=</span><span class="pln"> </span><span class="lit">1</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> st</span><span class="pun">.</span><span class="pln">chi2</span><span class="pun">.</span><span class="pln">cdf</span><span class="pun">(</span><span class="pln">statistic</span><span class="pun">,</span><span class="pln"> df</span><span class="pun">=(</span><span class="pln">m</span><span class="pun">-</span><span class="lit">1</span><span class="pun">)*(</span><span class="pln">k</span><span class="pun">-</span><span class="lit">1</span><span class="pun">))</span><span class="pln">
+
+    </span><span class="kwd">if</span><span class="pln"> return_p_value</span><span class="pun">:</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> p_value </span><span class="pun">&lt;</span><span class="pln"> p_threshold</span><span class="pun">,</span><span class="pln"> p_value
+    </span><span class="kwd">else</span><span class="pun">:</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln"> p_value </span><span class="pun">&lt;</span><span class="pln"> p_threshold
+
+
+</span><span class="com"># Main decision tree class. There'll be one instance of the class per node.</span><span class="pln">
+</span><span class="kwd">class</span><span class="pln"> </span><span class="typ">DecisionTree</span><span class="pun">:</span><span class="pln">
+    </span><span class="com"># Main prediction at this node</span><span class="pln">
+    label </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># Split attribute for the children</span><span class="pln">
+    attribute </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># Attribute value (where attribute has been set by parent)</span><span class="pln">
+    attribute_value </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># A list of child nodes (DecisionTree)</span><span class="pln">
+    children </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># p value for hypothesis testing</span><span class="pln">
+    p_value </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># Threshold to test p value against</span><span class="pln">
+    p_threshold </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># the parent node (DecisionTree)</span><span class="pln">
+    parent </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># level down the tree. 1 is top level</span><span class="pln">
+    level </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">None</span><span class="pln">
+    </span><span class="com"># max depth, for pruning</span><span class="pln">
+    max_level </span><span class="pun">=</span><span class="pln"> </span><span class="lit">10000000</span><span class="pln">
+
+    </span><span class="kwd">def</span><span class="pln"> __init__</span><span class="pun">(</span><span class="pln">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> attributes</span><span class="pun">,</span><span class="pln"> fitness_func</span><span class="pun">=</span><span class="pln">info_gain</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">=</span><span class="kwd">None</span><span class="pun">,</span><span class="pln"> parent</span><span class="pun">=</span><span class="kwd">None</span><span class="pun">,</span><span class="pln"> p_threshold</span><span class="pun">=</span><span class="lit">1.0</span><span class="pun">,</span><span class="pln"> max_level</span><span class="pun">=</span><span class="kwd">None</span><span class="pun">,</span><span class="pln"> old_level</span><span class="pun">=</span><span class="lit">0</span><span class="pun">):</span><span class="pln">
+        </span><span class="str">"""
+        Create a Decision tree node
+        :param data: Attribute values (example inputs)
+        :param labels: example outputs
+        :param attributes: Attribute column references
+        :param fitness_func: A function to test goodness of fit
+        :param value: Value of the parent's split attribute
+        :param parent:
+        :param p_threshold: threshold for hypothesis test
+        :param max_level: maximum tree depth
+        :param old_level: parent's level in the tree
+        :return:
+        """</span><span class="pln">
+        self</span><span class="pun">.</span><span class="pln">level </span><span class="pun">=</span><span class="pln"> old_level </span><span class="pun">+</span><span class="pln"> </span><span class="lit">1</span><span class="pln">
+        self</span><span class="pun">.</span><span class="pln">p_threshold </span><span class="pun">=</span><span class="pln"> p_threshold
+
+        </span><span class="kwd">if</span><span class="pln"> max_level </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">max_level </span><span class="pun">=</span><span class="pln"> max_level
+
+        </span><span class="kwd">if</span><span class="pln"> value </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">attribute_value </span><span class="pun">=</span><span class="pln"> value
+
+        </span><span class="kwd">if</span><span class="pln"> parent </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">parent </span><span class="pun">=</span><span class="pln"> parent
+
+        </span><span class="com"># If data or remaining attributes are empty or we've reached max depth then set the node label to the most</span><span class="pln">
+        </span><span class="com"># common one and return</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> data</span><span class="pun">.</span><span class="pln">size </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pln"> </span><span class="kwd">or</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> attributes </span><span class="kwd">or</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">level </span><span class="pun">==</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">max_level</span><span class="pun">:</span><span class="pln">
+            </span><span class="kwd">try</span><span class="pun">:</span><span class="pln">
+                </span><span class="com"># self.label = st.mode(labels)[0][0][0]</span><span class="pln">
+                self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> st</span><span class="pun">.</span><span class="pln">mode</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)[</span><span class="lit">0</span><span class="pun">][</span><span class="lit">0</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">except</span><span class="pun">:</span><span class="pln">
+                self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> labels</span><span class="pun">[</span><span class="pln">len</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> </span><span class="lit">1</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln">
+
+        </span><span class="com"># If labels are all the same, set label and return</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">all</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">[:]</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> labels</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]):</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> labels</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln">
+
+        </span><span class="com"># If corresponding attribute values are the same on every example just pick the last label and return</span><span class="pln">
+        </span><span class="com"># Implemented as a loop so we can stop checking as soon as we find a mismatch</span><span class="pln">
+        examples_all_same </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">True</span><span class="pln">
+        </span><span class="kwd">for</span><span class="pln"> i </span><span class="kwd">in</span><span class="pln"> range</span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">[</span><span class="lit">0</span><span class="pun">]):</span><span class="pln">
+            </span><span class="kwd">for</span><span class="pln"> j </span><span class="kwd">in</span><span class="pln"> range</span><span class="pun">(</span><span class="pln">data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">[</span><span class="lit">1</span><span class="pun">]):</span><span class="pln">
+                </span><span class="kwd">if</span><span class="pln"> data</span><span class="pun">[</span><span class="lit">0</span><span class="pun">,</span><span class="pln"> j</span><span class="pun">]</span><span class="pln"> </span><span class="pun">!=</span><span class="pln"> data</span><span class="pun">[</span><span class="pln">i</span><span class="pun">,</span><span class="pln"> j</span><span class="pun">]:</span><span class="pln">
+                    examples_all_same </span><span class="pun">=</span><span class="pln"> </span><span class="kwd">False</span><span class="pln">
+                    </span><span class="kwd">break</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> examples_all_same</span><span class="pun">:</span><span class="pln">
+                </span><span class="kwd">break</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> examples_all_same</span><span class="pun">:</span><span class="pln">
+            </span><span class="com"># Choose the last label</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> labels</span><span class="pun">[</span><span class="pln">len</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> </span><span class="lit">1</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln">
+
+        </span><span class="com"># Build the tree by splitting the data and adding child trees</span><span class="pln">
+        self</span><span class="pun">.</span><span class="pln">build</span><span class="pun">(</span><span class="pln">data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> attributes</span><span class="pun">,</span><span class="pln"> fitness_func</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">return</span><span class="pln">
+
+    </span><span class="kwd">def</span><span class="pln"> __repr__</span><span class="pun">(</span><span class="pln">self</span><span class="pun">):</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">children </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"x[{0}]={1}, y={2}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">parent</span><span class="pun">.</span><span class="pln">attribute</span><span class="pun">,</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">attribute_value</span><span class="pun">,</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">label</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">else</span><span class="pun">:</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">parent </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+                </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"x[{0}]={1}, p={2}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">parent</span><span class="pun">.</span><span class="pln">attribute</span><span class="pun">,</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">attribute_value</span><span class="pun">,</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">p_value</span><span class="pun">)</span><span class="pln">
+            </span><span class="kwd">else</span><span class="pun">:</span><span class="pln">
+                </span><span class="kwd">return</span><span class="pln"> </span><span class="str">"p={0}"</span><span class="pun">.</span><span class="pln">format</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">p_value</span><span class="pun">)</span><span class="pln">
+
+    </span><span class="kwd">def</span><span class="pln"> build</span><span class="pun">(</span><span class="pln">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> attributes</span><span class="pun">,</span><span class="pln"> fitness_func</span><span class="pun">):</span><span class="pln">
+        </span><span class="str">"""
+        build a subtree
+        :param data:
+        :param labels:
+        :param attributes:
+        :param fitness_func:
+        :return:
+        """</span><span class="pln">
+        self</span><span class="pun">.</span><span class="pln">choose_best_attribute</span><span class="pun">(</span><span class="pln">data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> attributes</span><span class="pun">,</span><span class="pln"> fitness_func</span><span class="pun">)</span><span class="pln">
+        best_attribute_column </span><span class="pun">=</span><span class="pln"> attributes</span><span class="pun">.</span><span class="pln">index</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">attribute</span><span class="pun">)</span><span class="pln">
+        </span><span class="com"># Attribute data is the single column with attribute values for the best attribute</span><span class="pln">
+        attribute_data </span><span class="pun">=</span><span class="pln"> data</span><span class="pun">[:,</span><span class="pln"> best_attribute_column</span><span class="pun">]</span><span class="pln">
+
+        </span><span class="com"># Prune if hypothesis test fails</span><span class="pln">
+        no_prune</span><span class="pun">,</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">p_value </span><span class="pun">=</span><span class="pln"> hypothesis_test</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> return_p_value</span><span class="pun">=</span><span class="kwd">True</span><span class="pun">,</span><span class="pln"> p_threshold</span><span class="pun">=</span><span class="pln">self</span><span class="pun">.</span><span class="pln">p_threshold</span><span class="pun">)</span><span class="pln">
+
+        </span><span class="kwd">if</span><span class="pln"> </span><span class="kwd">not</span><span class="pln"> no_prune</span><span class="pun">:</span><span class="pln">
+            </span><span class="com"># The try-return is probably not required here and above</span><span class="pln">
+            </span><span class="kwd">try</span><span class="pun">:</span><span class="pln">
+                self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> st</span><span class="pun">.</span><span class="pln">mode</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)[</span><span class="lit">0</span><span class="pun">][</span><span class="lit">0</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">except</span><span class="pun">:</span><span class="pln">
+                self</span><span class="pun">.</span><span class="pln">label </span><span class="pun">=</span><span class="pln"> labels</span><span class="pun">[</span><span class="pln">len</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> </span><span class="lit">1</span><span class="pun">]</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln">
+
+        </span><span class="com"># The child trees will be passed data for all attributes except the split attribute</span><span class="pln">
+        child_attributes </span><span class="pun">=</span><span class="pln"> attributes</span><span class="pun">[:]</span><span class="pln">
+        child_attributes</span><span class="pun">.</span><span class="pln">remove</span><span class="pun">(</span><span class="pln">self</span><span class="pun">.</span><span class="pln">attribute</span><span class="pun">)</span><span class="pln">
+
+        self</span><span class="pun">.</span><span class="pln">children </span><span class="pun">=</span><span class="pln"> </span><span class="pun">[]</span><span class="pln">
+        </span><span class="kwd">for</span><span class="pln"> val </span><span class="kwd">in</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">unique</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">):</span><span class="pln">
+            </span><span class="com"># Create children for data where the split attribute == val for each unique value for the attribute</span><span class="pln">
+            child_data </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">delete</span><span class="pun">(</span><span class="pln">data</span><span class="pun">[</span><span class="pln">attribute_data </span><span class="pun">==</span><span class="pln"> val</span><span class="pun">,:],</span><span class="pln"> best_attribute_column</span><span class="pun">,</span><span class="lit">1</span><span class="pun">)</span><span class="pln">
+            child_labels </span><span class="pun">=</span><span class="pln"> labels</span><span class="pun">[</span><span class="pln">attribute_data </span><span class="pun">==</span><span class="pln"> val</span><span class="pun">]</span><span class="pln">
+            self</span><span class="pun">.</span><span class="pln">children</span><span class="pun">.</span><span class="pln">append</span><span class="pun">(</span><span class="typ">DecisionTree</span><span class="pun">(</span><span class="pln">child_data</span><span class="pun">,</span><span class="pln"> child_labels</span><span class="pun">,</span><span class="pln"> child_attributes</span><span class="pun">,</span><span class="pln"> value</span><span class="pun">=</span><span class="pln">val</span><span class="pun">,</span><span class="pln"> parent</span><span class="pun">=</span><span class="pln">self</span><span class="pun">,</span><span class="pln">
+                                              old_level</span><span class="pun">=</span><span class="pln">self</span><span class="pun">.</span><span class="pln">level</span><span class="pun">,</span><span class="pln"> max_level</span><span class="pun">=</span><span class="pln">self</span><span class="pun">.</span><span class="pln">max_level</span><span class="pun">))</span><span class="pln">
+
+    </span><span class="kwd">def</span><span class="pln"> choose_best_attribute</span><span class="pun">(</span><span class="pln">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">,</span><span class="pln"> attributes</span><span class="pun">,</span><span class="pln"> fitness</span><span class="pun">):</span><span class="pln">
+        </span><span class="str">"""
+        Choose an attribute to split the children on
+        :param data: values for all attributes
+        :param labels: values for corresponding labels
+        :param attributes: attribute columns
+        :param fitness: the closeness of fit function
+        :return: empty ... self.attribute will be set by this function instead
+        """</span><span class="pln">
+        best_gain </span><span class="pun">=</span><span class="pln"> float</span><span class="pun">(</span><span class="str">'-inf'</span><span class="pun">)</span><span class="pln">
+        </span><span class="kwd">for</span><span class="pln"> attribute </span><span class="kwd">in</span><span class="pln"> attributes</span><span class="pun">:</span><span class="pln">
+            attribute_data </span><span class="pun">=</span><span class="pln"> data</span><span class="pun">[:,</span><span class="pln"> attributes</span><span class="pun">.</span><span class="pln">index</span><span class="pun">(</span><span class="pln">attribute</span><span class="pun">)]</span><span class="pln">
+            gain </span><span class="pun">=</span><span class="pln"> fitness</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">,</span><span class="pln"> labels</span><span class="pun">)</span><span class="pln">
+            </span><span class="kwd">if</span><span class="pln"> gain </span><span class="pun">&gt;</span><span class="pln"> best_gain</span><span class="pun">:</span><span class="pln">
+                best_gain </span><span class="pun">=</span><span class="pln"> gain
+                self</span><span class="pun">.</span><span class="pln">attribute </span><span class="pun">=</span><span class="pln"> attribute
+        </span><span class="kwd">return</span><span class="pln">
+
+    </span><span class="kwd">def</span><span class="pln"> classify</span><span class="pun">(</span><span class="pln">self</span><span class="pun">,</span><span class="pln"> data</span><span class="pun">):</span><span class="pln">
+        </span><span class="str">"""
+        Make predictions for the rows passed in data
+        :param data: rows of attribute values
+        :return: a numpy array of labels
+        """</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> data</span><span class="pun">.</span><span class="pln">size </span><span class="pun">==</span><span class="pln"> </span><span class="lit">0</span><span class="pun">:</span><span class="pln">
+            </span><span class="kwd">return</span><span class="pln">
+
+        </span><span class="com"># If we're down to one record then convert it back to a 2-D array</span><span class="pln">
+        </span><span class="kwd">if</span><span class="pln"> len</span><span class="pun">(</span><span class="pln">data</span><span class="pun">.</span><span class="pln">shape</span><span class="pun">)</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> </span><span class="lit">1</span><span class="pun">:</span><span class="pln">
+            data </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">reshape</span><span class="pun">(</span><span class="pln">data</span><span class="pun">,</span><span class="pln"> </span><span class="pun">(</span><span class="lit">1</span><span class="pun">,</span><span class="pln">len</span><span class="pun">(</span><span class="pln">data</span><span class="pun">)))</span><span class="pln">
+
+        </span><span class="kwd">if</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">children </span><span class="kwd">is</span><span class="pln"> </span><span class="kwd">None</span><span class="pun">:</span><span class="pln">
+            </span><span class="com"># If we're at the bottom of the tree then return the labels for all records as the tree node label</span><span class="pln">
+            labels </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">ones</span><span class="pun">(</span><span class="pln">len</span><span class="pun">(</span><span class="pln">data</span><span class="pun">))</span><span class="pln"> </span><span class="pun">*</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">label
+            </span><span class="kwd">return</span><span class="pln"> labels
+
+        labels </span><span class="pun">=</span><span class="pln"> np</span><span class="pun">.</span><span class="pln">zeros</span><span class="pun">(</span><span class="pln">len</span><span class="pun">(</span><span class="pln">data</span><span class="pun">))</span><span class="pln">
+
+        </span><span class="kwd">for</span><span class="pln"> child </span><span class="kwd">in</span><span class="pln"> self</span><span class="pun">.</span><span class="pln">children</span><span class="pun">:</span><span class="pln">
+            </span><span class="com"># Get the array indexes where the split attibute value  = child attribute value</span><span class="pln">
+            child_attr_val_idx </span><span class="pun">=</span><span class="pln"> data</span><span class="pun">[:,</span><span class="pln">self</span><span class="pun">.</span><span class="pln">attribute</span><span class="pun">]</span><span class="pln"> </span><span class="pun">==</span><span class="pln"> child</span><span class="pun">.</span><span class="pln">attribute_value
+            </span><span class="com"># pass the array subsets to child trees for classification</span><span class="pln">
+            labels</span><span class="pun">[</span><span class="pln">child_attr_val_idx</span><span class="pun">]</span><span class="pln"> </span><span class="pun">=</span><span class="pln"> child</span><span class="pun">.</span><span class="pln">classify</span><span class="pun">(</span><span class="pln">data</span><span class="pun">[</span><span class="pln">child_attr_val_idx</span><span class="pun">])</span><span class="pln">
+
+        </span><span class="kwd">return</span><span class="pln"> labels</span></code></pre>
+
+<p>My full code (with bagging) with along with the data is on GitHub at <a href="https://github.com/jabbermonkey/dtree_bias_var" rel="nofollow">https://github.com/jabbermonkey/dtree_bias_var</a></p>
+
+<p>I'd love to know if I've missed something in this implementation. Any general comments on the code are also very welcome.</p>
+    </div>
+    <div class="post-taglist">
+        <a href="http://codereview.stackexchange.com/questions/tagged/python" class="post-tag js-gps-track" title="show questions tagged 'python'" rel="tag">python</a> <a href="http://codereview.stackexchange.com/questions/tagged/algorithm" class="post-tag js-gps-track" title="show questions tagged 'algorithm'" rel="tag">algorithm</a> <a href="http://codereview.stackexchange.com/questions/tagged/python-3.x" class="post-tag js-gps-track" title="show questions tagged 'python-3.x'" rel="tag">python-3.x</a> <a href="http://codereview.stackexchange.com/questions/tagged/numpy" class="post-tag js-gps-track" title="show questions tagged 'numpy'" rel="tag">numpy</a> <a href="http://codereview.stackexchange.com/questions/tagged/machine-learning" class="post-tag js-gps-track" title="show questions tagged 'machine-learning'" rel="tag">machine-learning</a> 
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://codereview.stackexchange.com/q/109089" title="short permalink to this question" class="short-link" id="link-post-109089">share</a><span class="lsep">|</span><a href="http://codereview.stackexchange.com/posts/109089/edit" class="suggest-edit-post" title="">improve this question</a></div>        
+    </td>
+    <td class="post-signature" align="right">
+<div class="user-info ">
+    <div class="user-action-time">
+        <a href="http://codereview.stackexchange.com/posts/109089/revisions" title="show all edits to this post">edited <span title="2015-10-30 14:32:44Z" class="relativetime">Oct 30 '15 at 14:32</span></a>
+    </div>
+    <div class="user-gravatar32">
+        
+    </div>
+    <div class="user-details">
+        
+        <div class="-flair">
+            
+        </div>
+    </div>
+</div>    </td>
+    <td class="post-signature owner">
+        <div class="user-info ">
+    <div class="user-action-time">
+        asked <span title="2015-10-29 08:23:26Z" class="relativetime">Oct 29 '15 at 8:23</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://codereview.stackexchange.com/users/88200/jabbermonkey"><div class="gravatar-wrapper-32"><img src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/11660f29a164951ac45d9875f2670e9f.png" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://codereview.stackexchange.com/users/88200/jabbermonkey">Jabbermonkey</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">26</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="7 bronze badges"><span class="badge3"></span><span class="badgecount">7</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</div>
+</td>
+        </tr>
+                
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-109089" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-109089" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid answering questions in comments.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>        </tbody></table>
+</div>
+
+			<div id="answers">
+
+				<a name="tab-top"></a>
+				<div id="answers-header">
+					<div class="subheader answers-subheader">
+						<h2>
+								1 Answer
+                                <span style="display:none;" itemprop="answerCount">1</span>
+						</h2>
+						<div>
+							<div id="tabs">
+        <a href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python?answertab=active#tab-top" data-nav-xhref="" title="Answers with the latest activity first" data-value="active" data-shortcut="A">
+            active</a>
+        <a href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python?answertab=oldest#tab-top" data-nav-xhref="" title="Answers in the order they were provided" data-value="oldest" data-shortcut="O">
+            oldest</a>
+        <a class="youarehere" href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python?answertab=votes#tab-top" data-nav-xhref="" title="Answers with the highest score first" data-value="votes" data-shortcut="V">
+            votes</a>
+</div>
+						</div>
+					</div>    
+				</div>    
+
+
+
+
+  
+<a name="125707"></a>
+<div id="answer-125707" class="answer accepted-answer" data-answerid="125707" itemscope="" itemtype="http://schema.org/Answer" itemprop="acceptedAnswer">
+    <table>
+        <tbody><tr>
+            <td class="votecell">
+                
+
+<div class="vote">
+        <input name="_id_" value="125707" type="hidden">
+        <a class="vote-up-off" title="This answer is useful">up vote</a>
+        <span itemprop="upvoteCount" class="vote-count-post ">1</span>
+        <a class="vote-down-off" title="This answer is not useful">down vote</a>
+
+
+
+        <span class="vote-accepted-on load-accepted-answer-date" title="loading when this answer was accepted...">accepted</span>
+
+</div>
+
+            </td>
+            
+
+
+<td class="answercell">
+    <div class="post-text" itemprop="text">
+<p>It turns out that my Information Gain calculation was incorrect. I 
+was subtracting from the entropy of the filtered attribute-specific data
+ and I should have been subtracting from the entropy all the data. This 
+can be achieved by calculating entropy on the labels rather than the 
+data. </p>
+
+<p>So:</p>
+
+<pre style="" class="lang-py prettyprint prettyprinted"><code><span class="kwd">return</span><span class="pln"> entropy</span><span class="pun">(</span><span class="pln">attribute_data</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> EA </span><span class="pun">/</span><span class="pln"> total_count</span></code></pre>
+
+<p>should be</p>
+
+<pre style="" class="lang-py prettyprint prettyprinted"><code><span class="kwd">return</span><span class="pln"> entropy</span><span class="pun">(</span><span class="pln">labels</span><span class="pun">)</span><span class="pln"> </span><span class="pun">-</span><span class="pln"> EA </span><span class="pun">/</span><span class="pln"> total_count</span></code></pre>
+
+<p>Thanks to user <a href="https://github.com/surajrautela" rel="nofollow">surajrautela</a> on Github for raising an issue to point this out.</p>
+    </div>
+    <table class="fw">
+    <tbody><tr>
+    <td class="vt">
+<div class="post-menu"><a href="http://codereview.stackexchange.com/a/125707" title="short permalink to this answer" class="short-link" id="link-post-125707">share</a><span class="lsep">|</span><a href="http://codereview.stackexchange.com/posts/125707/edit" class="suggest-edit-post" title="">improve this answer</a></div>                    </td>
+            
+
+
+    <td class="post-signature owner" align="right">   
+       
+
+    <div class="user-info ">
+    <div class="user-action-time">
+        answered <span title="2016-04-14 20:14:52Z" class="relativetime">Apr 14 at 20:14</span>
+    </div>
+    <div class="user-gravatar32">
+        <a href="http://codereview.stackexchange.com/users/88200/jabbermonkey"><div class="gravatar-wrapper-32"><img src="algorithm%20-%20ID3%20Decision%20Tree%20in%20python%20-%20Code%20Review%20Stack%20Exchange_files/11660f29a164951ac45d9875f2670e9f.png" alt="" height="32" width="32"></div></a>
+    </div>
+    <div class="user-details">
+        <a href="http://codereview.stackexchange.com/users/88200/jabbermonkey">Jabbermonkey</a>
+        <div class="-flair">
+            <span class="reputation-score" title="reputation score " dir="ltr">26</span><span title="1 silver badge"><span class="badge2"></span><span class="badgecount">1</span></span><span title="7 bronze badges"><span class="badge3"></span><span class="badgecount">7</span></span>
+        </div>
+    </div>
+</div>
+    </td>
+    </tr>
+    </tbody></table>
+</td>
+        </tr>
+        
+<tr>
+    <td class="votecell"></td>
+    <td>
+	    <div id="comments-125707" class="comments  dno">
+		    <table>
+                <tbody data-remaining-comments-count="0" data-canpost="false" data-cansee="true" data-comments-unavailable="false" data-addlink-disabled="true">
+
+                        <tr><td></td><td></td></tr>
+                </tbody>
+		    </table>
+	    </div>
+
+        <div id="comments-link-125707" data-rep="50" data-anon="true">
+
+                <a class="js-add-link comments-link disabled-link " title="Use comments to ask for more information or suggest improvements. Avoid comments like “+1” or “thanks”.">add a comment</a><span class="js-link-separator dno">&nbsp;|&nbsp;</span>
+            <a class="js-show-link comments-link dno" title="expand to show all comments on this post" href="#" onclick=""></a>
+        </div>         
+    </td>
+</tr>    </tbody></table>
+</div>
+									<a name="new-answer"></a>
+						<form id="post-form" action="/questions/109089/answer/submit" method="post" class="post-form">
+						    <input id="post-id" value="109089" type="hidden">
+                            <input id="qualityBanWarningShown" name="qualityBanWarningShown" value="false" type="hidden">
+                            <input name="referrer" value="https://www.google.com/" type="hidden">
+							<h2 class="space">Your Answer</h2>
+
+        <script>
+            StackExchange.ifUsing("editor", function () {
+                return StackExchange.using("mathjaxEditing", function () {
+                    StackExchange.MarkdownEditor.creationCallbacks.add(function (editor, postfix) {
+                        StackExchange.mathjaxEditing.prepareWmdForMathJax(editor, postfix, [["\\$", "\\$"]]);
+                    });
+                });
+            }, "mathjax-editing");
+        </script>
+
+            <script>
+            StackExchange.ifUsing("editor", function () {
+                StackExchange.using("externalEditor", function () {
+                    StackExchange.using("snippets", function () {
+                        StackExchange.snippets.init();
+                    });
+                });
+            }, "code-snippets");
+        </script>
+    
+
+<script>
+    StackExchange.ready(function() {
+        initTagRenderer("".split(" "), "".split(" "));
+       
+        StackExchange.using("externalEditor", function() {
+                // Have to fire editor after snippets, if snippets enabled
+                if (StackExchange.settings.snippets.snippetsEnabled) {
+                    StackExchange.using("snippets", function() {
+                        createEditor();
+                    });
+                }
+                else {
+                    createEditor();
+                }
+            });
+
+            function createEditor() {
+                prepareEditor({
+                    heartbeatType: 'answer',
+                convertImagesToLinks: false,
+                reputationToPostImages: null,
+                bindNavPrevention: true,
+                postfix: "",
+                    onDemand: true,
+                    discardSelector: ".discard-answer"
+                    ,immediatelyShowMarkdownHelp:true
+                    });
+                
+
+        }
+    });  
+</script>
+
+
+<div id="post-editor" class="post-editor js-post-editor">
+
+    <div style="position: relative;">     
+        <div class="wmd-container">
+            <div id="wmd-button-bar" class="wmd-button-bar"><ul id="wmd-button-row" class="wmd-button-row"><li style="left: 0px;" class="wmd-button" id="wmd-bold-button"><span style="background-position: 0px -20px;"></span></li><li style="left: 25px;" class="wmd-button" id="wmd-italic-button"><span style="background-position: -20px -20px;"></span></li><li style="left: 50px;" class="wmd-spacer" id="wmd-spacer1"><span style="background-position: -40px -20px;"></span></li><li style="left: 75px;" class="wmd-button" id="wmd-link-button"><span style="background-position: -40px -20px;"></span></li><li style="left: 100px;" class="wmd-button" id="wmd-quote-button"><span style="background-position: -60px -20px;"></span></li><li style="left: 125px;" class="wmd-button" id="wmd-code-button"><span style="background-position: -80px -20px;"></span></li><li style="left: 150px;" class="wmd-button" id="wmd-image-button"><span style="background-position: -100px -20px;"></span></li><li style="left: 175px;" class="wmd-spacer" id="wmd-spacer2"><span style="background-position: -120px -20px;"></span></li><li style="left: 200px;" class="wmd-button" id="wmd-olist-button"><span style="background-position: -120px -20px;"></span></li><li style="left: 225px;" class="wmd-button" id="wmd-ulist-button"><span style="background-position: -140px -20px;"></span></li><li style="left: 250px;" class="wmd-button" id="wmd-heading-button"><span style="background-position: -160px -20px;"></span></li><li style="left: 275px;" class="wmd-button" id="wmd-hr-button"><span style="background-position: -180px -20px;"></span></li><li style="left: 300px;" class="wmd-spacer" id="wmd-spacer3"><span style="background-position: -200px -20px;"></span></li><li style="left: 325px;" class="wmd-button" id="wmd-undo-button"><span style="background-position: -200px -20px;"></span></li><li style="left: 350px;" class="wmd-button" id="wmd-redo-button"><span style="background-position: -220px -20px;"></span></li></ul></div>
+            <textarea id="wmd-input" class="wmd-input" name="post-text" cols="92" rows="15" tabindex="101" data-min-length=""></textarea>
+        </div>
+    </div>
+
+    <div class="fl" style="margin-top: 8px; height:24px;">&nbsp;</div>
+    <div id="draft-saved" class="draft-saved community-option fl" style="margin-top: 8px; height:24px; display:none;">draft saved</div>
+
+    <div id="draft-discarded" class="draft-discarded community-option fl" style="margin-top: 8px; height:24px; display:none;">draft discarded</div>
+
+
+
+    <div id="wmd-preview" class="wmd-preview"></div>
+    <div></div>
+    <div class="edit-block">
+        <input id="fkey" name="fkey" value="c1bb4e4272c0f7802cb89fbb1a9dac70" type="hidden">
+        <input id="author" name="author" type="text">
+    </div>
+
+
+
+</div>
+							<div style="position: relative;">
+								
+								            <div class="form-item new-post-login">
+        
+                <div class="new-login-form">
+                    <div class="new-login-left">
+                        <h3>Sign up or <a id="login-link" href="http://codereview.stackexchange.com/users/login?ssrc=question_page&amp;returnurl=http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python%23new-answer">log in</a></h3>
+                        <script>
+                            StackExchange.ready(function () {
+                                StackExchange.helpers.onClickDraftSave('#login-link');
+                            });
+                        </script>
+                        <div class="preferred-login google-login">
+                            <p><span class="icon"></span><span>Sign up using Google</span></p>
+                        </div>
+                        <div class="preferred-login facebook-login">
+                            <p><span class="icon"></span><span>Sign up using Facebook</span></p>
+                        </div>
+                        <div class="preferred-login stackexchange-login">
+                            <p><span class="icon"></span><span>Sign up using Email and Password</span></p>
+                        </div>
+                    </div>
+                    <input name="manual-openid" class="manual-openid" type="hidden">
+                    <input name="use-facebook" class="use-facebook" value="false" type="hidden">
+                    <input name="use-google" class="use-google" value="false" type="hidden">
+                    <input class="submit-openid" value="Submit" style="display:none" type="button">
+                    <div class="new-login-right">
+                                <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tbody><tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" size="30" maxlength="30" tabindex="105" type="text">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" size="30" maxlength="100" tabindex="106" placeholder="required, but never shown" type="email">
+                </div>
+            </td>
+        </tr>
+        </tbody></table>
+    </div>
+
+                    </div>
+                </div>
+            </div>
+            <script>
+                StackExchange.ready(
+                    function () {
+                        StackExchange.openid.initPostLogin('.new-post-login', 'http%3a%2f%2fcodereview.stackexchange.com%2fquestions%2f109089%2fid3-decision-tree-in-python%23new-answer', 'question_page');
+                    }
+                );
+            </script>
+            <noscript>
+                        <h3>Post as a guest</h3>
+    <div class="form-item">
+        <table>
+        <tr>
+                    <td class="vm">
+                <div>
+                    <label for="display-name">Name</label>
+                    <input id="display-name" name="display-name" type="text" size="30" maxlength="30" value="" tabindex="105">
+                </div>
+                <div>
+                    <label for="m-address">Email</label>
+                    <input id="m-address" name="m-address" type="email" size="30" maxlength="100" value="" tabindex="106" placeholder="required, but never shown" />
+                </div>
+            </td>
+        </tr>
+        </table>
+    </div>
+
+            </noscript>
+
+							</div>
+           
+															<div class="form-submit cbt">
+									<input id="submit-button" value="Post Your Answer" tabindex="110" type="submit">
+									<a href="#" class="btn-clear discard-answer dno">discard</a>
+
+<p class="privacy-policy-agreement">
+By posting your answer, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">								</div>
+						</form>
+
+
+
+						<h2 class="bottom-notice" data-loc="1">
+Not the answer you're looking for?							Browse other questions tagged <a href="http://codereview.stackexchange.com/questions/tagged/python" class="post-tag" title="show questions tagged 'python'" rel="tag">python</a> <a href="http://codereview.stackexchange.com/questions/tagged/algorithm" class="post-tag" title="show questions tagged 'algorithm'" rel="tag">algorithm</a> <a href="http://codereview.stackexchange.com/questions/tagged/python-3.x" class="post-tag" title="show questions tagged 'python-3.x'" rel="tag">python-3.x</a> <a href="http://codereview.stackexchange.com/questions/tagged/numpy" class="post-tag" title="show questions tagged 'numpy'" rel="tag">numpy</a> <a href="http://codereview.stackexchange.com/questions/tagged/machine-learning" class="post-tag" title="show questions tagged 'machine-learning'" rel="tag">machine-learning</a>  or <a href="http://codereview.stackexchange.com/questions/ask">ask your own question</a>.						</h2>
+			</div>
+		</div>
+				<div id="sidebar" class="show-votes">
+						    <div class="module question-stats">
+			        <table id="qinfo">
+			            <tbody><tr>
+			                <td>
+			                    <p class="label-key">asked</p>
+			                </td>
+			                <td style="padding-left: 10px">
+			                    <p class="label-key" title="2015-10-29 08:23:26Z"><b>10 months ago</b></p>
+			                </td>
+			            </tr>
+			            <tr>
+			                <td>
+			                    <p class="label-key">viewed</p>
+			                </td>
+
+			                <td style="padding-left: 10px">
+			                    <p class="label-key">
+			                        <b>3936 times</b>
+			                    </p>
+			                </td>
+			            </tr>
+			                <tr>
+			                    <td>
+			                        <p class="label-key">active</p>
+			                    </td>
+			                    <td style="padding-left: 10px">
+			                        <p class="label-key"><b><a href="http://codereview.stackexchange.com/questions/109089/id3-decision-tree-in-python?lastactivity" class="lastactivity-link" title="2016-04-19 08:27:18Z">4 months ago</a></b></p>
+			                    </td>
+			                </tr>
+			        </tbody></table>
+			    </div>
+						
+			<div style="margin-bottom: 10px;">
+        
+
+<style type="text/css">
+#newsletter-ad {
+    width: 270px;
+    height: 250px;
+    overflow: hidden;
+    background: url('//cdn.sstatic.net/Sites/codereview/img/newsletter-ad.png?v=4');
+    padding: 0 15px 0 15px;
+}
+#newsletter-ad-header {
+    margin-top: 60px;
+}
+#newsletter-ad ul {
+    margin: 1em 0 1em 1.5em;
+}
+#newsletter-ad ul li {
+    margin-bottom: 5px;
+}
+#newsletter-signup-container {
+    text-align: center;
+}
+#newsletter-preview-container {
+    margin-top: 10px;
+    text-align: center;
+}
+#newsletter-email-input {
+    width: 200px;
+}
+</style>
+
+<script>
+    StackExchange.ready(function () {
+        StackExchange.newsletterAd.init();
+    });
+</script>
+
+<div id="newsletter-ad">
+        <p id="newsletter-ad-header">Get the <b>weekly newsletter!</b> In it, you'll get:</p>
+        <ul>
+            <li>The week's top questions and answers</li>
+            <li>Important community announcements</li>
+            <li>Questions that need answers</li>
+        </ul>
+    <div id="newsletter-signup-container"><input id="newsletter-signup" value="Sign up for the newsletter" type="button"></div>
+    <p id="newsletter-preview-container">see an <a href="http://stackexchange.com/newsletters/newsletter?site=codereview.stackexchange.com" id="newsletter-preview">example newsletter</a></p>
+    <div class="dno">
+        
+<p class="privacy-policy-agreement">
+By subscribing, you agree to the <a href="http://stackexchange.com/legal/privacy-policy" target="_blank">privacy policy</a> and <a href="http://stackexchange.com/legal/terms-of-service" target="_blank">terms of service</a>.</p>
+<input name="legalLinksShown" value="1" type="hidden">
+    </div>
+</div>
+
+    </div>
+			
+
+            
+
+				<div class="module sidebar-related">
+					<h4 id="h-related">Related</h4>
+                    <div class="related js-gps-related-questions" data-tracker="rq=1">
+                        <div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/56558?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">5</div></a><a href="http://codereview.stackexchange.com/questions/56558/hints-to-make-sudoku-solver-more-pythonic?rq=1" class="question-hyperlink">Hints to make Sudoku solver more Pythonic</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/56734?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="http://codereview.stackexchange.com/questions/56734/hints-to-make-sudoku-solver-more-pythonic-ii?rq=1" class="question-hyperlink">Hints to make Sudoku solver more Pythonic (II)</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/62123?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">3</div></a><a href="http://codereview.stackexchange.com/questions/62123/tree-utility-in-python?rq=1" class="question-hyperlink">Tree Utility in Python</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/82957?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">2</div></a><a href="http://codereview.stackexchange.com/questions/82957/decision-tree-for-binary-classification?rq=1" class="question-hyperlink">Decision tree for binary classification</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/109632?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">1</div></a><a href="http://codereview.stackexchange.com/questions/109632/latent-dirichlet-allocation-in-python?rq=1" class="question-hyperlink">Latent Dirichlet Allocation in Python</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/117316?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">1</div></a><a href="http://codereview.stackexchange.com/questions/117316/write-binary-save-file-in-python?rq=1" class="question-hyperlink">Write binary save file in Python</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/118340?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">4</div></a><a href="http://codereview.stackexchange.com/questions/118340/skip-list-in-python?rq=1" class="question-hyperlink">Skip list in Python</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/123534?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes answered-accepted default">6</div></a><a href="http://codereview.stackexchange.com/questions/123534/breadth-first-search-on-a-tree-in-python?rq=1" class="question-hyperlink">Breadth-first search on a tree in Python</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/134961?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">4</div></a><a href="http://codereview.stackexchange.com/questions/134961/export-data-from-python-to-spreadsheet?rq=1" class="question-hyperlink">Export data from Python to spreadsheet</a></div><div class="spacer js-gps-track"><a href="http://codereview.stackexchange.com/q/138785?rq=1" title="Vote score (upvotes - downvotes)"><div class="answer-votes default">2</div></a><a href="http://codereview.stackexchange.com/questions/138785/order-statistics-tree-on-top-of-treap?rq=1" class="question-hyperlink">Order Statistics Tree on top of Treap</a></div>
+                    </div>
+				</div>
+            
+<div id="hot-network-questions" class="module">
+    <h4>
+        <a href="http://stackexchange.com/questions?tab=hot" class="js-gps-track" data-gps-track="posts_hot_network.click({ item_type:1, location:11 })">
+            Hot Network Questions
+        </a>
+    </h4>
+    <ul>
+            <li>
+                <div class="favicon favicon-movies" title="Movies &amp; TV Stack Exchange"></div><a href="http://movies.stackexchange.com/questions/60050/why-do-the-toys-blink-alternately" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:367 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why do the toys blink alternately?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-mathematica" title="Mathematica Stack Exchange"></div><a href="http://mathematica.stackexchange.com/questions/125209/visualize-fraction" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:387 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Visualize fraction
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/139344/identify-movie-about-very-advanced-genetic-engineering" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    identify movie about very advanced genetic engineering
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/77824/why-do-flight-attendants-say-in-safety-interactions-that-put-your-own-mask-first" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why do flight attendants say in safety interactions that put your own mask first before helping others?
+                </a>
+
+            </li>
+            <li>
+                <div class="favicon favicon-superuser" title="Super User"></div><a href="http://superuser.com/questions/1119505/and-function-gives-true-result-for-empty-blank-cell-why" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:3 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    AND function gives TRUE result for empty, BLANK cell - why?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-stackoverflow" title="Stack Overflow"></div><a href="http://stackoverflow.com/questions/39259012/how-to-make-a-decision-without-an-if-statement" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:1 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to make a decision without an if statement
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-travel" title="Travel Stack Exchange"></div><a href="http://travel.stackexchange.com/questions/77832/why-do-airlines-seat-people-the-way-they-do" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:273 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why do airlines seat people the way they do?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/135499/linux-what-is-the-point-of-encrypting-home-directory" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Linux: What is the point of encrypting home directory?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-math" title="Mathematics Stack Exchange"></div><a href="http://math.stackexchange.com/questions/1911587/why-is-the-identity-element-included-in-the-definition-of-a-group" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:69 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why is the identity element included in the definition of a group
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-programmers" title="Programmers Stack Exchange"></div><a href="http://programmers.stackexchange.com/questions/329728/are-design-patterns-frowned-upon-in-agile-development" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:131 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Are design patterns frowned upon in agile development?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/75142/requesting-time-off-on-behalf-of-spouse-for-surprise-vacation" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Requesting time off on behalf of spouse for surprise vacation
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/53810/how-do-elves-make-their-way-into-the-modern-age" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How do elves make their way into the modern age?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-security" title="Information Security Stack Exchange"></div><a href="http://security.stackexchange.com/questions/135359/company-computers-for-competent-developers-how-can-you-deal-with-them" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:162 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Company computers for competent developers, how can you deal with them?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-puzzling" title="Puzzling Stack Exchange"></div><a href="http://puzzling.stackexchange.com/questions/41846/riddled-and-dismembered" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:559 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Riddled and Dismembered
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-english" title="English Language &amp; Usage Stack Exchange"></div><a href="http://english.stackexchange.com/questions/345952/synonym-for-vicious-circle-but-less-negative" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:97 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Synonym for vicious circle but less negative
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-history" title="History Stack Exchange"></div><a href="http://history.stackexchange.com/questions/32569/what-damage-did-anti-tank-rifles-hope-to-inflict-on-tanks-in-ww2" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:324 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    What damage did anti-tank rifles hope to inflict on tanks in WW2?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-askubuntu" title="Ask Ubuntu"></div><a href="http://askubuntu.com/questions/819924/how-to-send-ping-process-to-background-and-foreground" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:89 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How to send ping process to background and foreground?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-aviation" title="Aviation Stack Exchange"></div><a href="http://aviation.stackexchange.com/questions/31168/how-were-bullets-fired-through-the-propeller-in-the-focke-wulf-190" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:528 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    How were bullets fired through the propeller in the Focke Wulf 190?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/75233/hr-never-sent-me-a-contract-so-i-didnt-give-notice-and-now-they-want-me-to-star" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    HR never sent me a contract so I didn't give notice and now they want me to start next week
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-scifi" title="Science Fiction &amp; Fantasy Stack Exchange"></div><a href="http://scifi.stackexchange.com/questions/139403/why-did-wesley-recover-so-suddenly" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:186 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Why did Wesley recover so suddenly?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-space" title="Space Exploration Stack Exchange"></div><a href="http://space.stackexchange.com/questions/18011/was-amos-6-insured-for-pre-launch-operations" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:508 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Was Amos 6 insured for pre-launch operations?
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-workplace" title="The Workplace Stack Exchange"></div><a href="http://workplace.stackexchange.com/questions/75267/company-policy-violation-due-to-browser-history-syncing" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:423 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Company policy violation due to browser history syncing
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-codegolf" title="Programming Puzzles &amp; Code Golf Stack Exchange"></div><a href="http://codegolf.stackexchange.com/questions/91725/the-squiggly-sequence" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:200 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    The Squiggly Sequence
+                </a>
+
+            </li>
+            <li style="display: list-item;" class="dno js-hidden">
+                <div class="favicon favicon-worldbuilding" title="Worldbuilding Stack Exchange"></div><a href="http://worldbuilding.stackexchange.com/questions/53762/can-3-planets-rotate-around-each-other-like-this" class="js-gps-track" data-gps-track="site.switch({ item_type:11, target_site:579 }); posts_hot_network.click({ item_type:2, location:11 })">
+                    Can 3 planets rotate around each other like this?
+                </a>
+
+            </li>
+    </ul>
+
+        
+</div>
+		</div>
+	
+<div id="feed-link">
+    <div id="feed-link-text">
+        <a href="http://codereview.stackexchange.com/feeds/question/109089" title="feed of this question and its answers">
+            <span class="feed-icon"></span>question feed
+        </a>
+    </div>
+</div>	<script>
+StackExchange.ready(function(){$.get('/posts/109089/ivc/dfd5');});
+</script>
+<noscript>
+    <div><img src="/posts/109089/ivc/dfd5" class="dno" alt="" width="0" height="0"></div>
+</noscript><div style="display:none" id="prettify-lang">lang-py</div></div>
+
+
+        </div>
+    </div>
+    <div id="footer" class="categories">
+        <div class="footerwrap">            
+            <div id="footer-menu">
+                <div class="top-footer-links">
+                    <a href="http://stackoverflow.com/company/about">about us</a>
+                        <a href="http://codereview.stackexchange.com/tour">tour</a>
+                    <a href="http://codereview.stackexchange.com/help">help</a>
+                    <a href="http://blog.stackoverflow.com/?blb=1">blog</a>
+                        <a href="http://chat.stackexchange.com/?tab=site&amp;host=codereview.stackexchange.com">chat</a>
+                    <a href="http://data.stackexchange.com/">data</a>
+                    <a href="http://stackexchange.com/legal">legal</a>
+                    <a href="http://stackexchange.com/legal/privacy-policy">privacy policy</a>
+                    <a href="http://stackoverflow.com/company/work-here">work here</a>
+                    <a href="http://stackexchange.com/mediakit">advertising info</a>
+
+                    <a onclick='StackExchange.switchMobile("on")'>mobile</a>
+                    <b><a href="http://codereview.stackexchange.com/contact">contact us</a></b>
+                        <b><a href="http://meta.codereview.stackexchange.com/">feedback</a></b>
+                    
+                </div>
+                <div id="footer-sites">
+                    <table>
+    <tbody><tr>
+            <th colspan="3">
+                Technology
+            </th>
+            <th>
+                Life / Arts
+            </th>
+            <th>
+                Culture / Recreation
+            </th>
+            <th>
+                Science
+            </th>
+            <th>
+                Other
+            </th>
+    </tr>
+    <tr>
+            <td>
+                <ol>
+                        <li><a href="http://stackoverflow.com/" title="professional and enthusiast programmers">Stack Overflow</a></li>
+                        <li><a href="http://serverfault.com/" title="system and network administrators">Server Fault</a></li>
+                        <li><a href="http://superuser.com/" title="computer enthusiasts and power users">Super User</a></li>
+                        <li><a href="http://webapps.stackexchange.com/" title="power users of web applications">Web Applications</a></li>
+                        <li><a href="http://askubuntu.com/" title="Ubuntu users and developers">Ask Ubuntu</a></li>
+                        <li><a href="http://webmasters.stackexchange.com/" title="pro webmasters">Webmasters</a></li>
+                        <li><a href="http://gamedev.stackexchange.com/" title="professional and independent game developers">Game Development</a></li>
+                        <li><a href="http://tex.stackexchange.com/" title="users of TeX, LaTeX, ConTeXt, and related typesetting systems">TeX - LaTeX</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://programmers.stackexchange.com/" title="professional programmers interested in conceptual questions about software development">Programmers</a></li>
+                        <li><a href="http://unix.stackexchange.com/" title="users of Linux, FreeBSD and other Un*x-like operating systems">Unix &amp; Linux</a></li>
+                        <li><a href="http://apple.stackexchange.com/" title="power users of Apple hardware and software">Ask Different (Apple)</a></li>
+                        <li><a href="http://wordpress.stackexchange.com/" title="WordPress developers and administrators">WordPress Development</a></li>
+                        <li><a href="http://gis.stackexchange.com/" title="cartographers, geographers and GIS professionals">Geographic Information Systems</a></li>
+                        <li><a href="http://electronics.stackexchange.com/" title="electronics and electrical engineering professionals, students, and enthusiasts">Electrical Engineering</a></li>
+                        <li><a href="http://android.stackexchange.com/" title="enthusiasts and power users of the Android operating system">Android Enthusiasts</a></li>
+                        <li><a href="http://security.stackexchange.com/" title="information security professionals">Information Security</a></li>
+                            </ol></td><td><ol>
+                        <li><a href="http://dba.stackexchange.com/" title="database professionals who wish to improve their database skills and learn from others in the community">Database Administrators</a></li>
+                        <li><a href="http://drupal.stackexchange.com/" title="Drupal developers and administrators">Drupal Answers</a></li>
+                        <li><a href="http://sharepoint.stackexchange.com/" title="SharePoint enthusiasts">SharePoint</a></li>
+                        <li><a href="http://ux.stackexchange.com/" title="user experience researchers and experts">User Experience</a></li>
+                        <li><a href="http://mathematica.stackexchange.com/" title="users of Mathematica">Mathematica</a></li>
+                        <li><a href="http://salesforce.stackexchange.com/" title="Salesforce administrators, implementation experts, developers and anybody in-between">Salesforce</a></li>
+                        <li><a href="http://expressionengine.stackexchange.com/" title="administrators, end users, developers and designers for ExpressionEngine® CMS">ExpressionEngine® Answers</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#technology" class="more">
+                                more (13)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://photo.stackexchange.com/" title="professional, enthusiast and amateur photographers">Photography</a></li>
+                        <li><a href="http://scifi.stackexchange.com/" title="science fiction and fantasy enthusiasts">Science Fiction &amp; Fantasy</a></li>
+                        <li><a href="http://graphicdesign.stackexchange.com/" title="Graphic Design professionals, students, and enthusiasts">Graphic Design</a></li>
+                        <li><a href="http://movies.stackexchange.com/" title="movie and tv enthusiasts">Movies &amp; TV</a></li>
+                        <li><a href="http://cooking.stackexchange.com/" title="professional and amateur chefs">Seasoned Advice (cooking)</a></li>
+                        <li><a href="http://diy.stackexchange.com/" title="contractors and serious DIYers">Home Improvement</a></li>
+                        <li><a href="http://money.stackexchange.com/" title="people who want to be financially literate">Personal Finance &amp; Money</a></li>
+                        <li><a href="http://academia.stackexchange.com/" title="academics and those enrolled in higher education">Academia</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#lifearts" class="more">
+                                more (9)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://english.stackexchange.com/" title="linguists, etymologists, and serious English language enthusiasts">English Language &amp; Usage</a></li>
+                        <li><a href="http://skeptics.stackexchange.com/" title="scientific skepticism">Skeptics</a></li>
+                        <li><a href="http://judaism.stackexchange.com/" title="those who base their lives on Jewish law and tradition and anyone interested in learning more">Mi Yodeya (Judaism)</a></li>
+                        <li><a href="http://travel.stackexchange.com/" title="road warriors and seasoned travelers">Travel</a></li>
+                        <li><a href="http://christianity.stackexchange.com/" title="committed Christians, experts in Christianity and those interested in learning more">Christianity</a></li>
+                        <li><a href="http://gaming.stackexchange.com/" title="passionate videogamers on all platforms">Arqade (gaming)</a></li>
+                        <li><a href="http://bicycles.stackexchange.com/" title="people who build and repair bicycles, people who train cycling, or commute on bicycles">Bicycles</a></li>
+                        <li><a href="http://rpg.stackexchange.com/" title="gamemasters and players of tabletop, paper-and-pencil role-playing games">Role-playing Games</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#culturerecreation" class="more">
+                                more (21)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://math.stackexchange.com/" title="people studying math at any level and professionals in related fields">Mathematics</a></li>
+                        <li><a href="http://stats.stackexchange.com/" title="people interested in statistics, machine learning, data analysis, data mining, and data visualization">Cross Validated (stats)</a></li>
+                        <li><a href="http://cstheory.stackexchange.com/" title="theoretical computer scientists and researchers in related fields">Theoretical Computer Science</a></li>
+                        <li><a href="http://physics.stackexchange.com/" title="active researchers, academics and students of physics">Physics</a></li>
+                        <li><a href="http://mathoverflow.net/" title="professional mathematicians">MathOverflow</a></li>
+                        <li><a href="http://chemistry.stackexchange.com/" title="scientists, academics, teachers and students">Chemistry</a></li>
+                        <li><a href="http://biology.stackexchange.com/" title="biology researchers, academics, and students">Biology</a></li>
+                    
+                        <li>
+                            <a href="http://stackexchange.com/sites#science" class="more">
+                                more (5)
+                            </a>
+                        </li>
+                </ol>
+            </td>
+            <td>
+                <ol>
+                        <li><a href="http://stackapps.com/" title="apps, scripts, and development with the Stack Exchange API">Stack Apps</a></li>
+                        <li><a href="http://meta.stackexchange.com/" title="meta-discussion of the Stack Exchange family of Q&amp;A websites">Meta Stack Exchange</a></li>
+                        <li><a href="http://area51.stackexchange.com/" title="proposing new sites in the Stack Exchange network">Area 51</a></li>
+                        <li><a href="http://careers.stackoverflow.com/">Stack Overflow Careers</a></li>
+                    
+                </ol>
+            </td>
+    </tr>
+</tbody></table>
+                </div>
+            </div>
+            <div id="copyright">
+                site design / logo © 2016 Stack Exchange Inc; user contributions licensed under <a href="https://creativecommons.org/licenses/by-sa/3.0/" rel="license">cc by-sa 3.0</a> 
+                with <a href="http://blog.stackoverflow.com/2009/06/attribution-required/" rel="license">attribution required</a>
+            </div>
+            <div id="svnrev">
+                rev 2016.9.2.3943
+            </div>
+                </div>
+    </div>
+    <noscript>
+        <div id="noscript-warning">Code Review Stack Exchange works best with JavaScript enabled<img src="http://pixel.quantserve.com/pixel/p-c1rF4kxgLUzNc.gif" alt="" class="dno"></div>
+    </noscript>
+
+    <script>
+            (function(i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function() { (i[r].q = i[r].q || []).push(arguments) }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
+            })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+            
+            ga('create', 'UA-5620270-24', {'cookieDomain': 'stackexchange.com'});
+            ga('set', 'dimension2', '|python|algorithm|python-3.x|numpy|machine-learning|');             ga('send', 'pageview');
+        
+        var _qevents = _qevents || [],
+            _comscore = _comscore || [];
+        (function () {
+            var ssl='https:'==document.location.protocol,
+                s=document.getElementsByTagName('script')[0],
+                qc=document.createElement('script');
+                qc.async = true;
+                qc.src = (ssl ? 'https://secure' : 'http://edge') + '.quantserve.com/quant.js';
+                s.parentNode.insertBefore(qc, s);
+                _qevents.push({ qacct: "p-c1rF4kxgLUzNc" });
+                            var sc=document.createElement('script');
+                sc.async=true;
+                sc.src=(ssl?'https://sb':'http://b') + '.scorecardresearch.com/beacon.js';
+                s.parentNode.insertBefore(sc, s);
+                _comscore.push({ c1: "2", c2: "17440561" });
+        })();
+
+    </script>
+        
+    
+            <script type="text/javascript">
+                
+                (function(appendChild) {
+                    Node.prototype.appendChild = function() {
+                        var parent = this;
+                        var newNode = arguments[0];
+                        if (parent.nodeName === 'HEAD'
+                            && newNode
+                            && newNode.nodeName === 'SCRIPT'
+                            && newNode.src) {
+                            
+                            window.setTimeout(function() {
+                                var result = newNode.src.match(/^https:\/\/maps\.googleapis\.com\/maps\/api\/place\/js\/(\w+)Service\./i) || [];
+                                var service = result[1];
+                                if (service) {
+                                    if (service === 'Autocompletion') service =  2;
+                                    else if (service === 'Place') service = 1;
+                                    else service = 0;
+                                    StackExchange.using('gps', function() {
+                                        StackExchange.gps.track('google_maps_places_api.call', { service: service });
+                                    });
+                                }
+                            }, 0);
+                        }
+                        return appendChild.apply(this, arguments);
+                    };
+                })(Node.prototype.appendChild);
+            </script>
+    
+<div style="position: absolute; width: 0px; height: 0px; overflow: hidden; padding: 0px; border: 0px none; margin: 0px;"><div style="position: absolute; visibility: hidden; top: 0px; left: 0px; width: auto; padding: 0px; border: 0px none; margin: 0px; white-space: nowrap; text-align: left; text-indent: 0px; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; font-size: 40px; font-weight: normal; font-style: normal; font-size-adjust: none; font-family: STIXSizeOneSym,sans-serif;" id="MathJax_Font_Test"></div></div></body></html>

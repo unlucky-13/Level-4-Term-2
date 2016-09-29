@@ -1,0 +1,31 @@
+\documentclass[11pt]{article}
+%Gummi|065|=)
+\title{\textbf{CSE472: Machine Learning Sessional}\\Assignment 1:\\ Decision Tree Learning for Cancer
+Diagnosis
+}
+\author{Mazharul Islam\\
+		1105013
+		}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Statistics.}\begin{tabular}{|l|l|l|l|}
+	\hline
+		Evaluation Criterion &  Accuracy& Precision& Recall\\
+	\hline
+		Information Gain(Testing Data) &  0.945939849624 &  0.941352088035 & 0.33101078168 \\
+	\hline
+	\hline
+		Information Gain(Training Data) &  1.000000 &  1.000000 & 0.346679104478 \\
+	\hline
+	\end{tabular}
+
+\section{Questions}
+	\subsection{Why are you dividing the dataset 80 \% into training and 20 \% into test data rather than using 100 \% data for training?}
+		
+	Because we need to have some data in order to test  the evaluated ID3 tree and  how much it is correct. Since we are not given any seperate testing dataset we need to split the given dataset into training set \& testing set.	
+	\subsection{Do you see evidence of overfitting in  some  experiments  Explain.}
+	\textbf{Yes} For 90 \% spliting the precession of train data is 1.0
+but for test data it is  0.938787878788. which is less than when the training data is split into 80 \%
+\end{document}

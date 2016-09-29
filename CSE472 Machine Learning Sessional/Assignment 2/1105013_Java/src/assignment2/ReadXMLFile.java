@@ -39,10 +39,8 @@ public class ReadXMLFile {
                 //  id++;
                 //System.out.println(id);
                 TreeMap<String, Integer> dictionary = new TreeMap<>();
-                int idx1 = line.indexOf("Body") + 6;
-                int idx2 = line.indexOf("OwnerUserId") - 2;
-                // System.out.println(line.length());
-                //System.out.println(idx1+" "+idx2) ;
+                int idx1 = line.indexOf("Body") ;
+                int idx2 = line.indexOf("OwnerUserId") ; 
                 if (idx2 < idx1) {
                     continue;
                 }

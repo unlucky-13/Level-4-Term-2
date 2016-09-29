@@ -1,0 +1,28 @@
+\documentclass[11pt]{article}
+%Gummi|065|=)
+\title{\textbf{CSE472: Machine Learning Sessional}\\Assignment 1:\\ Decision Tree Learning for Cancer
+Diagnosis
+}
+\author{Mazharul Islam\\
+		1105013
+		}
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Statistics.}\begin{tabular}{|l|l|l|l|}
+	\hline
+		Evaluation Criterion &  Accuracy& Precision& Recall\\
+	\hline
+		Information Gain & 0.837245508982 & 0.807218969273 & 0.397551216674\\
+	\hline
+	\end{tabular}
+
+\section{Questions}
+	\subsection{Why are you dividing the dataset 80 \% into training and 20 \% into test data rather than using 100 \% data for training?}
+		
+	Because we need to have some data in order to test  the evaluated ID3 tree and  how much it is correct. Since we are not given any seperate testing dataset we need to split the given dataset into training set \& testing set.
+	\subsection{Do you see evidence of overfitting in  some  experiments  Explain.}
+	\textbf{Yes}
+	If the dataset is split into 50 \% then the accuracy increases which is the evidence that the data is overfited in some sense. 
+\end{document}
