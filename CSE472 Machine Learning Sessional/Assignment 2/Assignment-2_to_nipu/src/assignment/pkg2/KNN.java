@@ -21,9 +21,22 @@ public class KNN {
     private static TreeMap<String, Integer> dictionary;
     private static final String dir = "Data/";
     private static final String topicListFileName = "topics.txt";
-    public static LinkedList<String> topicsList = null;
+    private static LinkedList<String> topicsList = null;
     public static final double PI = Math.acos(-1) ;
-
+    private static double getIDF(LinkedList<ClassDictionary> TrainDictionary, String key) {
+        if(TDF_value_holders.containsKey(key)){
+            return TDF_value_holders.get(key).doubleValue() ;
+        }
+        double count1=0 ;
+        for(ClassDictionary classDictionary: TrainDictionary){
+            if(classDictionary.dict.containsKey(key)) count1++ ;
+        }
+        
+        double count2 = TrainDictionary.size() ;
+        double IDF = Math.log(count2/(1+count1)) ; // same for bot
+        TDF_value_holders.put(key, IDF) ;
+        return IDF ;
+    }
 
     KNN() {
         dictionary = null;
@@ -41,20 +54,7 @@ public class KNN {
             System.out.println("can not read file -> " + topicListFileName);
         }
     }
-        private static double getIDF(LinkedList<ClassDictionary> TrainDictionary, String key) {
-        if(TDF_value_holders.containsKey(key)){
-            return TDF_value_holders.get(key).doubleValue() ;
-        }
-        double count1=0 ;
-        for(ClassDictionary classDictionary: TrainDictionary){
-            if(classDictionary.dict.containsKey(key)) count1++ ;
-        }
-        
-        double count2 = TrainDictionary.size() ;
-        double IDF = Math.log(count2/(1+count1)) ; // same for bot
-        TDF_value_holders.put(key, IDF) ;
-        return IDF ;
-    }
+
     public static LinkedList<ClassDictionary> Parse(LinkedList<String> fileNames,int start) {
 
         LinkedList<ClassDictionary> dicList = new LinkedList<ClassDictionary>();
@@ -63,7 +63,7 @@ public class KNN {
             dictionary = new TreeMap<String, Integer>();
             //String fileName = dir + "Training\\" + fileNames.get(i) + ".xml";
             String fileName = dir + "Training/" + fileNames.get(i) + ".xml";
-            //System.out.println("---Parsing-----" + fileName);
+            System.out.println("---Parsing-----" + fileName);
             LinkedList<ClassDictionary> Temp = new ReadXMLFile(fileName, 100,i,start).read();
             dicList.addAll(Temp);
         }
@@ -288,13 +288,13 @@ public class KNN {
 
         double wrong = 0;
         double right = 0;
-        //System.out.println("YES");
+        System.out.println("YES");
         for (int i = 0; i < topicsList.size(); i++) {
             String fileName = dir + "Test/" + topicsList.get(i) + ".xml";
             //    System.out.println("Testing Data for -> " + fileName);
             LinkedList<ClassDictionary> dict_list = new ReadXMLFile(fileName, 50, i,0).read();
             // System.out.println("Dict size -> "+dict_list.size()) ;
-            //System.out.println("parsing done!!!!!") ;
+             System.out.println("parsing done!!!!!") ;
             for (ClassDictionary testData : dict_list) {
                 // here are the testing
                 int type ;
@@ -309,7 +309,7 @@ public class KNN {
                 }
                // System.out.println(right+" "+wrong);
             }
-            //System.out.println(right+" "+wrong);
+            System.out.println(right+" "+wrong);
         }
         return (right / (right + wrong));
     }
@@ -360,22 +360,10 @@ public class KNN {
             TrainDictionaryList = knn.Parse(topicsList,runs*100) ;
             ret[runs] = TestData(TrainDictionaryList, bestK,bestAlgo,0) ;
        }
-       /*for(int i=0;i<Runs;i++){
+       for(int i=0;i<Runs;i++){
            System.out.println(i+" "+ret[i]);
-       }*/
-       double[] returnVal=new double[2];
-       returnVal[0]=0;
-       returnVal[1]=0;
-       for(int i=0;i<Runs;i++){
-           returnVal[0]+=ret[i];
        }
-       returnVal[0]/=(double)Runs;
-       for(int i=0;i<Runs;i++){
-           returnVal[1]+=Math.pow((ret[i]-returnVal[0]),2);
-       }
-       returnVal[1]/=(double)(Runs-1);
-       returnVal[1]=Math.sqrt(returnVal[1]);
-       return returnVal;
+        return ret;
 
     }
 

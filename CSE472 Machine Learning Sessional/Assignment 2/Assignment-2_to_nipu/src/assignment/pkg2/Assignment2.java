@@ -27,44 +27,24 @@ public class Assignment2 {
     private static SuperHashTable[] shtArray;
     private static double[] accuracy;
     private static double[] NBdata,KNNdata;
-    private static double t_05=1.9945,t_01=2.64845,t_005=3.00045,d=.1;
+    private static double t_05=1.9845,t_01=2.6269,t_005=2.87;
     public static void main(String[] args) {
         nb=new NB();
         NBdata=nb.GatherData();
         //System.out.println(NBdata[0]+" "+NBdata[1]);
         knn=new KNN();
         KNNdata=knn.GatherData(50); // number of runs = 50
-        System.out.println(NBdata[0]+" "+NBdata[1]+" || "+KNNdata[0]+" "+KNNdata[1]);
-        double t=(NBdata[0]-KNNdata[0]-d)/Math.sqrt((Math.pow(NBdata[1],2)+Math.pow(KNNdata[1],2))/(double)50);
-        double dof=Math.pow((Math.pow(NBdata[1],2)+Math.pow(KNNdata[1],2))/50,2)/((Math.pow(NBdata[1],4)+Math.pow(KNNdata[1],4))/122500);
-        System.out.println(t+" "+dof);
-        dof=Math.round(dof);
-        System.out.println(dof);
-        /*double sp=Math.sqrt((Math.pow(NBdata[1],2)+Math.pow(KNNdata[1],2))*49/(double)98);
+        double sp=Math.sqrt((Math.pow(NBdata[1],2)+Math.pow(KNNdata[1],2))*49/(double)98);
         double t=(NBdata[0]-KNNdata[0])/(double)(sp*Math.sqrt(2/(double)50));
-        System.out.println("t= "+t);*/
-        System.out.println("Null Hypothesis:  Mean_NB - Mean_KNN >= "+d*100);
-        System.out.println("Alternative Hypothesis:  Mean_NB - Mean_KNN < "+d*100);
-        System.out.println("\n\nAlpha = 0.05");
+        System.out.println("t= "+t);
         if(t>t_05){
-            System.out.println("Null Hypothesis Rejected And Alternative Hypothesis Accepted!");
+            System.out.println("Not Equal");
         }
-        else{
-            System.out.println("Null Hypothesis Cannot Be Rejected And Alternative Hypothesis Cannot Be Accepted!");
-        }
-        System.out.println("\n\nAlpha = 0.005");
         if(t>t_005){
-            System.out.println("Null Hypothesis Rejected And Alternative Hypothesis Accepted!");
+            System.out.println("Not Equal");
         }
-        else{
-            System.out.println("Null Hypothesis Cannot Be Rejected And Alternative Hypothesis Cannot Be Accepted!");
-        }
-        System.out.println("\n\nAlpha = 0.01");
         if(t>t_01){
-            System.out.println("Null Hypothesis Rejected And Alternative Hypothesis Accepted!");
-        }
-        else{
-            System.out.println("Null Hypothesis Cannot Be Rejected And Alternative Hypothesis Cannot Be Accepted!");
+            System.out.println("Not Equal");
         }
         // TODO code application logic here
         //sht=new SuperHashTable();

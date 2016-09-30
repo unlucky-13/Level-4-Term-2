@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.LinkedList;
 
 /**
@@ -68,7 +67,7 @@ public class NB {
             sd+=Math.pow((accuracy[i]-mean),2);
         }
         
-        sd=sd/(double)(accuracy.length-1);
+        sd=sd/accuracy.length;
         sd=Math.sqrt(sd);
         //System.out.println("Mean= "+mean+"  SD= "+sd);
         ret[0]=mean;
@@ -119,14 +118,8 @@ public class NB {
                 //System.out.println(inputFile+" done!"+" Line count= "+count);
             }
             //Train();
-            PrintWriter writer = new PrintWriter("Alpha.txt", "UTF-8");
-            //writer.println("The first line");
-            //writer.println("The second line");
-            //writer.close();
-            writer.println("Alpha : Accuracy");
             for(alpha=1;alpha<=10;alpha++){
                 t=Test(0,alpha);
-                writer.println(alpha+" : "+t);
                 if(t>maxAccuracy){
                     maxAccuracy=t;
                     maxAlpha=alpha;
@@ -135,13 +128,11 @@ public class NB {
             }
             for(alpha=minAlpha;alpha<=maxAlpha;alpha+=(maxAlpha-minAlpha)/(double)100){
                 t=Test(0,alpha);
-                writer.println(alpha+" : "+t);
-                if(t>maxAccuracy){
+                if(t>=maxAccuracy){
                     maxAccuracy=t;
                     retAlpha=alpha;
                 }
             }
-            writer.close();
             //System.out.println("MaxAccuracy= "+maxAccuracy+"  Alpha= "+retAlpha);
             //sht.show();
         } catch (FileNotFoundException e) {
@@ -271,7 +262,7 @@ public class NB {
                     }
                 }
                 i++;
-                //System.out.println(inputFile+" done!");
+                System.out.println(inputFile+" done!");
             }
             for(i=0;i<shtArray.length;i++){
                 accuracy[i]=Test(i,alpha);

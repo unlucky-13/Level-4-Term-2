@@ -35,7 +35,7 @@ public class ReadXMLFile {
         start=_start ;
         html_tag_list = new LinkedList<>();
         stop_words_list = new LinkedList<>();
-        //System.out.println("Parsing file ->" + filename);
+        System.out.println("Parsing file ->" + filename);
         try {
 
             BufferedReader bf = new BufferedReader(new FileReader(stop_word_filename));
@@ -108,7 +108,7 @@ public class ReadXMLFile {
                     
 // new sample data
                 ClassDictionary classDictionary = new ClassDictionary(filename, fileID);
-                if (line.indexOf("<row") != -1) {
+                if (line.contains("<row")) {
                     String[] parts = line.split("&lt;p&gt;");
                     String input = "";
                     for (int j = 1; j < parts.length; j++) {
@@ -120,14 +120,14 @@ public class ReadXMLFile {
                         // numbers are also excluded codes to be written
                         // System.out.println(temp[0]+"-----") ;
                         String[] words = temp[0].split(" ");
-                        for (int i = 0; i < words.length; i++) {
+                        for (String word : words) {
                             //  System.out.println(words[i]) ;
-                            if (add_it(words[i])) {
-                                classDictionary.add_word_to_dictionary(words[i]);
+                            if (add_it(word)) {
+                                classDictionary.add_word_to_dictionary(word);
                             }
                         }
                     }
-                    if(classDictionary.dict.size()!=0) dict_list.add(classDictionary);
+                    if(!classDictionary.dict.isEmpty()) dict_list.add(classDictionary);
                 }
             }
             //System.out.println(inputFile+" done!"+" Line count= "+count);
