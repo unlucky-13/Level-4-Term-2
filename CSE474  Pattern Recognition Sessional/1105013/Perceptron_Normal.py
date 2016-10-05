@@ -16,7 +16,6 @@ def loadFile(fileName):
 if __name__=='__main__':
     traindata = loadFile("Train.txt")
     weight_vector =[1,1,1,1]
-
     iterations=100
     learning_rate = 0.7
     count=0
@@ -41,12 +40,10 @@ if __name__=='__main__':
 
         #update the weight vector
        # print len(wrongly_classified)
-
         count+=1
         if len(wrongly_classified)==0:
-           # print  "-------------converges after------------- ", count, " iterations"
+            print  "-------------converges after------------- ", count, " iterations"
             break
-
         for i in range(len(wrongly_classified)):
             idx = wrongly_classified[i]
             #print " idx ->",idx
@@ -58,9 +55,7 @@ if __name__=='__main__':
             for j in range(len(weight_vector)):
                     weight_vector[j]+=(delta*learning_rate*traindata[idx][j])
 
-
-
-    print "Final weight vector ->",weight_vector
+        print weight_vector
 
 
     right=wrong=0
@@ -75,7 +70,6 @@ if __name__=='__main__':
             classNo=1.0
       #  print  classNo
         if classNo!=testdata[i][4]:
-            print classNo," ",testdata[i][4]
             wrong+=1
         else:
             right+=1

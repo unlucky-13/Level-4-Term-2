@@ -33,11 +33,12 @@ if __name__=='__main__':
                 classNo=1.0
                 delta=1.00
             if classNo!=traindata[i][4]:
+
                 for j in range(len(weight_vector)):
                     weight_vector[j]+=(delta*learning_rate*traindata[i][j])
         #print weight_vector
 
-    right=wrong=0
+    right=wrong=0.00
     testdata = loadFile("Test.txt")
     for i in range(len(testdata)):
         cross=0.0
@@ -48,8 +49,10 @@ if __name__=='__main__':
         else:
             classNo=1.0
       #  print  classNo
-        if classNo!=traindata[i][4]:
+        if classNo!=testdata[i][4]:
             wrong+=1
         else:
             right+=1
-    print right," ",wrong
+    print "Right :->",right,"Wrong :->",wrong
+
+    print "Accuracy ->", ((right*100.00)/(right+wrong)), " % "

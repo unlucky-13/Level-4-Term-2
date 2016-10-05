@@ -60,7 +60,6 @@ if __name__=='__main__':
         if len(wrongly_classified) == 0:
             print  "converges after ",count," iterations"
             break
-
         for i in range(len(wrongly_classified)):
             idx = wrongly_classified[i]
             delta=1.00
