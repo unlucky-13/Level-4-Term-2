@@ -1,0 +1,493 @@
+
+<!-- saved from url=(0071)https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="GENERATOR" content="Adobe PageMill 2.0 Mac">
+  <title>2d and 3d transformations</title>
+</head>
+<body bgcolor="#f9ffe4">
+<h1>5. 2D &amp; 3D Transformations </h1>
+Brock University<br>
+COSC 3P98 Computer Graphics<br>
+Instructor: <a href="mailto:bross@brocku.ca">Brian Ross</a><br>
+<p>
+</p><hr><hr>
+
+<h2>2d transform composition</h2>
+
+<ul>
+  <li>the order we perform multiple transforms can matter
+  <ul>
+    <li>eg. translate + scale can differ from scale + translate
+    </li><li>eg. rotate + translate can differ from translate + rotate
+    </li><li>eg. rotate + scale can differ from scale + rotate (when scale_x differs from scale_y)
+  </li></ul>
+  </li><li>When does M1 + M2 = M2 + M1?
+</li></ul>
+
+<h2 align="CENTER"><table width="242" border="1" cellspacing="2" cellpadding="0" height="98">
+<tbody><tr>
+<td width="50%" height="17"><p align="CENTER">&nbsp;<b>M1</b></p></td>
+<td width="50%"><p align="CENTER">&nbsp;<b>M2</b></p></td></tr>
+<tr>
+<td width="50%" height="17"><p align="CENTER">&nbsp;translate</p></td>
+<td width="50%"><p align="CENTER">translate</p></td></tr>
+<tr>
+<td width="50%" height="17"><p align="CENTER">scale</p></td>
+<td width="50%"><p align="CENTER">scale</p></td></tr>
+<tr>
+<td width="50%" height="17"><p align="CENTER">rotate</p></td>
+<td width="50%"><p align="CENTER">rotate</p></td></tr>
+<tr>
+<td width="50%" height="17"><p align="CENTER">scale (sx = sy)</p></td>
+<td width="50%"><p align="CENTER">rotate</p></td></tr>
+</tbody></table>
+</h2>
+<ul>
+<li> To prove commutativity (or lack thereof), show that the composed 
+transformation matrices are the same (or different).
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>Combined form for 2d Transforms</h2>
+
+<blockquote>
+  <blockquote>
+    <pre>    |  r11  r12  tx  |
+M = |  r21  r22  ty  |
+    |   0    0    1  |</pre>
+  </blockquote>
+</blockquote>
+
+<ul>
+  <li>upper 2 by 2 submatrix is a composite rotation &amp; scale matrix;
+  <ul>
+    <li>t1 and t2 are composed translations
+  </li></ul>
+  </li><li>precise form of matrix expressions depends upon order of transforms
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>Coordinate systems: Local and Global</h2>
+
+
+<ul>
+<li> With no transformations, there is one <b>global coordinate system</b> in which objects are drawn.
+</li><li> When you apply any transformation, this is equivalent to changing 
+the coordinate system. You are defining a <b>local coordinate system</b> 
+within the global system.
+</li><li> For example, if you set the scale to 0.5, and then draw a box, that box's coordinate system is 0.5 relative to the global coordinate system.
+</li><li> Thinking of transformations as changing the coordinate systems is very
+useful conceptually, since in most scenes, objects transforms are defined 
+relative to one, but the objects themselves are drawn without regard to
+the transforms applied to them.
+This is most easily imagined as if they had differing coordinate
+systems.
+</li></ul>
+<h1><hr align="LEFT"></h1>
+
+<h2>2d transforms: OpenGL implementation</h2>
+
+ <ul>
+  <li>OpenGL is <i>immediate mode</i>: graphics
+  operations are applied 'instantly'
+  <ul>
+    <li>in terms of transformations, the user gives a rotate, translate, or
+    scale command, and the matrix multiplication represented by that transform
+    is <i>immediately</i> applied to a global transformation matrix
+    </li><li>In other words, a 4 by 4 matrix of floating point values is maintained. It changes each time a single transformation is done. However, all the individual transformations used to derive these numeric values are 
+not retained.
+  </li></ul>
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>2d transforms: OpenGL</h2>
+
+<ul>
+  <li>OpenGL transformation commands set up a 4 by 4 transformation matrix, 
+      in the way shown on previous overheads
+   <ul>
+  <li>Can use <b>glGet(GL_MODELVIEW_MATRIX)</b> to retrieve this matrix, and <b>glLoadMatrix</b> to replace it with your own matrix. 
+   </li></ul>
+  </li><li>we haven't talked about 3d transforms; however, note that homogeneous
+  3d transformation matrix is 4 by 4; 2D uses subset of it.
+  </li><li><b>glRotate{fd} (TYPE angle, TYPE x, TYPE y, TYPE z)</b>
+  <ul>
+    <li>TYPE is f or d
+    </li><li>rotates the current transformation matrix counterclockwise 'angle'
+    degrees about a ray from the origin through the point (x, y, z)
+    </li><li>eg. <b>glRotatef(45.0, 0.0, 0.0, 1.0) </b>rotates 45 degrees about
+    the z-axis
+    </li><li> (x,y,z) can be any direction. It will be automatically normalized if it isn't a 
+unit vector.
+  </li></ul>
+  </li><li><b>glTranslate {fd} (TYPE x, y, z)</b>
+  <ul>
+    <li>translates by the amounts x, y, z 
+    </li><li>note: <b>glTranslatef()</b>: empty argument is the identity matrix
+  </li></ul>
+  </li><li><b>glScale {fd} (TYPE x, y, z)</b>
+  <ul>
+    <li>applies x, y, z scaling factors 
+    </li><li>eg. glScalef(2.0, -0.5, 1.0)
+  </li></ul>
+</li></ul>
+
+<p></p><hr align="LEFT"><p></p>
+
+<h2>OpenGL: Order of transformation operations </h2>
+<ul>
+  <li>When giving OpenGLtransformation commands,  they are applied in 
+  the inverse order you give them. 
+</li></ul>
+
+<pre><b>glScaled(1.0, 1.0, 3.0);</b>
+<b>glRotatef(45.0, 0.0, 1.0, 0.0);</b>
+<b>glTranslatef(3.0, 2.0, 0.0);</b>
+<b>draw_my_triangle();</b></pre>
+
+
+<ul>
+    <li>the transformations occur in the reverse order
+    <ul>
+      <li>This is done to reflect the algebraic
+      order of the matrix transforms: <br>
+S * R * T * P = S * (R * (T * P) )
+    </li></ul>
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>2D Transformation inversions</h2>
+
+<p>T(-dx, -dy) * T(dx, dy) = I</p>
+
+<p>R(-A) * R(A) = I</p>
+
+<p>S(1/sx, 1/sy) * S( sx, sy) = I</p>
+where I is the identity matrix.<br>
+
+<p>Consider a sequence of transformations M:<br>
+P' = M * P <br>
+= (Tr1 * Tr2 * ... * TrK) * P</p>
+
+<p>To invert M...<br>
+</p><p>M^(-1) * P <br>
+= (Tr1 * Tr2 * ... * TrK)^(-1) * P <br>
+= TrK^(-1) * ... * Tr2^(-1) * Tr1^(-1) * P</p>
+<ul>
+<li> --&gt; Invert the order and invert each transform.
+</li></ul>
+<p> Apply M^(-1) to M:
+</p><p>M^(-1) * M * P <br>
+= (TrK^(-1) * ... * Tr2^(-1) * Tr1^(-1)) * (Tr1 * Tr2 * ... * TrK) * P <br>
+= (TrK^(-1) * ... * Tr2^(-1) * <b>Tr1^(-1) * Tr1</b> * Tr2 * ... * TrK) * P <br>
+= (TrK^(-1) * ... * Tr2^(-1) * <b>I</b> * Tr2 * ... * TrK) * P <br>
+= (TrK^(-1) * ... * <b>Tr2^(-1) * Tr2</b> * ... * TrK) * P <br>
+= ...<br>
+= I * P 
+
+</p><ul>
+  <li>Note how algebra representation is useful!
+</li></ul>
+
+
+
+<p></p><hr align="LEFT"><p></p>
+
+<h2>OpenGL: Saving and restoring contexts</h2>
+
+<ul>
+  <li>Previously mentioned that OpenGL does not save individual transformations.
+  <ul>
+  <li>Implies that application program must retain all the individual transformations, if one ever wants to "undo" them!
+  </li></ul>
+  </li><li><b>glPushmatrix(), glPopmatrix()</b>: save and restore transformation matrices
+  <ul>
+    <li>you essentially modify &amp; use top matrix on the stack
+    </li><li>initialize to identity matrix with: <b>glLoadIdentity()</b>
+    </li><li>Using <b>glPushmatrix()</b> lets you save your current local coordinate system, by copying top (current) transformation matrix onto top of stack.
+     </li><li>Subsequent transformations manipulate top matrix in stack.<br>
+      --&gt; Transformations compound and accumulate into one general transformation.
+     </li><li><b>glPopmatrix()</b> then reverts back to previous local coordinate system.
+     <ul>
+     <li>Equivalent to applying the inversions of all the transforms done in the meantime.
+     </li></ul>
+  </li></ul>
+  </li><li>Extremely useful when rendering hierarchical scenes
+</li></ul>
+
+<p><img src="./2d and 3d transformations_files/pushpop.gif" width="589" height="290" align="BOTTOM" naturalsizeflag="3"></p>
+
+<p></p><hr align="LEFT">
+<h2>OpenGL Matrix Modes</h2>
+
+<ul>
+  <li>OpenGL has separate transformation matrices for different 
+      graphics features
+  </li><li> <b>glMatrixMode(GLenum mode)</b>, where mode is one of: 
+  <ul>
+    <li> <b>GL_MODELVIEW</b> - for manipulating model in scene (stack of them for glPushMatrix)
+    </li><li> <b>GL_PROJECTION</b> - perspective orientation 
+    </li><li> <b>GL_TEXTURE</b> - texture map orientation
+  </li></ul>
+  </li><li> Make sure you specify <b>glMatrixMode(GL_MODELVIEW)</b> before proceeding with model transformations
+  </li><li> Likewise, specify <b>glMatrixMode(GL_PROJECTION)</b> when you set up your perspective view (in later topic)
+  </li><li><b>glLoadIdentity()</b>: loads a 4-by-4 identity matrix into the current matrix (whatever mode you're in)
+     <ul>
+     <li> always initialize with the identity; don't presume it is loaded for you
+     </li></ul>
+  </li><li>Example 2D OpenGL program: <a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/sierpinski.c">Sierpinski Triangles</a> and <a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/sierpinski.gif">example output (level=7)</a>. 
+  </li><li> Here's the <a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/sierp_bug.gif">output</a> when transformations in wrong order.
+</li></ul>
+
+<p></p><hr align="LEFT">
+
+<h2>Properties of affine transformation matrix M</h2>
+
+<ul>
+  <li>lines are preserved (ie. lines remain lines after transform)
+  </li><li>parallelism is preserved
+  </li><li>proportional distances are preserved
+  <ul>
+    <li>eg. if point P is a fraction F between points A and B before, it will
+    remain so after the transform
+  </li></ul>
+  </li><li>the change in area of any object transformed is:
+  <ul>
+    <li>(area after transform) / (area before transform) = |determinant M |
+  </li></ul>
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>2D transforms: Shear transformations ("shearing")</h2>
+
+<h2>&nbsp;</h2>
+
+<pre>       | 1  a  0 |            | 1  0  0 |
+SHx =  | 0  1  0 |     SHy =  | b  1  0 |
+       | 0  0  1 |            | 0  0  1 |
+
+x' = x + ay             x' = x
+y' = y                  y' = bx + y</pre>
+
+<ul>
+  <li>... a proportional change in x as a function of y (and vice versa)
+</li></ul>
+
+<p align="CENTER"><img src="./2d and 3d transformations_files/shear.gif" width="380" height="186" align="BOTTOM" naturalsizeflag="3"></p>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>3D Transforms</h2>
+
+<ul>
+  <li>3D space: add a Z coordinate (X, Y, Z)
+  <ul>
+    <li>3D homogeneous coordinates: 4 dimensions
+  </li></ul>
+  </li><li>Text and OpenGL use a Right-handed rotation system: grab the Z axis with
+  right hand, and curl fingers from +ve X axis to +ve Y axis: thumb points
+  out at you, which is direction of +ve Z axis
+  <ul>
+    <li>implies that +ve Z axis points at you when facing the screen with +ve
+    Y pointing up and +ve X pointing right
+  </li></ul>
+</li></ul>
+
+<p align="CENTER"><img src="./2d and 3d transformations_files/handrules.gif" width="394" height="203" align="BOTTOM" naturalsizeflag="3"></p>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>3D transforms</h2>
+<p><img src="./2d and 3d transformations_files/3-dhomer2.gif"> </p>
+
+<p></p><ul>
+  <li>All transformations directly extend to 3D
+  </li><li>Translation:
+</li></ul>
+
+<blockquote>
+  <pre>               | 1 0 0 dx |
+T(dx,dy,dz) =  | 0 1 0 dy |
+               | 0 0 1 dz |
+               | 0 0 0 1  |</pre>
+</blockquote>
+
+<ul>
+  <li>Scaling:
+</li></ul>
+
+<blockquote>
+  <pre>               | sx  0  0  0 |
+S(sx,sy,sz) =  |  0 sy  0  0 |
+               |  0  0 sz  0 |
+               |  0  0  0  1 |</pre>
+</blockquote>
+
+<ul>
+  <li>Rotation:
+</li></ul>
+
+<blockquote>
+  <pre>        | 1      0        0   0 |
+Rx(A) = | 0  cos A   -sin A   0 |
+        | 0  sin A    cos A   0 |
+        | 0      0        0   1 |
+ 
+        | cos A   0   sin A   0 |
+Ry(A) = |     0   1       0   0 |
+        | -sin A  0   cos A   0 |
+        |     0   0       0   1 |
+
+        | cos A  -sin A   0   0 |
+Rz(A) = | sin A   cos A   0   0 |
+        |     0       0   1   0 |
+        |     0       0   0   1 |</pre>
+</blockquote>
+<p>
+</p><pre><hr align="LEFT"></pre>
+
+<h2>3d transforms</h2>
+
+<ul>
+  <li>2D rotations is given by Z axis rotation matrix
+  </li><li>Note that rotation matrix about Y axis uses "different' signs
+  <ul>
+    <li>reason: when you look down Y axis, you have this:
+  </li></ul>
+</li></ul>
+
+<p align="CENTER"><img src="./2d and 3d transformations_files/3drotcase.gif" width="125" height="127" align="BOTTOM" naturalsizeflag="3"></p>
+
+<p>z' = z cos A - x sin A</p>
+
+<p>x' = z sin A + x cos A (as before)</p>
+
+
+<p>--&gt; but when you put these in matrix form, the X and Z are in reversed
+order, hence the sign change</p>
+
+<ul>
+  <li>All these transformation matrices have inverses similar to 2D case
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>3D transforms</h2>
+
+<ul>
+  <li>composing 3D transforms works same as 2D: write each transformation
+  matrix in the order the transformation sequence is done
+  <ul>
+    <li>translation &amp; rotations on same axes are additive, while scaling
+    is multiplicative
+    </li><li>however, note that rotations on different axis are NOT commutative!
+  </li></ul>
+  </li><li>general transform:
+</li></ul>
+
+<blockquote>
+  <blockquote>
+    <pre>    | r11  r12  r13  tx |
+M = | r21  r22  r23  ty |
+    | r31  r32  r33  tz |
+    |   0    0    0   1 |</pre>
+  </blockquote>
+</blockquote>
+
+<ul>
+  <li>one trick: inverse of the top-left 3 x 3 submatrix: transpose it
+</li></ul>
+
+<blockquote>
+  <blockquote>
+    <pre>    | r11  r12  r13 |
+R = | r21  r22  r23 |
+    | r31  r32  r33 |
+    
+                    |  r11  -r21  r13 |
+R^(-1) = (1/Det R)* | -r12  r22  -r32 |
+                    |  r31  -r23  r33 |</pre>
+  </blockquote>
+</blockquote>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>3D transform properties</h2>
+
+<ul>
+  <li>lines are preserved
+  </li><li>parallelism is preserved
+  </li><li>proportional distances are preserved
+  </li><li>(volume after transformation) / (volume before) = | det M |
+</li></ul>
+<ul>
+  <li>Example 3D Opengl program:<a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/sierpinski3d.c">Sierpinski Pyramids</a> and <a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/sierpinski3d.gif">example output</a>
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>Non-affine transform: Fish-eye (angle halver)</h2>
+
+<p>
+</p><ul>
+<li> entire X-Y plane mapped to a circle
+<ul>
+   <li> phi = tan^(-1)(|P|)
+   </li><li> convert P to Q: Q = s * P  (s = scaling factor)
+   </li><li> where s = tan(tan^(-1)(|P|)/2)/(|P|) = |Q|/|P| = tan(phi/2)/|P|
+</li></ul>
+</li><li><a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/local/p1.gif"> Fish eye transformation setup</a>(from [Hill 1990])  
+</li><li><a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/local/p2.gif"> Example transformation </a> (from [Hill 1990])
+</li></ul>
+
+<h1><hr align="LEFT"></h1>
+
+<h2>Non-affine transforms: inversion in a unit circle</h2>
+
+<ul>
+  <li> Map point P to inverse of its distance from origin
+  </li><li>circles and lines that do not pass through origin map into circles
+  </li><li> Derivation:
+  <ul>
+     <li> sin(A) = X/(|P|)
+     </li><li> so: X' = 1/(|P|) sin(A) = (1/(|P|))*(X/(|P|)) = X / (|P|^2)
+     </li><li> Q = 1/(|P|^2) * P  
+     </li><li> X' = 1/(|P|^2) * X
+     </li><li> Y' = 1/(|P|^2) * Y
+
+  </li></ul>
+</li></ul>
+
+
+<p align="CENTER"><img src="./2d and 3d transformations_files/inversion.gif" width="227" height="239" align="BOTTOM" naturalsizeflag="3">
+</p><ul>
+<li><a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/local/p3.gif"> Example unit circle inversions.</a>(from [Hill 1990])
+</li><li><a href="https://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/local/p4.gif"> Circle inversion of a map of the world</a>(from [Hill 1990])
+</li></ul>
+
+<p>
+</p><hr>
+<h2>References</h2>
+<ul>
+<li><em>Introduction to Computer Graphics </em>, Foley, van Dam, <it> et al</it>, Addison Wesley, ISBN 0-201-60921-5.
+</li><li><em>Computer Graphics</em>, F.S. Hill Jr, Macmillan 1990, ISBN 0-02-354860-6. (Source of non-affine transformation examples.) 
+</li></ul>
+
+<hr><hr>
+<a href="http://www.cosc.brocku.ca/Offerings/3P98/course/"> Back to COSC 3P98 index</a>
+
+<p>
+COSC 3P98 Computer Graphics<br>
+Brock University<br>
+Dept of Computer Science<br>
+Copyright © 2015 <a href="mailto:bross@cosc.brocku.ca">Brian J. Ross</a> (Except noted figures).<br>
+http://www.cosc.brocku.ca/Offerings/3P98/course/lectures/2d_3d_xforms/<br>
+Last updated: October 29, 2015<br>
+
+
+</p></body></html>
