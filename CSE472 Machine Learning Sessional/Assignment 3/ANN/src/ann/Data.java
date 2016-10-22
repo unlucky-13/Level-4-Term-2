@@ -15,7 +15,4 @@ public class Data {
         in=_in ;
         out=_out ;
     }
-    Data(){
-        
-    }
 }
