@@ -84,6 +84,11 @@ int main(void){
             for(int i=0;i<DIMENSION-1;i++){
                 fscanf(fileToRead,"%lf",&arr[i]) ;
             }
+            // normalizing
+            double scale = sqrt(arr[0]+arr[1]+arr[2]) ;
+            for(int i=0;i<DIMENSION-1;i++){
+				arr[i]/=scale ;
+			}
             Matrix rotationMatrix(DIMENSION-1,DIMENSION-1) ;
             rotationMatrix = rotationMatrix*cos(angle) ;
             double sign=-1 ;
@@ -234,7 +239,7 @@ int main(void){
            // M.Print() ;
             M = P*M ;
             M.Print() ;
-            fprintf(fileToWrite,"%.7lf %.7lf %.7lf\n",M.M[0][0]/M.M[3][0],M.M[1][0]/M.M[3][0],M.M[2][0]/M.M[3][0]) ;
+            fprintf(fileToWrite,"%.7f %.7f %.7f\n",M.M[0][0]/M.M[3][0],M.M[1][0]/M.M[3][0],M.M[2][0]/M.M[3][0]) ;
             countt++ ;
             if(countt%3==0) fprintf(fileToWrite,"\n") ;
     }
