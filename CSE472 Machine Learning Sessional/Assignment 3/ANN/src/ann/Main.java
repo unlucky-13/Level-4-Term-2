@@ -23,6 +23,8 @@ public class Main {
         // int total layer no including hiddenlayer+inputlaye+outputlayer
         // int No of Nerons in the hidden layers
         network.printWeightVectos();  // after randomly initializaing printing the wieght vecs in between the layers 
-        
+        for(int i=0;i<TrainData.size();i++){
+            network.forwardPropagation(TrainData.get(i).in);
+        }
     }
 }
