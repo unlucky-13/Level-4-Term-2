@@ -24,8 +24,8 @@ public class Network {
                 NeuronsPerLayer = _NeuronsPerLayer ;
                 // assigning the weight vectors 
                 weightVecss = new LinkedList<>() ;
-                LinkedList<Double> ll = getRandomLinkedList((inputNeuronNo+1)*(NeuronsPerLayer+1)) ;
-                Vector vec = new Vector(inputNeuronNo+1,NeuronsPerLayer+1,ll) ;
+                LinkedList<Double> ll = getRandomLinkedList(inputNeuronNo*(NeuronsPerLayer+1)) ;
+                Vector vec = new Vector(inputNeuronNo,NeuronsPerLayer+1,ll) ;
                 weightVecss.add(vec) ; // between the input layer and the 1st hidden layer weight vector
                 for(int i=0;i<layerNo-3;i++){ // between the hidden layers weight vectors
                     ll = getRandomLinkedList((NeuronsPerLayer+1)*(NeuronsPerLayer+1)) ;
@@ -33,8 +33,8 @@ public class Network {
                     weightVecss.add(vec) ;
                 }
                 // between the last hidden  layer and the output layer 
-                ll = getRandomLinkedList((inputNeuronNo+1)*(outputNeuronNo+1)) ;
-                vec =     new Vector(NeuronsPerLayer+1,outputNeuronNo+1,ll) ;
+                ll = getRandomLinkedList((NeuronsPerLayer+1)*(outputNeuronNo)) ;
+                vec =     new Vector(NeuronsPerLayer+1,outputNeuronNo,ll) ;
                 weightVecss.add(vec) ;
     }
     public LinkedList<Double> getRandomLinkedList(int size){ // for initializing the weight vectors
@@ -51,7 +51,13 @@ public class Network {
        }
    }
    public void forwardPropagation(Vector input){
-        if(input.row!=weightVecss.get(0).row){
+                /*
+                Vector t = Transpose(weightVecss.get(0)) ;
+                System.out.println(t.row+" "+t.col) ;
+                System.out.println(input.row+" "+input.col) ;
+                */
+      // /* 
+       if(input.row!=weightVecss.get(0).row){
             System.out.println("input Dimension error") ;
             return ;
         }
@@ -60,7 +66,8 @@ public class Network {
         Vector last = input ;
         for(int i=1;i<layerNo;i++){
             try{
-                Vector vecs = dot(weightVecss.get(i-1),last) ;
+                Vector t = Transpose(weightVecss.get(i-1)) ;
+                Vector vecs = dot(t,last) ;
                 vecs = activationFunction(vecs) ;
                 vecs.Matrix[0][0]=1.00 ; // since it is always 1
                 a.add(vecs) ;
@@ -69,9 +76,10 @@ public class Network {
             }
         }
         for(int i=0;i<a.size();i++){
-            System.out.println("Values at"+i) ;
+            System.out.println("Values at "+i) ;
             a.get(i).print();
         }
+        //*/
    }
    
    
@@ -89,9 +97,9 @@ public class Network {
     private Vector dot(Vector v1, Vector v2) throws DimensionErrorException {
         // returns the dot product
         // throws exception if dimension doesn't match
-        System.out.println(v1.col+" "+v2.row) ; 
+         
         if(v1.col!=v2.row){
-            throw new DimensionErrorException() ;
+            System.out.println(v1.col+" "+v2.row) ;
         }
         LinkedList<Double> ll = new LinkedList<>() ;
         for(int i=0;i<v1.row;i++){
@@ -114,6 +122,16 @@ public class Network {
             }
         }
         return vecs ;
+    }
+    private Vector Transpose(Vector vecs){
+        LinkedList<Double> ll = new LinkedList<>() ;
+        for(int j=0;j<vecs.col;j++){
+            for(int i=0;i<vecs.row;i++){
+                ll.add(vecs.Matrix[i][j]) ;
+            }
+        }
+        Vector vec = new Vector(vecs.col,vecs.row,ll) ;
+        return vec ;
     }
 }
 class DimensionErrorException extends Exception{
