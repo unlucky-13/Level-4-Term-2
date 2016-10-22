@@ -27,11 +27,10 @@ public class Network {
                 for(int i=0;i<layerNo-3;i++){ // between the hidden layers weight vectors
                     ll = getRandomLinkedList((NeronsPerLayer+1)*(NeronsPerLayer+1)) ;
                     vec = new Vector((NeronsPerLayer+1),(NeronsPerLayer+1), ll) ;
-                    weightVecss.add(vec) ;
                 }
                 // between the last hidden  layer and the output layer 
                 ll = getRandomLinkedList((inputNeuronNo+1)*(outputNeuronNo+1)) ;
-                vec =     new Vector(NeronsPerLayer+1,outputNeuronNo+1,ll) ;
+                vec =     new Vector(inputNeuronNo+1,outputNeuronNo+1,ll) ;
                 weightVecss.add(vec) ;
     }
     public LinkedList<Double> getRandomLinkedList(int size){ // for initializing the weight vectors
@@ -43,15 +42,10 @@ public class Network {
     }
    public void printWeightVectos(){
        for(int i=0;i<weightVecss.size();i++){
-           System.out.println("Weight vectors in between layer "+i+" and "+(i+1));
+           System.out.println("Weight vectos in between laye "+i+" and "+(i+1));
            weightVecss.get(i).print();
        }
    }
-   public void forwardPropagation(){
-       
-   }
-   
-   
     public static void main(String args[]){
                 LoadData ld = new LoadData() ;
                 LinkedList<Data> TrainData  = ld.ReadTrainData() ;
@@ -61,5 +55,7 @@ public class Network {
                      testData[i].out.print(); 
                 }
                 */
+                
+                
     }
 }
