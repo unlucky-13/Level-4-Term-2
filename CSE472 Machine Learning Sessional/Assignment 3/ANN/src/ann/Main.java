@@ -22,10 +22,11 @@ public class Main {
         // int NeuronNo in the output layer 
         // int total layer no including hiddenlayer+inputlaye+outputlayer
         // int No of Nerons in the hidden layers
-        network.printWeightVectos();  // after randomly initializaing printing the wieght vecs in between the layers 
-        for(int i=0;i<TrainData.size();i++){
+        //network.printWeightVectos();  // after randomly initializaing printing the wieght vecs in between the layers 
+        int i=0 ;
+///  for(int i=0;i<TrainData.size();i++){
             Vector output = network.forwardPropagation(TrainData.get(i).in) ;
             network.backPropagation(output,TrainData.get(i).out) ; // 
-        }
+      //  }
     }
 }

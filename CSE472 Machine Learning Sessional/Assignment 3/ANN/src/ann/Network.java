@@ -87,18 +87,34 @@ public class Network {
        LinkedList<Vector>error = new LinkedList<>() ;
        try{
             Vector last = subtract(output,expectedOutput) ;
+            error.add(last) ;
             for(int i=layerNo-2;i>=1;i--){
-                Vector derivative = new Vector(a.get(i).row, a.get(i).col,a.get(i).Matrix) ;
-                for(int j=0;j<last.Matrix.length;j++){
-                    derivative.Matrix[i][j] =last.Matrix[j][0]*derivative.Matrix[i][j]*(1-derivative.Matrix[i][j]) ; 
+                Vector derivative = new Vector(a.get(i+1).row, a.get(i+1).col,a.get(i+1).Matrix) ;
+                derivative.print() ;
+                last.print() ;
+                for(int j=0;j<derivative.row;j++){
+                    for(int k=0;k<derivative.col;k++){
+                        derivative.Matrix[j][k] =last.Matrix[j][k]*derivative.Matrix[j][k]*(1.00-derivative.Matrix[j][k]) ;
+                    }
                 }
+                System.out.println("-----------------------") ;
+               // weightVecss.get(i).print();
+                //derivative.print();
                 last = dot(weightVecss.get(i),derivative) ;
                 error.add(last) ;
             }
        }catch(Exception ex){
-           System.out.println("Exception in back prop finding error vectors ");
+           
+           System.out.println("Exception in back prop finding error vectors "+ex.toString());
        }
-       
+       // there is no error for input layer
+   //    System.out.println("Printing the error vectors");
+     //  System.out.println(error.size());
+       /*
+       for(int i=layerNo-2;i>=0;i--){
+           error.get(i).print();  // here ith index error vector is for i+1 a-th 
+       }
+       */
        // now update the weights
        
        
@@ -139,7 +155,9 @@ public class Network {
     private Vector activationFunction(Vector vecs) {
         for(int i=0;i<vecs.row;i++){
             for(int j=0;j<vecs.col;j++){
-                vecs.Matrix[i][j] = 1.000/(1.00-Math.exp(vecs.Matrix[i][j])) ; // apply softmax function here 
+                vecs.Matrix[i][j] = 1.000/(1.00-Math.exp(vecs.Matrix[i][j])) ; 
+                // it is done using sigmod function 
+                //apply softmax function here 
             }
         }
         return vecs ;
