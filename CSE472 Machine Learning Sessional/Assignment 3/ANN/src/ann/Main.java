@@ -17,16 +17,20 @@ public class Main {
         
 //          TRAINING PHASE          ////////////////////////////////////
         LinkedList<Data> TrainData  = loadData.ReadTrainData() ; // the TrainData is a linked list of pair(x,y) where x is the input and y is the expected output for this input
-        Network network = new Network(TrainData.get(0).in.row,TrainData.get(0).out.row ,5, 20) ; 
+        Network network = new Network(TrainData.get(0).in.row,TrainData.get(0).out.row ,5, 20,0.5) ; 
         // int  NeuronNo in the input layer 
         // int NeuronNo in the output layer 
         // int total layer no including hiddenlayer+inputlaye+outputlayer
         // int No of Nerons in the hidden layers
+        // double learning rate for gradiant descent
         //network.printWeightVectos();  // after randomly initializaing printing the wieght vecs in between the layers 
-        int i=0 ;
-///  for(int i=0;i<TrainData.size();i++){
+        
+//        int i=0 ;
+  for(int i=0;i<TrainData.size();i++){
             Vector output = network.forwardPropagation(TrainData.get(i).in) ;
+            System.out.println(i) ;
             network.backPropagation(output,TrainData.get(i).out) ; // 
-      //  }
+        }
+        network.printWeightVectos();
     }
 }

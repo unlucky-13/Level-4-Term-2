@@ -65,7 +65,7 @@ public class LoadData{
             for(int i=0;i<iterations;i++){
                 LinkedList<Double> x = new LinkedList<>() ;
                 LinkedList<Double> y = new LinkedList<>() ;
-                
+                x.add(1.00) ; // since the 0 th input is always 1
                 for(int j=0;j<trainData[i].length;j++){
                     for(int k=0;k<trainData[i][j].length;k++){
                         //String s=String.format("%8s",Integer.toBinaryString(data[index] & 0xFF)).replace(' ', '0');
@@ -103,7 +103,7 @@ public class LoadData{
             
             System.out.print(" Train Data read DONE!!!\n");
         }catch(Exception ex){
-                    System.out.println("Exception in Train Data Read "+"\n"+ex.toString());
+                    System.out.println("Exception found in Train Data Read "+"\n"+ex.toString());
                     
         }
         return TrainData ;
@@ -115,7 +115,7 @@ public class LoadData{
         return null ;
     }
     
-    private static int GetValue(String s){
+    private int GetValue(String s){
         int value=0,power=s.length()-1;
         for(int i=0;i<s.length();i++){
             value+=(Character.getNumericValue(s.charAt(i)))*Math.pow(2,power);

@@ -61,7 +61,7 @@ public class LoadData{
             trainLabel=new int[GetValue(imageCount1)];
             int index1=8;
            // System.out.println(trainData.length);
-           int iterations = Math.min(trainData.length,10000) ; // heapspace dosn't allocate so much space for 60 0000 Train Data
+           int iterations = Math.min(trainData.length,10) ; // heapspace dosn't allocate so much space for 60 0000 Train Data
             for(int i=0;i<iterations;i++){
                 LinkedList<Double> x = new LinkedList<>() ;
                 LinkedList<Double> y = new LinkedList<>() ;

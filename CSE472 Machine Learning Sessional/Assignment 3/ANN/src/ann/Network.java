@@ -15,8 +15,11 @@ public class Network {
     LinkedList<Vector> weightVecss  ;
     LinkedList<Vector>a ; // the values in the layers 
     int layerNo ,NeuronsPerLayer;
-    public Network(int inputNeuronNo,int outputNeuronNo,int _layerNo,int _NeuronsPerLayer) {
+    double Learning_rate ;
+    public Network(int inputNeuronNo,int outputNeuronNo,int _layerNo,int _NeuronsPerLayer,double learning_rate) {
+                Learning_rate = learning_rate ;
                 layerNo = _layerNo ; 
+                a = new LinkedList<>() ;
                 NeuronsPerLayer = _NeuronsPerLayer ;
                 // assigning the weight vectors 
                 weightVecss = new LinkedList<>() ;
@@ -57,7 +60,7 @@ public class Network {
             System.out.println("input Dimension error") ;
             return null;
         }
-        a = new LinkedList<>() ;
+        a.clear();
         a.add(input) ;
         Vector last = input ;
         for(int i=1;i<layerNo;i++){
@@ -90,16 +93,16 @@ public class Network {
             error.add(last) ;
             for(int i=layerNo-2;i>=1;i--){
                 Vector derivative = new Vector(a.get(i+1).row, a.get(i+1).col,a.get(i+1).Matrix) ;
-                derivative.print() ;
-                last.print() ;
+             //   derivative.print() ;
+              //  last.print() ;
                 for(int j=0;j<derivative.row;j++){
                     for(int k=0;k<derivative.col;k++){
                         derivative.Matrix[j][k] =last.Matrix[j][k]*derivative.Matrix[j][k]*(1.00-derivative.Matrix[j][k]) ;
                     }
                 }
-                System.out.println("-----------------------") ;
+              //  System.out.println("-----------------------") ;
                // weightVecss.get(i).print();
-                //derivative.print();
+             //   derivative.print();
                 last = dot(weightVecss.get(i),derivative) ;
                 error.add(last) ;
             }
@@ -115,9 +118,22 @@ public class Network {
            error.get(i).print();  // here ith index error vector is for i+1 a-th 
        }
        */
-       // now update the weights
-       
-       
+       // NOW UPDATE THE WEIGHT VECTORS
+   //    System.out.println(error.size());
+     //  System.out.println(layerNo-1);
+       Vector tranpose = null ;
+       for(int i=0;i<layerNo-1;i++){
+           try{
+            tranpose = Transpose(error.get(layerNo-i-2)) ;
+            Vector changeweightVec = add(weightVecss.get(i),dot(a.get(i),tranpose)) ;
+            changeweightVec = multiply(Learning_rate,changeweightVec) ;
+            weightVecss.set(i,changeweightVec)  ;
+           }catch(Exception ex){
+                error.get(layerNo-i-2).print();
+                tranpose.print();
+               System.out.println("Exception is here "+ex.toString());
+           }
+       }
    }
    
     public static void main(String args[]){
@@ -136,7 +152,8 @@ public class Network {
         // throws exception if dimension doesn't match
          
         if(v1.col!=v2.row){
-            System.out.println(v1.col+" "+v2.row) ;
+         //   System.err.println(v1.row +" "+v1.col+" "+v2.row+" "+v2.col) ;
+            //throw  new DimensionErrorException() ;
         }
         LinkedList<Double> ll = new LinkedList<>() ;
         for(int i=0;i<v1.row;i++){
@@ -184,6 +201,28 @@ public class Network {
             }
         }
         Vector vec = new Vector(vec1.row,vec1.col,ll) ;
+        return vec ;
+    }
+    private Vector add(Vector vec1, Vector vec2) throws DimensionErrorException{
+        if(vec1.row!=vec2.row || vec1.col!=vec2.col){
+            throw new DimensionErrorException() ;
+        }
+        LinkedList<Double> ll = new LinkedList<>() ;
+        for(int i=0;i<vec1.row;i++){
+            for(int j=0;j<vec1.col;j++){
+                ll.add(vec1.Matrix[i][j]+vec2.Matrix[i][j]) ;
+            }
+        }
+        Vector vec = new Vector(vec1.row,vec1.col,ll) ;
+        return vec ;
+    }
+
+    private Vector multiply(double Learning_rate, Vector vec) {
+        for(int i=0;i<vec.row;i++){
+            for(int j=0;j<vec.col;j++){
+                vec.Matrix[i][j]  *=Learning_rate ; 
+            }
+        }
         return vec ;
     }
 }

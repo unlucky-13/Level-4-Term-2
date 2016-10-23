@@ -17,6 +17,16 @@ public class Vector {
     Vector(){
         
     }
+    Vector(int _row,int _col,Double[][] _M){
+        row=_row ; col = _col ;
+        Matrix = new Double [row][col] ;
+        for(int i=0;i<_row;i++){
+            for(int j=0;j<_col;j++){
+                Matrix[i][j]=_M[i][j] ;
+            }
+        }
+    }
+    
     Vector(int _row,int _col,LinkedList<Double>data){
         row = _row ;
         col = _col ;
@@ -34,6 +44,7 @@ public class Vector {
     }
     public void print(){
         System.out.println("Row -> "+row+" Col -> "+col) ;
+        /*
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
                 System.out.print(Matrix[i][j]) ;
@@ -41,5 +52,6 @@ public class Vector {
             }
             System.out.println() ;
         }
+        */
     }
 }
