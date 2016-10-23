@@ -4,17 +4,13 @@
  * and open the template in the editor.
  */
 package ann;
-import java.util.Random ;
 import java.util.LinkedList;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- *
  * @author mazharul
  */
 public class Network {
-    
-    
     
     LinkedList<Vector> weightVecss  ;
     LinkedList<Vector>a ; // the values in the layers 
@@ -50,7 +46,7 @@ public class Network {
            weightVecss.get(i).print();
        }
    }
-   public void forwardPropagation(Vector input){
+   public Vector forwardPropagation(Vector input){
                 /*
                 Vector t = Transpose(weightVecss.get(0)) ;
                 System.out.println(t.row+" "+t.col) ;
@@ -59,7 +55,7 @@ public class Network {
       // /* 
        if(input.row!=weightVecss.get(0).row){
             System.out.println("input Dimension error") ;
-            return ;
+            return null;
         }
         a = new LinkedList<>() ;
         a.add(input) ;
@@ -75,13 +71,38 @@ public class Network {
                 System.out.println("excepeiton in DOT product");
             }
         }
+        /*
         for(int i=0;i<a.size();i++){
             System.out.println("Values at "+i) ;
             a.get(i).print();
         }
+        */
+        return a.getLast() ; // the output
         //*/
    }
-   
+   public void backPropagation(Vector output,Vector expectedOutput){
+       // first calculate the error function
+       
+       
+       LinkedList<Vector>error = new LinkedList<>() ;
+       try{
+            Vector last = subtract(output,expectedOutput) ;
+            for(int i=layerNo-2;i>=1;i--){
+                Vector derivative = new Vector(a.get(i).row, a.get(i).col,a.get(i).Matrix) ;
+                for(int j=0;j<last.Matrix.length;j++){
+                    derivative.Matrix[i][j] =last.Matrix[j][0]*derivative.Matrix[i][j]*(1-derivative.Matrix[i][j]) ; 
+                }
+                last = dot(weightVecss.get(i),derivative) ;
+                error.add(last) ;
+            }
+       }catch(Exception ex){
+           System.out.println("Exception in back prop finding error vectors ");
+       }
+       
+       // now update the weights
+       
+       
+   }
    
     public static void main(String args[]){
                 LoadData ld = new LoadData() ;
@@ -118,7 +139,7 @@ public class Network {
     private Vector activationFunction(Vector vecs) {
         for(int i=0;i<vecs.row;i++){
             for(int j=0;j<vecs.col;j++){
-                vecs.Matrix[i][j] = 1.000/(1.00-Math.exp(vecs.Matrix[i][j])) ;
+                vecs.Matrix[i][j] = 1.000/(1.00-Math.exp(vecs.Matrix[i][j])) ; // apply softmax function here 
             }
         }
         return vecs ;
@@ -131,6 +152,20 @@ public class Network {
             }
         }
         Vector vec = new Vector(vecs.col,vecs.row,ll) ;
+        return vec ;
+    }
+
+    private Vector subtract(Vector vec1, Vector vec2) throws DimensionErrorException{
+        if(vec1.row!=vec2.row || vec1.col!=vec2.col){
+            throw new DimensionErrorException() ;
+        }
+        LinkedList<Double> ll = new LinkedList<>() ;
+        for(int i=0;i<vec1.row;i++){
+            for(int j=0;j<vec1.col;j++){
+                ll.add(vec1.Matrix[i][j]-vec2.Matrix[i][j]) ;
+            }
+        }
+        Vector vec = new Vector(vec1.row,vec1.col,ll) ;
         return vec ;
     }
 }

@@ -17,6 +17,15 @@ public class Vector {
     Vector(){
         
     }
+    Vector(int _row,int _col,Double[][] _M){
+        row=_row ; col = _col ;
+        for(int i=0;i<_row;i++){
+            for(int j=0;j<_col;j++){
+                Matrix[i][j]=_M[i][j] ;
+            }
+        }
+    }
+    
     Vector(int _row,int _col,LinkedList<Double>data){
         row = _row ;
         col = _col ;
