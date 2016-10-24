@@ -1,0 +1,2 @@
+You are required to implement three layer neural network classifier using Back-propagation learning algorithm. Use this(https://archive.ics.uci.edu/ml/datasets/Abalone) sample dataset. Divide the dataset in three groups: training, validation and testing. Optimize the weights using training data and optimize the model parameters using the validation data and calculate performance using the test data. 
+
