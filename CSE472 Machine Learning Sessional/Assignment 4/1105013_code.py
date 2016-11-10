@@ -122,7 +122,6 @@ def Importance(examples,attributes):
 def decisionTreeLearning(examples,attributes,parrent_examples,tree,parent): # returns a tree
     if len(examples)==0:
         #print "example shesh"
-
         ret=plurality_value(parrent_examples)-2
         tree = Tree(ret)
         return  tree
@@ -153,7 +152,7 @@ def decisionTreeLearning(examples,attributes,parrent_examples,tree,parent): # re
             tree.adjList[i]=childTree
         return tree
 ###################################################################################################################
-def singleRun(traninData,testData):
+def singleRun(trainData,testData):
 
     tree = [[ [0 for x in range(11)] for y in range(11)] for z in range(11)]
     attributes=[]
@@ -161,16 +160,17 @@ def singleRun(traninData,testData):
         attributes.append(i)
      # Now split the train
      
-    [traninData,validation] = splitDataset(trainData,0.5) # spliting the trainData set
-    take = len(validation)/10
-    iterations=10 ;
+    [trainData,unlabelData] = splitDataset(trainData,0.8) # spliting the trainData set
+    take = len(unlabelData)/10
+    iterations=10
     cur=0
     while iterations>0:
+        #print len(trainData)
         iterations-=1
         mainTree = decisionTreeLearning(trainData,attributes,trainData,tree,0)
         for i in range(take):
-            if cur==len(validation): break
-            data = validation[cur]
+            if cur==len(unlabelData): break
+            data = unlabelData[cur]
             cur+=1
             currrentTree = mainTree
             while currrentTree.attribute >= 0:
@@ -274,12 +274,10 @@ if __name__ == '__main__':
                 testData.append(dataset[kk])
             else:
                 trainData.append(dataset[kk])
-                    
-
             #print k
         #print len(trainData), " ", len(testData)," ",k
+
         [recall2,precession2,accuracy2] = singleRun(trainData,testData)
         #print precession2
-        totaccuracy+=precession2
-            
+        totaccuracy+=accuracy2
     print "Accuracy in Leave out Cross Validation ->",totaccuracy/len(dataset)
