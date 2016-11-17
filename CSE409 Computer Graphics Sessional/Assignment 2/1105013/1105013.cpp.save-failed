@@ -132,14 +132,7 @@ Matrix Matrix::operator+(const Matrix &Mat){
 }
 ///                 Matrix class end
 
-
-
-
-
-
-
-
-
+vector<Matrix>stage1 ;
 int main(void){
   //  Vector vec1(10,5),vec2(5,10) ;
   //  vec1.Print() ;
@@ -176,7 +169,8 @@ int main(void){
 
                 Mat = top*Mat ;
              //   Mat.Print() ;
-                fprintf(fileToWrite,"%.10f %.10f %.10f\n",Mat.M[0][0],Mat.M[1][0],Mat.M[2][0]) ;
+                stage1.push_back(Mat) ;
+                fprintf(fileToWrite,"%.3f %.3f %.3f\n",Mat.M[0][0],Mat.M[1][0],Mat.M[2][0]) ;
             }
             fprintf(fileToWrite,"\n") ;
         }
@@ -225,6 +219,7 @@ int main(void){
 				arr[i]/=scale ;
 			}
             Matrix rotationMatrix(DIMENSION-1,DIMENSION-1) ;
+
             rotationMatrix = rotationMatrix*cos(angle) ;
             double sign=-1 ;
             for(int i=0;i<DIMENSION-1;i++){
@@ -263,7 +258,7 @@ int main(void){
         }
         else if(strcmp(buffer,"pop")==0){
                 int k = stack_track.top() ; stack_track.pop() ;
-                while((int)S.size()>k){
+                while(S.size()>k){
                     S.pop() ;
                 }
         }
@@ -275,9 +270,13 @@ int main(void){
    }
    fclose(fileToRead) ;
    fclose(fileToWrite) ;
-
+   /*
+   for(int i=0;i<stage1.size();i++){
+        stage1[i].Print() ;
+   }
+    */
    ///          STAGE 2
-   fileToRead = fopen(fileNames[stageNo-1],"r") ;
+  // fileToRead = fopen(fileNames[stageNo-1],"r") ;
    fileToWrite  = fopen(fileNames[stageNo++],"w") ;
    Vector l = look-eye ;
    l.normalize() ;
@@ -329,9 +328,11 @@ int main(void){
    M.M[3][0]=1 ;
   // V.Print() ;
    int countt=0 ;
+   for(int i=0;i<stage1.size();i++){
+        M = stage1[i] ;
     while(fscanf(fileToRead,"%lf %lf %lf",&M.M[0][0],&M.M[1][0],&M.M[2][0])==3){
             M = V*M ;
-            fprintf(fileToWrite,"%.10f %.10f %.10f\n",M.M[0][0],M.M[1][0],M.M[2][0]) ;
+            fprintf(fileToWrite,"%.3f %.3f %.3f\n",M.M[0][0],M.M[1][0],M.M[2][0]) ;
             countt++ ;
             if(countt%3==0) fprintf(fileToWrite,"\n") ;
     }
@@ -365,15 +366,15 @@ int main(void){
    P.M[3][1]=0 ;
    P.M[3][2]=-1 ;
    P.M[3][3]=0 ;
-    P.Print() ;
+   // P.Print() ;
     countt=0 ;
-    //M.M[3][0]=1 ;
+ //   M.M[3][0]=1 ;
    // cout<<fovY<<" "<<aspectRatio<<" "<<near<<" "<<far<<endl ;
     while(fscanf(fileToRead,"%lf %lf %lf",&M.M[0][0],&M.M[1][0],&M.M[2][0])==3){
             M.M[3][0]=1 ;
            // M.Print() ;
             M = P*M ;
-            M.Print() ;
+          //  M.Print() ;
             fprintf(fileToWrite,"%.7f %.7f %.7f\n",M.M[0][0]/M.M[3][0],M.M[1][0]/M.M[3][0],M.M[2][0]/M.M[3][0]) ;
             countt++ ;
             if(countt%3==0) fprintf(fileToWrite,"\n") ;

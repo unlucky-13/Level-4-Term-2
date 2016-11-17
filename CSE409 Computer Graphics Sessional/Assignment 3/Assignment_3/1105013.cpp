@@ -132,13 +132,54 @@ Matrix Matrix::operator+(const Matrix &Mat){
 }
 ///                 Matrix class end
 
+///                 CLIPING Z AXIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+vector<Vector>  FindInterSection(Vector v1,Vector v2,double zValue,bool isNear){
+    vector<Vector>vec ;
+    if(fabs(v1.z-v2.z)<EPS){
 
+        if(v1.z>=zValue && isNear){
+            vec.push_back(v1) ;
+            vec.push_back(v2) ;
+        }
+        else if(v1.z<=zValue && !isNear){
+            vec.push_back(v1) ;
+            vec.push_back(v2) ;
+        }
+        else{
 
-
-
-
-
+        }
+    }
+    else{
+        double t = (zValue-v1.z)/(v2.z-v1.z) ; /// here v1 and v2 must have different z value
+        //cout<<t<<endl ;
+        Vector v3 ;
+        v3.x=v1.x+t*(v2.x-v1.x) ;
+        v3.y=v1.y+t*(v2.y-v1.y) ;
+        v3.z=v1.z+t*(v2.z-v1.z) ;
+        if(t>=0.00 && t<=1.00){                     /// t must be in between 0 and 1
+            if(isNear){
+                if(v2.z>=zValue){
+                    vec.push_back(v3) ;
+                    vec.push_back(v2) ;
+                }else{
+                    vec.push_back(v1) ;
+                    vec.push_back(v3) ;
+                }
+            }else{
+                if(v1.z>=zValue){
+                    vec.push_back(v3) ;
+                    vec.push_back(v2) ;
+                }else{
+                    vec.push_back(v1) ;
+                    vec.push_back(v3) ;
+                }
+            }
+        }
+    }
+    return vec ;
+}
+///                 CLIPPING Z AXIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 int main(void){
   //  Vector vec1(10,5),vec2(5,10) ;
@@ -367,7 +408,7 @@ int main(void){
    P.M[3][3]=0 ;
     P.Print() ;
     countt=0 ;
-    //M.M[3][0]=1 ;
+ //   M.M[3][0]=1 ;
    // cout<<fovY<<" "<<aspectRatio<<" "<<near<<" "<<far<<endl ;
     while(fscanf(fileToRead,"%lf %lf %lf",&M.M[0][0],&M.M[1][0],&M.M[2][0])==3){
             M.M[3][0]=1 ;
