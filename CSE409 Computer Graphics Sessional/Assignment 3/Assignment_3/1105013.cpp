@@ -1,194 +1,23 @@
 using namespace std ;
 #include<bits/stdc++.h>
+#include "Vector.h"
+#include "Color.h"
+#include "Matrix.h"
+#include "Triangle.h"
+#include "ReadZ.h"
+#include "Clipping.h"
+#include"bitmap_image.hpp"
+
+#define MAXN 1000
 #define PI acos(-1)
 char fileNames[][11] = { "stage1.txt","stage2.txt","stage3.txt"} ;
 char buffer[111] ;
-
-///                                 Vector class
-class Vector{
-    public:
-    double  x,y,z ;
-    public:
-    Vector(){
-    }
-    Vector(double _x,double _y,double _z){
-        x=_x ; y = _y ; z=_z ;
-    }
-public:
-    Vector operator * (const double &scale)const{
-        return Vector(x*scale,y*scale,z*scale) ;
-    }
-    void normalize(){
-        double scale = sqrt(x*x+y*y+z*z) ;
-        x/=scale ;
-        y/=scale ;
-        z/=scale ;
-    }
-    Vector operator + (const Vector &other)const{
-        return Vector(x+other.x,y+other.y,z+other.z) ;
-    }
-    Vector operator - (const Vector &other)const{
-        return Vector(x-other.x,y-other.y,z-other.z) ;
-    }
-    Vector cross(const Vector &otherVector){
-        double xx = (y*otherVector.z-z*otherVector.y) ;
-        double yy = (otherVector.x*z-x*otherVector.z) ;
-        double zz = (x*otherVector.y-otherVector.x*y) ;
-        return Vector(xx,yy,zz) ;
-    }
-    double dot(const Vector &otherVector){
-        return (x*otherVector.x+y*otherVector.y+z*otherVector.z) ;
-    }
-} ;
-///                             Vector class end
-
-
-///                         Matrix class
-class Matrix{
-public:
-    double x,y,z ;
-    int row,col ;
-    double **M ;
-    Matrix(int row,int col){
-        this->row = row ;
-        this->col = col ;
-        M = new double*[row] ;
-        for(int i=0;i<row;i++){
-            M[i] = new double[col] ;
-            for(int j=0;j<col;j++){
-                M[i][j] = (i==j) ? 1 : 0 ;
-            }
-        }
-    }
-    Matrix(){ // default constructor
-        row = col=100 ;
-        M = new double*[row] ;
-        for(int i=0;i<row;i++){
-            M[i] = new double[col] ;
-            for(int j=0;j<col;j++){
-                    M[i][j] = (i==j) ? 1 : 0 ;
-            }
-        }
-    }
-public: // functions
-    void Print() ;
-    Matrix operator * (const Matrix &Mat) ;
-    Matrix operator * (const double &scale) ;
-    Matrix operator + (const Matrix &Mat) ;
-} ;
-
-void Matrix::Print(){
-    cout<<"Row -> "<<row<<" " <<" col -> "<< col<<endl ;
-    for(int i=0;i<row;i++){
-        for(int j=0;j<col;j++){
-            printf("%10f",M[i][j]) ;
-        }
-        cout<<endl ;
-    }
-    return ;
-}
-
-Matrix Matrix::operator*(const Matrix &Mat){
-        ///Print() ;
-        if(col!=Mat.row){
-            throw "MATRIX DIMENSION MISMATCH" ;
-        }else{
-            Matrix ret(row,Mat.col) ;
-            for(int i=0;i<row;i++){
-                for(int j=0;j<Mat.col;j++){
-                        ret.M[i][j]=0 ;
-                        for(int k=0;k<col;k++){
-                            ret.M[i][j]+= Mat.M[k][j]*M[i][k] ;
-                        }
-                    //    cout<<ret.M[i][j]<<endl ;
-                }
-            }
-            return ret;
-        }
-}
-Matrix Matrix::operator*(const double &scale){
-
-            Matrix ret(row,col) ;
-            for(int i=0;i<row;i++){
-                for(int j=0;j<col;j++){
-                        ret.M[i][j]=M[i][j]*scale ;
-                }
-            }
-            return ret;
-}
-
-Matrix Matrix::operator+(const Matrix &Mat){
-        if(Mat.col!=col || Mat.row!=row){
-            throw "MATRIX DIMENSION MISMATCH" ;
-        }else{
-            Matrix ret(Mat.row,Mat.col) ;
-            for(int i=0;i<Mat.row;i++){
-                for(int j=0;j<Mat.col;j++){
-                    ret.M[i][j]=M[i][j]+Mat.M[i][j] ;
-                }
-            }
-            return ret;
-        }
-}
-///                 Matrix class end
-
-///                 CLIPING Z AXIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-vector<Vector>  FindInterSection(Vector v1,Vector v2,double zValue,bool isNear){
-    vector<Vector>vec ;
-    if(fabs(v1.z-v2.z)<EPS){
-
-        if(v1.z>=zValue && isNear){
-            vec.push_back(v1) ;
-            vec.push_back(v2) ;
-        }
-        else if(v1.z<=zValue && !isNear){
-            vec.push_back(v1) ;
-            vec.push_back(v2) ;
-        }
-        else{
-
-        }
-    }
-    else{
-        double t = (zValue-v1.z)/(v2.z-v1.z) ; /// here v1 and v2 must have different z value
-        //cout<<t<<endl ;
-        Vector v3 ;
-        v3.x=v1.x+t*(v2.x-v1.x) ;
-        v3.y=v1.y+t*(v2.y-v1.y) ;
-        v3.z=v1.z+t*(v2.z-v1.z) ;
-        if(t>=0.00 && t<=1.00){                     /// t must be in between 0 and 1
-            if(isNear){
-                if(v2.z>=zValue){
-                    vec.push_back(v3) ;
-                    vec.push_back(v2) ;
-                }else{
-                    vec.push_back(v1) ;
-                    vec.push_back(v3) ;
-                }
-            }else{
-                if(v1.z>=zValue){
-                    vec.push_back(v3) ;
-                    vec.push_back(v2) ;
-                }else{
-                    vec.push_back(v1) ;
-                    vec.push_back(v3) ;
-                }
-            }
-        }
-    }
-    return vec ;
-}
-///                 CLIPPING Z AXIS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+Color pixelBuffer[MAXN][MAXN] ;
+double zBuffer[MAXN][MAXN] ;
 int main(void){
-  //  Vector vec1(10,5),vec2(5,10) ;
-  //  vec1.Print() ;
-   // vec2.Print() ;
    FILE *fileToWrite,*fileToRead ;
-   double x,y,z ,arr[5],angle,aspectRatio,fovY,near,far;
-   int stageNo=0,DIMENSION=4,lineNo=0 ;
-
+   double x,y,z ,arr[5],angle,aspectRatio,fovY,near,far,rrr,bbb,ggg;
+   int stageNo=0,DIMENSION=4,lineNo=0,screen_height,screen_width ;
    ///          STAGE 1
    fileToRead = fopen("scene.txt","r") ;
    fileToWrite  = fopen(fileNames[stageNo++],"w+") ;
@@ -203,6 +32,11 @@ int main(void){
     fscanf(fileToRead,"%lf %lf %lf",&look.x,&look.y,&look.z) ;
     fscanf(fileToRead,"%lf %lf %lf",&up.x,&up.y,&up.z) ;
     fscanf(fileToRead,"%lf %lf %lf %lf",&fovY,&aspectRatio,&near,&far) ;
+    fscanf(fileToRead,"%d %d",&screen_width,&screen_height) ;
+    fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
+    Color BackGround(rrr,bbb,ggg) ;
+
+
     while(fscanf(fileToRead,"%s",buffer)!=EOF){
         if(strcmp(buffer,"triangle")==0){
              Matrix top = S.top() ;
@@ -214,11 +48,12 @@ int main(void){
                 Mat.M[3][0]=1 ;
               //  top.Print() ;
                //f Mat.Print() ;
-
                 Mat = top*Mat ;
              //   Mat.Print() ;
                 fprintf(fileToWrite,"%.10f %.10f %.10f\n",Mat.M[0][0],Mat.M[1][0],Mat.M[2][0]) ;
             }
+            fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
+            fprintf(fileToWrite,"%.10f %.10f %.10f\n",rrr,bbb,ggg) ; /// printing the color to the file
             fprintf(fileToWrite,"\n") ;
         }
         else if(strcmp(buffer,"translate")==0){
@@ -368,13 +203,24 @@ int main(void){
    //V.Print() ;
    Matrix M (DIMENSION,1) ;
    M.M[3][0]=1 ;
-  // V.Print() ;
-   int countt=0 ;
+  /// V.Print() ;
+    vector<Vector>vec ;
+    int countt=0 ;
     while(fscanf(fileToRead,"%lf %lf %lf",&M.M[0][0],&M.M[1][0],&M.M[2][0])==3){
             M = V*M ;
-            fprintf(fileToWrite,"%.10f %.10f %.10f\n",M.M[0][0],M.M[1][0],M.M[2][0]) ;
-            countt++ ;
-            if(countt%3==0) fprintf(fileToWrite,"\n") ;
+            vec.push_back(Vector(M.M[0][0],M.M[1][0],M.M[2][0])) ;
+            if(vec.size()==3){
+                    fscanf(fileToRead,"%lf %lf %lf\n",&rrr,&bbb,&ggg) ;
+                   // cout<<rrr<<" "<<bbb<<" "<<ggg<<endl ;
+                    vec = ClippingByZ(vec,-far,-near) ;
+                   // cout<<vec.size()<<endl ;
+                    for(int i=0;i<(int)vec.size();i++){
+                        if(i==3) fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,bbb,ggg) ;
+                        fprintf(fileToWrite,"%.10f %.10f %.10f\n",vec[i].x,vec[i].y,vec[i].z) ;
+                    }
+                    fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,bbb,ggg) ;
+                    vec.clear() ;
+            }
     }
 
    fclose(fileToRead) ;
@@ -406,21 +252,61 @@ int main(void){
    P.M[3][1]=0 ;
    P.M[3][2]=-1 ;
    P.M[3][3]=0 ;
-    P.Print() ;
-    countt=0 ;
- //   M.M[3][0]=1 ;
-   // cout<<fovY<<" "<<aspectRatio<<" "<<near<<" "<<far<<endl ;
+   ///P.Print() ;
+   vec.clear() ;
+   vector<Triangle>triangles ;
     while(fscanf(fileToRead,"%lf %lf %lf",&M.M[0][0],&M.M[1][0],&M.M[2][0])==3){
             M.M[3][0]=1 ;
            // M.Print() ;
             M = P*M ;
-            M.Print() ;
+            ///M.Print() ;
+            vec.push_back(Vector(M.M[0][0]/M.M[3][0],M.M[1][0]/M.M[3][0],M.M[2][0]/M.M[3][0])) ;
             fprintf(fileToWrite,"%.7f %.7f %.7f\n",M.M[0][0]/M.M[3][0],M.M[1][0]/M.M[3][0],M.M[2][0]/M.M[3][0]) ;
             countt++ ;
-            if(countt%3==0) fprintf(fileToWrite,"\n") ;
-    }
+            if(vec.size()==3) {
+                    Triangle triangle(vec[0],vec[1],vec[2]) ;
+                    fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
+                    triangle.color = Color(rrr,bbb,ggg) ;
+                    triangles.push_back(triangle) ;
+                    fprintf(fileToWrite,"\n") ;
+                    vec.clear() ;
+            }
+   }
    fclose(fileToRead) ;
    fclose(fileToWrite) ;
+
+   for(int i=0;i<(int)triangles.size();i++){
+        triangles[i].print() ;
+   }
+
+   ///puts("OKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") ;
+   for(int j=0;j<screen_height;j++){
+        for(int i=0;i<screen_width;i++){
+            pixelBuffer[i][j] = BackGround ;
+            zBuffer[i][j]= -1e10;
+        }
+   }
+
+    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!STAGE FIVE
+    for(int I=0;I<(int)triangles.size();I++){
+            for(int i=0;i<screen_width;i++){
+                    for(int j=0;j<screen_height;j++){
+                        double Z =ReadZ(triangles[I],i,j) ;
+                        if(Z>zBuffer[i][j]){
+                            zBuffer[i][j] = Z ;
+                            pixelBuffer[i][j]=triangles[i].color ;
+                        }
+                    }
+            }
+    }
+    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NOW DRAW THE IMAGE
+    bitmap_image image(screen_width,screen_height);  // Creating an image
+    for(int i=0;i<screen_width;i++){
+        for(int j=0;j<screen_height;j++){
+            image.set_pixel(i,j,pixelBuffer[i][j].r,pixelBuffer[i][j].b,pixelBuffer[i][j].g);  // Setting some pixels as red
+        }
+    }
+    image.save_image("1105013.bmp");    // Saving the image in a file
     return 0 ;
 }
 

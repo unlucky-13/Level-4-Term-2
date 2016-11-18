@@ -1,6 +1,7 @@
 class Matrix{
 public:
     double x,y,z ;
+    Color color ;
     int row,col ;
     double **M ;
     Matrix(int row,int col){

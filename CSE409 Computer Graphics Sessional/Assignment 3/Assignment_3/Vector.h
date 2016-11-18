@@ -32,5 +32,8 @@ public:
     double dot(const Vector &otherVector){
         return (x*otherVector.x+y*otherVector.y+z*otherVector.z) ;
     }
+    double Value(){
+        return sqrt(x*x+y*y+z*z) ;
+    }
 } ;
 

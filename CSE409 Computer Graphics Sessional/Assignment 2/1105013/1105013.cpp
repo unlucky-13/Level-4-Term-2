@@ -149,7 +149,7 @@ int main(void){
    int stageNo=0,DIMENSION=4,lineNo=0 ;
 
    ///          STAGE 1
-   fileToRead = fopen("scene.txt","r") ;
+   fileToRead = fopen("ss.txt","r") ;
    fileToWrite  = fopen(fileNames[stageNo++],"w+") ;
    Matrix IdentityMatrix(DIMENSION,DIMENSION) ;
    Vector eye,up,look ;
@@ -382,4 +382,3 @@ int main(void){
    fclose(fileToWrite) ;
     return 0 ;
 }
-
