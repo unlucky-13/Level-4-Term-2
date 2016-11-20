@@ -15,14 +15,21 @@ public:
             v2=Vector(M3.M[0][0],M3.M[0][1],M3.M[0][2]) ;
         }
         double area(){
-            double theta = acos(v0.dot(v1)/(v0.Value()*v1.Value())) ;
-            return fabs(0.5*v0.Value()*v1.Value()*sin(theta)) ;
+            Vector AB = v1-v0 ;
+            Vector AC = v2-v0 ;
+            //cout<<(AB.Value()*AC.Value())<<endl ;
+            if(fabs(AB.Value()*AC.Value())<=EPS) return 0 ; // two points are same
+            double theta = acos(AB.dot(AC)/(AB.Value()*AC.Value())) ;
+           // cout<<v0.dot(v1)/(v0.Value()*v1.Value())<<" "<<theta<<endl ;
+            return fabs(0.5*AB.Value()*AC.Value()*sin(theta)) ;
         }
         bool onTriangle(Vector P){
         /// checks if the point p is on the triangle or not
                 double area1 = Triangle(v0,v1,P).area() ;
                 double area2 = Triangle(v1,v2,P).area() ;
                 double area3 = Triangle(v0,v2,P).area() ;
+             //   cout<<area1<<" "<<area2<<" "<<area3<<endl ;
+               // cout<<area()<<endl ;
                 if(fabs(area()-area1-area2-area3)<=EPS) return 1 ;
                 return 0 ;
         }

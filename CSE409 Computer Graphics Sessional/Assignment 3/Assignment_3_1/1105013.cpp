@@ -15,6 +15,7 @@ char buffer[111] ;
 Color pixelBuffer[MAXN][MAXN] ;
 double zBuffer[MAXN][MAXN] ;
 int main(void){
+
    FILE *fileToWrite,*fileToRead ;
    double x,y,z ,arr[5],angle,aspectRatio,fovY,near,far,rrr,bbb,ggg;
    int stageNo=0,DIMENSION=4,lineNo=0,screen_height,screen_width ;
@@ -33,10 +34,10 @@ int main(void){
     fscanf(fileToRead,"%lf %lf %lf",&up.x,&up.y,&up.z) ;
     fscanf(fileToRead,"%lf %lf %lf %lf",&fovY,&aspectRatio,&near,&far) ;
     fscanf(fileToRead,"%d %d",&screen_width,&screen_height) ;
-    fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
+    fscanf(fileToRead,"%lf %lf %lf",&rrr,&ggg,&bbb) ;
     Color BackGround(rrr,bbb,ggg) ;
-
-
+   // near*=-1 ;
+    //far*=-1 ;
     while(fscanf(fileToRead,"%s",buffer)!=EOF){
         if(strcmp(buffer,"triangle")==0){
              Matrix top = S.top() ;
@@ -52,8 +53,8 @@ int main(void){
              //   Mat.Print() ;
                 fprintf(fileToWrite,"%.10f %.10f %.10f\n",Mat.M[0][0],Mat.M[1][0],Mat.M[2][0]) ;
             }
-            fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
-            fprintf(fileToWrite,"%.10f %.10f %.10f\n",rrr,bbb,ggg) ; /// printing the color to the file
+            fscanf(fileToRead,"%lf %lf %lf",&rrr,&ggg,&bbb) ;
+            fprintf(fileToWrite,"%.10f %.10f %.10f\n",rrr,ggg,bbb) ; /// printing the color to the file
             fprintf(fileToWrite,"\n") ;
         }
         else if(strcmp(buffer,"translate")==0){
@@ -210,15 +211,18 @@ int main(void){
             M = V*M ;
             vec.push_back(Vector(M.M[0][0],M.M[1][0],M.M[2][0])) ;
             if(vec.size()==3){
-                    fscanf(fileToRead,"%lf %lf %lf\n",&rrr,&bbb,&ggg) ;
+                    fscanf(fileToRead,"%lf %lf %lf\n",&rrr,&ggg,&bbb) ;
                    // cout<<rrr<<" "<<bbb<<" "<<ggg<<endl ;
                     vec = ClippingByZ(vec,-far,-near) ;
-                   // cout<<vec.size()<<endl ;
-                    for(int i=0;i<(int)vec.size();i++){
-                        if(i==3) fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,bbb,ggg) ;
+                    cout<<vec.size()<<endl ;
+                    for(int i=0;i<(int)vec.size() && i<3;i++){
                         fprintf(fileToWrite,"%.10f %.10f %.10f\n",vec[i].x,vec[i].y,vec[i].z) ;
                     }
-                    fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,bbb,ggg) ;
+                    if(vec.size()>0) fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,ggg,bbb) ;
+                    for(int i=3;i<(int)vec.size();i++){
+                        fprintf(fileToWrite,"%.10f %.10f %.10f\n",vec[i].x,vec[i].y,vec[i].z) ;
+                    }
+                    if(vec.size()>3) fprintf(fileToWrite,"%.10f %.10f %.10f\n\n",rrr,ggg,bbb) ;
                     vec.clear() ;
             }
     }
@@ -239,7 +243,7 @@ int main(void){
    P.M[0][3]=0 ;
 
    P.M[1][0]=0 ;
-   P.M[1][1]=near/tt ;
+   P.M[1][1]=-near/tt ;
    P.M[1][2]=0 ;
    P.M[1][3]=0 ;
 
@@ -265,8 +269,8 @@ int main(void){
             countt++ ;
             if(vec.size()==3) {
                     Triangle triangle(vec[0],vec[1],vec[2]) ;
-                    fscanf(fileToRead,"%lf %lf %lf",&rrr,&bbb,&ggg) ;
-                    triangle.color = Color(rrr,bbb,ggg) ;
+                    fscanf(fileToRead,"%lf %lf %lf",&rrr,&ggg,&bbb) ;
+                    triangle.color = Color(rrr,ggg,bbb) ;
                     triangles.push_back(triangle) ;
                     fprintf(fileToWrite,"\n") ;
                     vec.clear() ;
@@ -283,29 +287,37 @@ int main(void){
    for(int j=0;j<screen_height;j++){
         for(int i=0;i<screen_width;i++){
             pixelBuffer[i][j] = BackGround ;
-            zBuffer[i][j]= -1e10;
+            zBuffer[i][j]= 1e10;
         }
    }
 
     ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!STAGE FIVE
     for(int I=0;I<(int)triangles.size();I++){
-            for(int i=0;i<screen_width;i++){
-                    for(int j=0;j<screen_height;j++){
-                        double Z =ReadZ(triangles[I],i,j) ;
-                        if(Z>zBuffer[i][j]){
-                            zBuffer[i][j] = Z ;
-                            pixelBuffer[i][j]=triangles[i].color ;
+            for(int i=0;i<=screen_width;i++){
+                    for(int j=0;j<=screen_height;j++){
+
+                            double II = (2.00/(screen_width))*(i+1)-1 ;
+                            double JJ = (2.00/(screen_height))*(j+1)-1 ;
+                            double III = (2.00/(screen_width))*(i+2)-1 ;
+                            double JJJ = (2.00/(screen_height))*(j+2)-1 ;
+                          //  cout<<II<<" "<<JJ<<endl ;
+                            double pZ =ReadZ(triangles[I],(II+III)/2,(JJ+JJJ)/2) ;
+                          //  cout<<II<<" "<<JJ<<" "<<Z<<endl ;
+                            if(pZ<zBuffer[i][j]){
+                                zBuffer[i][j] = pZ ;
+                                pixelBuffer[i][j]=triangles[I].color ;
                         }
                     }
             }
     }
     ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!NOW DRAW THE IMAGE
     bitmap_image image(screen_width,screen_height);  // Creating an image
-    for(int i=0;i<screen_width;i++){
-        for(int j=0;j<screen_height;j++){
-            image.set_pixel(i,j,pixelBuffer[i][j].r,pixelBuffer[i][j].b,pixelBuffer[i][j].g);  // Setting some pixels as red
+    for(int i=0;i<=screen_width;i++){
+        for(int j=0;j<=screen_height;j++){
+            image.set_pixel(i,j,pixelBuffer[i][j].r,pixelBuffer[i][j].g,pixelBuffer[i][j].b);  // Setting some pixels as red
         }
     }
+
     image.save_image("1105013.bmp");    // Saving the image in a file
     return 0 ;
 }
