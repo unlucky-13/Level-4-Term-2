@@ -191,6 +191,7 @@ public:
 /// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!CLIPPING Z AXIS STARTS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 bool isInside(Vector v,double zNear,double zFar){
+    cout<<zNear<<" "<<zFar<<endl ;
     if(v.z<=zFar && zNear<=v.z){
         return 1 ;
     }
@@ -204,7 +205,7 @@ Vector Intersection(Vector v1,Vector v2,double zNear,double zFar){
     if(t1>=0 && t1<=1.00){
         t = t1 ;
     }
-    if(t2>=0 && t2<=1.00){
+    else if(t2>=0 && t2<=1.00){
         t = t2 ;
     }
     vec.x = v1.x+t*(v2.x-v1.x) ;
@@ -223,6 +224,7 @@ vector<Vector> ClippingByZ(vector<Vector>vec,double zNear,double zFar){
             outside.push_back(vec[i]) ;
         }
     }
+    //cout<<outside.size()<<endl ;
     if(inside.size()==3){
       ///      puts("No cliiping") ;
         // all points are inside
@@ -246,6 +248,34 @@ vector<Vector> ClippingByZ(vector<Vector>vec,double zNear,double zFar){
             }
     }
     else{
+
+
+            vector<Vector>L,R ;
+        for(int i=0;i<vec.size();i++){
+                if(vec[i].z<zFar) {
+            //        ok=0 ;
+                    L.push_back(vec[i]) ;
+            }
+        }
+
+        for(int i=0;i<vec.size();i++){
+            if(vec[i].z>zNear) {
+                R.push_back(vec[i]) ;
+            }
+        }
+
+        if(L.size()==3 || R.size()==3) return ret ;
+        if(L.size()==2) swap(L,R) ;
+
+        Vector v1 = Intersection(L[0],R[1],zNear,1e11) ;
+        Vector v2 = Intersection(L[0],R[2],zNear,1e11) ;
+           // cout<<v1.z<<" "<<v2.z<<endl ;
+        Vector v3 = Intersection(L[0],R[1],1e11,zFar) ;
+        Vector v4 = Intersection(L[0],R[2],1e11,zFar) ;
+             //   cout<<v3.z<<" "<<v4.z<<endl ;
+        ret.push_back(v1) ; ret.push_back(v2) ; ret.push_back(v4) ;
+        ret.push_back(v1) ; ret.push_back(v4) ; ret.push_back(v3) ;
+          //  cout<<"here" ;
             /// Either it is the worst case or outside the range
     }
   //  printf("%d\n",(int)ret.size()) ;
@@ -260,10 +290,13 @@ double ReadZ(Triangle T,double i,double j){
     Vector PQ = T.v0-T.v1  ;
     Vector PR = T.v0-T.v2  ;
     Vector n = PQ.cross(PR) ;
+  //  cout<<"Here" ;
     double  Z = (n.x*(i-T.v0.x)+n.y*(j-T.v0.y))/(-n.z)+T.v0.z ; /// ?????? is it correct
     //cout<<i<<" "<<j<<" "<<Z<<endl ;
     Vector P(i,j,Z) ;
+
     if(T.onTriangle(P)){
+
         return Z ;
     }
     return 1e11 ;
@@ -301,7 +334,7 @@ int main(void){
    double x,y,z ,arr[5],angle,aspectRatio,fovY,near,far,rrr,bbb,ggg;
    int stageNo=0,DIMENSION=4,lineNo=0,screen_height,screen_width ;
    ///          STAGE 1
-   fileToRead = fopen("scene.txt","r") ;
+   fileToRead = fopen("scene_4.txt","r") ;
    fileToWrite  = fopen(fileNames[stageNo++],"w+") ;
    Matrix IdentityMatrix(DIMENSION,DIMENSION) ;
    Vector eye,up,look ;
@@ -570,14 +603,16 @@ int main(void){
    }
 
     ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!STAGE FIVE
+    //cout<<triangles.size()<<endl ;
     for(int I=0;I<(int)triangles.size();I++){
             for(int i=0;i<=screen_width;i++){
                     for(int j=0;j<=screen_height;j++){
-
+                           // cout<<i<<" "<<j<<endl ;
                             double II = (2.00/(screen_width))*((double)i+.5)-1 ;
                             double JJ = (2.00/(screen_height))*((double)j+.5)-1 ;
                           //  cout<<II<<" "<<JJ<<endl ;
                             double pZ =ReadZ(triangles[I],II,JJ) ;
+                          //  cout<<pZ<<endl ;
                           //  cout<<II<<" "<<JJ<<" "<<Z<<endl ;
                             if(pZ<zBuffer[i][j]){
                                 zBuffer[i][j] = pZ ;
@@ -594,7 +629,7 @@ int main(void){
         }
     }
 
-    image.save_image("1105013.bmp");    // Saving the image in a file
+    image.save_image("out.bmp");    // Saving the image in a file
     return 0 ;
 }
 
