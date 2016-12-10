@@ -1,0 +1,5 @@
+1. Checker Board
+2. Camera
+3. Draw the objects and 1
+4. Intersection Handling
+5. Texturing

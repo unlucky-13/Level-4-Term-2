@@ -1,0 +1,577 @@
+# depslib dependency file v1.0
+1431008436 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\camera.cpp
+	<windows.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+	<math.h>
+	"camera.h"
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\windows.h
+	<winresrc.h>
+	<stdarg.h>
+	<windef.h>
+	<wincon.h>
+	<winbase.h>
+	<wingdi.h>
+	<winuser.h>
+	<winnls.h>
+	<winver.h>
+	<winnetwk.h>
+	<winreg.h>
+	<winsvc.h>
+	<cderr.h>
+	<dde.h>
+	<ddeml.h>
+	<dlgs.h>
+	<imm.h>
+	<lzexpand.h>
+	<mmsystem.h>
+	<nb30.h>
+	<rpc.h>
+	<shellapi.h>
+	<winperf.h>
+	<commdlg.h>
+	<winspool.h>
+	<winsock2.h>
+	<winsock.h>
+	<ole2.h>
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winresrc.h
+	<winuser.h>
+	<winnt.h>
+	<winver.h>
+	<dde.h>
+	<dlgs.h>
+	<commctrl.h>
+
+1301111164 c:\program files (x86)\codeblocks\mingw\include\winuser.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winnt.h
+	<winerror.h>
+	<string.h>
+	<basetsd.h>
+	<pshpack4.h>
+	<poppack.h>
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winerror.h
+
+1341010376 c:\program files (x86)\codeblocks\mingw\include\string.h
+	<_mingw.h>
+	<stddef.h>
+
+1341010370 c:\program files (x86)\codeblocks\mingw\include\_mingw.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\basetsd.h
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\pshpack4.h
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\poppack.h
+
+1301111164 c:\program files (x86)\codeblocks\mingw\include\winver.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\dde.h
+
+1301111150 c:\program files (x86)\codeblocks\mingw\include\dlgs.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\commctrl.h
+	<prsht.h>
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\prsht.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\windef.h
+	<winnt.h>
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\wincon.h
+
+1301111160 c:\program files (x86)\codeblocks\mingw\include\winbase.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\wingdi.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winnls.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winnetwk.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winreg.h
+
+1301111164 c:\program files (x86)\codeblocks\mingw\include\winsvc.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\cderr.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\ddeml.h
+
+1301111150 c:\program files (x86)\codeblocks\mingw\include\imm.h
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\lzexpand.h
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\mmsystem.h
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\nb30.h
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpc.h
+	<windows.h>
+	<rpcdce.h>
+	<rpcnsi.h>
+	<rpcnterr.h>
+	<winerror.h>
+	<excpt.h>
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcdce.h
+	<basetyps.h>
+	<rpcdcep.h>
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\basetyps.h
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcdcep.h
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcnsi.h
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcnterr.h
+
+1341010372 c:\program files (x86)\codeblocks\mingw\include\excpt.h
+	<_mingw.h>
+	<windef.h>
+
+1301111160 c:\program files (x86)\codeblocks\mingw\include\shellapi.h
+	<pshpack2.h>
+	<poppack.h>
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\pshpack2.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winperf.h
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\commdlg.h
+	<unknwn.h>
+	<prsht.h>
+
+1301111160 c:\program files (x86)\codeblocks\mingw\include\unknwn.h
+	<windows.h>
+	<objfwd.h>
+	<wtypes.h>
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\objfwd.h
+	<basetyps.h>
+
+1301111164 c:\program files (x86)\codeblocks\mingw\include\wtypes.h
+	<rpc.h>
+	<rpcndr.h>
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcndr.h
+	<rpcnsip.h>
+	<objfwd.h>
+
+1301111158 c:\program files (x86)\codeblocks\mingw\include\rpcnsip.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winspool.h
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winsock2.h
+	<windows.h>
+
+1301111162 c:\program files (x86)\codeblocks\mingw\include\winsock.h
+	<windows.h>
+	<mswsock.h>
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\mswsock.h
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\ole2.h
+	<winerror.h>
+	<objbase.h>
+	<olectlid.h>
+	<oleauto.h>
+	<oleidl.h>
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\objbase.h
+	<rpc.h>
+	<rpcndr.h>
+	<stdlib.h>
+	<basetyps.h>
+	<wtypes.h>
+	<unknwn.h>
+	<objidl.h>
+	<cguid.h>
+
+1341010376 c:\program files (x86)\codeblocks\mingw\include\stdlib.h
+	<_mingw.h>
+	<stddef.h>
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\objidl.h
+	<objfwd.h>
+
+1301111148 c:\program files (x86)\codeblocks\mingw\include\cguid.h
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\olectlid.h
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\oleauto.h
+	<oaidl.h>
+
+1301111154 c:\program files (x86)\codeblocks\mingw\include\oaidl.h
+	<windows.h>
+	<ole2.h>
+
+1301111156 c:\program files (x86)\codeblocks\mingw\include\oleidl.h
+	<objfwd.h>
+
+893358000 c:\program files (x86)\codeblocks\mingw\include\gl\gl.h
+
+893358000 c:\program files (x86)\codeblocks\mingw\include\gl\glu.h
+	<GL/gl.h>
+
+976645372 c:\program files (x86)\codeblocks\mingw\include\gl\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1341010374 c:\program files (x86)\codeblocks\mingw\include\math.h
+	<_mingw.h>
+
+1430943793 d:\4-2\cse 410-computer graphics sessional\raytracer11\sdl.hpp
+	<string>
+	<iostream>
+	<fstream>
+	<strstream>
+	<windows.h>
+	<assert.h>
+	<math.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+	"RGBpixmap.h"
+
+1341010370 c:\program files (x86)\codeblocks\mingw\include\assert.h
+	<_mingw.h>
+
+1430944427 d:\4-2\cse 410-computer graphics sessional\raytracer11\rgbpixmap.h
+	<windows.h>
+	<assert.h>
+	<string>
+	<iostream>
+	<fstream>
+	<strstream>
+	<iostream>
+	<stdlib.h>
+	<fstream>
+	<string>
+	<strstream>
+	<stdio.h>
+	<algorithm>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+
+1475222456 c:\program files (x86)\codeblocks\mingw\include\stdio.h
+	<_mingw.h>
+	<stddef.h>
+	<stdarg.h>
+	<sys/types.h>
+
+1341010380 c:\program files (x86)\codeblocks\mingw\include\sys\types.h
+	<_mingw.h>
+	<stddef.h>
+
+1431015715 d:\4-2\cse 410-computer graphics sessional\raytracer11\camera.h
+	"ds.h"
+
+1430944182 d:\4-2\cse 410-computer graphics sessional\raytracer11\sdl.h
+	<string>
+	<iostream>
+	<fstream>
+	<strstream>
+	<windows.h>
+	<assert.h>
+	<math.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+	"RGBpixmap.h"
+
+1432036640 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\main.cpp
+	<windows.h>
+	"Camera.h"
+	<math.h>
+	<io.h>
+	"common.h"
+	"bitmap_image.hpp"
+
+1341010374 c:\program files (x86)\codeblocks\mingw\include\io.h
+	<_mingw.h>
+	<sys/types.h>
+
+1430943751 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\myraytracer.cpp
+	"SDL.h"
+	"Camera.h"
+	<math.h>
+	<io.h>
+
+1170762352 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\rgbpixmap.cpp
+	"RGBpixmap.h"
+
+1430944372 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\sdl.cpp
+	"SDL.h"
+	"camera.h"
+
+1432036471 d:\4-2\cse 410-computer graphics sessional\raytracer11\ds.h
+	<string>
+	<iostream>
+	<fstream>
+	<strstream>
+	<windows.h>
+	<assert.h>
+	<math.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+
+1431009437 source:d:\4-2\cse 410-computer graphics sessional\raytracer11\ds.cpp
+	"ds.h"
+
+1431509497 d:\4-2\cse 410-computer graphics sessional\raytracer11\common.h
+	"math.h"
+	"stdlib.h"
+
+1430847717 d:\4-2\cse 410-computer graphics sessional\raytracer11\bitmap_image.hpp
+	<algorithm>
+	<cmath>
+	<cstdlib>
+	<fstream>
+	<iostream>
+	<iterator>
+	<limits>
+	<string>
+
+1431008438 source:c:\users\mehedee zaman\desktop\raytracer11\camera.cpp
+	<windows.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+	<math.h>
+	"camera.h"
+
+1432711067 c:\users\mehedee zaman\desktop\raytracer11\camera.h
+	"Point.hpp"
+	"common.h"
+
+1432633279 c:\users\mehedee zaman\desktop\raytracer11\ds.h
+	<string>
+	<iostream>
+	<fstream>
+	<strstream>
+	<windows.h>
+	<assert.h>
+	<math.h>
+	<gl/Gl.h>
+	<gl/Glu.h>
+	<gl/glut.h>
+
+1431009438 source:c:\users\mehedee zaman\desktop\raytracer11\ds.cpp
+	"ds.h"
+
+1432717036 source:c:\users\mehedee zaman\desktop\raytracer11\main.cpp
+	<windows.h>
+	<GL/glut.h>
+	"consts.hpp"
+	"Camera.h"
+	"object.hpp"
+	"sphere.hpp"
+	"plane.hpp"
+	"cube.hpp"
+	"world.hpp"
+	"bitmap_image.hpp"
+
+1432662396 c:\users\mehedee zaman\desktop\raytracer11\common.h
+	"math.h"
+	"vector.hpp"
+
+1432713024 c:\users\mehedee zaman\desktop\raytracer11\bitmap_image.hpp
+	<algorithm>
+	<cmath>
+	<cstdlib>
+	<fstream>
+	<iostream>
+	<iterator>
+	<limits>
+	<string>
+
+1432636943 c:\users\mehedee zaman\desktop\raytracer11\point.hpp
+
+1432710298 c:\users\mehedee zaman\desktop\raytracer11\consts.hpp
+
+1432655101 c:\users\mehedee zaman\desktop\raytracer11\vector.hpp
+
+1432668171 c:\users\mehedee zaman\desktop\raytracer11\object.hpp
+	"Ray.hpp"
+
+1432649998 c:\users\mehedee zaman\desktop\raytracer11\ray.hpp
+
+1432668047 c:\users\mehedee zaman\desktop\raytracer11\sphere.hpp
+
+1432702222 c:\users\mehedee zaman\desktop\raytracer11\plane.hpp
+
+1432717781 c:\users\mehedee zaman\desktop\raytracer11\world.hpp
+	<stdio.h>
+
+1432700770 c:\users\mehedee zaman\desktop\raytracer11\cube.hpp
+
+1481266640 source:c:\users\user\desktop\ray-tracing-master\main.cpp
+	<windows.h>
+	<GL/glut.h>
+	"consts.hpp"
+	"Camera.h"
+	"object.hpp"
+	"sphere.hpp"
+	"plane.hpp"
+	"cube.hpp"
+	"world.hpp"
+	"bitmap_image.hpp"
+	"Tracer.h"
+
+1432726484 c:\users\user\desktop\ray-tracing-master\consts.hpp
+
+1481275962 c:\users\user\desktop\ray-tracing-master\camera.h
+	"Point.hpp"
+	"common.h"
+
+1432726484 c:\users\user\desktop\ray-tracing-master\point.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\common.h
+	"math.h"
+	"vector.hpp"
+
+1432726484 c:\users\user\desktop\ray-tracing-master\vector.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\object.hpp
+	"Ray.hpp"
+
+1432726484 c:\users\user\desktop\ray-tracing-master\ray.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\sphere.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\plane.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\cube.hpp
+
+1432726484 c:\users\user\desktop\ray-tracing-master\world.hpp
+	<stdio.h>
+
+1432726484 c:\users\user\desktop\ray-tracing-master\bitmap_image.hpp
+	<algorithm>
+	<cmath>
+	<cstdlib>
+	<fstream>
+	<iostream>
+	<iterator>
+	<limits>
+	<string>
+
+1481275792 c:\users\user\desktop\ray-tracing-master\tracer.h
+
+1481301561 source:e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\main.cpp
+	<windows.h>
+	<glut.h>
+	"consts.hpp"
+	"Camera.h"
+	"object.hpp"
+	"sphere.hpp"
+	"plane.hpp"
+	"cube.hpp"
+	"world.hpp"
+	"bitmap_image.hpp"
+	"Tracer.h"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\consts.hpp
+
+1481276193 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\camera.h
+	"Point.hpp"
+	"common.h"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\point.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\common.h
+	"math.h"
+	"vector.hpp"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\vector.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\object.hpp
+	"Ray.hpp"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\ray.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\sphere.hpp
+
+1481285451 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\plane.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\cube.hpp
+
+1481288204 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\world.hpp
+	<stdio.h>
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\bitmap_image.hpp
+	<algorithm>
+	<cmath>
+	<cstdlib>
+	<fstream>
+	<iostream>
+	<iterator>
+	<limits>
+	<string>
+
+1481283619 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\ray-tracing-master\tracer.h
+
+1392007564 c:\program files (x86)\codeblocks\mingw\include\glut.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+
+1481301882 source:e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\main.cpp
+	<windows.h>
+	<glut.h>
+	"consts.hpp"
+	"Camera.h"
+	"object.hpp"
+	"sphere.hpp"
+	"plane.hpp"
+	"cube.hpp"
+	"world.hpp"
+	"bitmap_image.hpp"
+	"Tracer.h"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\consts.hpp
+
+1481276193 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\camera.h
+	"Point.hpp"
+	"common.h"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\point.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\common.h
+	"math.h"
+	"vector.hpp"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\vector.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\object.hpp
+	"Ray.hpp"
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\ray.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\sphere.hpp
+
+1481285451 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\plane.hpp
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\cube.hpp
+
+1481288204 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\world.hpp
+	<stdio.h>
+
+1432726484 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\bitmap_image.hpp
+	<algorithm>
+	<cmath>
+	<cstdlib>
+	<fstream>
+	<iostream>
+	<iterator>
+	<limits>
+	<string>
+
+1481283619 e:\google drive\study\l4 t2\level-4-term-2\cse409 computer graphics sessional\assignment 4\assignment 4\mine\tracer.h
+
