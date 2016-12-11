@@ -1,6 +1,6 @@
 using namespace std ;
 #include <bits/stdc++.h>
-#include<windows.h>
+//#include<windows.h>
 #include<glut.h>
 #include "bitmap_image.hpp"
 
@@ -311,48 +311,70 @@ public:
                 glVertex3f(z.x,z.y,z.z);
         glEnd();
     }
+    bool rayTriangleIntersect(
+    const Point &orig, const Point &dir,
+    const Point &v0, const Point &v1, const Point &v2,
+    float &t, float &u, float &v){
+    // compute plane's normal
+    Point v0v1 = v1 - v0;
+    Point v0v2 = v2 - v0;
+    // no need to normalize
+    Point N = v0v1.cross(v0v2); // N
+    float denom = N.dot(N);
+
+    // Step 1: finding P
+
+    // check if ray and plane are parallel ?
+    float NdotRayDirection = N.dot(dir);
+    if (fabs(NdotRayDirection) < EPS) // almost 0
+        return false; // they are parallel so they don't intersect !
+
+    // compute d parameter using equation 2
+    float d = N.dot(v0);
+
+    // compute t (equation 3)
+    t = (N.dot(orig) + d) / NdotRayDirection;
+    // check if the triangle is in behind the ray
+    if (t < 0) return false; // the triangle is behind
+
+    // compute the intersection point using equation 1
+    Point P = orig + dir*t;
+
+    // Step 2: inside-outside test
+    Point C; // vector perpendicular to triangle's plane
+
+    // edge 0
+    Point edge0 = v1 - v0;
+    Point vp0 = P - v0;
+    C = edge0.cross(vp0);
+    if (N.dot(C) < 0) return false; // P is on the right side
+
+    // edge 1
+    Point edge1 = v2 - v1;
+    Point vp1 = P - v1;
+    C = edge1.cross(vp1);
+    if ((u = N.dot(C)) < 0)  return false; // P is on the right side
+
+    // edge 2
+    Point edge2 = v0 - v2;
+    Point vp2 = P - v2;
+    C = edge2.cross(vp2);
+    if ((v = N.dot(C)) < 0) return false; // P is on the right side;
+
+    u /= denom;
+    v /= denom;
+
+    return true; // this ray hits the triangle
+}
     double intersect(Ray& directionRay){
-
-        // compute plane's normal
-        Point N  = getNormal(x) ;
-        //double  area2 = N.value();
-        // Step 1: finding P
-
-        // check if ray and plane are parallel ?
-        double NdotRayDirection = N.dot(directionRay.dir);
-        if (fabs(NdotRayDirection) < EPS) // almost 0
-            return MAX_T; // they are parallel so they don't intersect !
-
-        // compute d parameter using equation 2
-        double d = N.dot(x);
-        // compute t (equation 3)
-        double t = (N.dot(directionRay.P0) + d) / NdotRayDirection;
-        // check if the triangle is in behind the ray
-        if (t < 0) return MAX_T; // the triangle is behind
-
-        // compute the intersection point using equation 1
-        Point P = directionRay.P0 + directionRay.dir*t;
-        // Step 2: inside-outside test
-        Point C; // vector perpendicular to triangle's plane
-        // edge 0
-        Point edge0 = y - x;
-        Point vp0 = P - x;
-        C = edge0.cross(vp0);
-        if (N.dot(C) < 0) return MAX_T; // P is on the right side
-
-        // edge 1
-        Point edge1 = z - y;
-        Point vp1 = P - y;
-        C = edge1.cross(vp1);
-        if (N.dot(C) < 0)  return MAX_T; // P is on the right side
-
-        // edge 2
-        Point edge2 = x - z;
-        Point vp2 = P - z;
-        C = edge2.cross(vp2);
-        if (N.dot(C) < 0) return MAX_T; // P is on the right side;
-
-        return t; // this ray hits the triangle
+            float t, u, v;
+            Point orig = directionRay.P0 ;
+            Point dir = directionRay.dir ;
+            bool res = rayTriangleIntersect(orig,dir,z,y,x,t,u,v) ;
+            if(res){
+                return t ;
+            }
+            return MAX_T ;
     }
     Point getNormal(Point &p){
         Point v0v1 = y - x;
@@ -401,10 +423,10 @@ Color getColor(int i,int j){
         return spheres[j].color ;
     }
     else if(i==3){
-        lights[j].color ;
+        return lights[j].color ;
     }
     else if(i==4){
-        triangles[j].color ;
+        return triangles[j].color ;
     }
     return Color(0,0,0) ;
 }
@@ -455,7 +477,6 @@ void ray_tracing(Ray& directionRay,int Level,Color & col){
     for(int i=0;i<(int)lights.size();i++){
         double  t = lights[i].intersect(directionRay) ;
         if(t<min_t){
-                col  = Color(1,1,1) ;
                 return  ;
                 I = 3 ;
                 J = i ;
@@ -467,13 +488,12 @@ void ray_tracing(Ray& directionRay,int Level,Color & col){
         if(t<min_t){
                 I = 4 ;
                 J = i ;
-                col = triangles[i].color ;
                 min_t=t ;
         }
     }
-    //col = getColor(I,J) ;
+    col = getColor(I,J) ;
     /// determine the color at the point
-   // /*
+    /*
     directionRay.dir.normalize() ;
     Point intersectionPoint = directionRay.P0+directionRay.dir*min_t ;
     /// Trace light
@@ -528,8 +548,7 @@ void ray_tracing(Ray& directionRay,int Level,Color & col){
         ray_tracing(newRay,Level+1,newColor) ;
         col = col + newColor*getColor(I,J)*reflection ;
     }
-
-
+*/
 }
 
 void callModelViewMatrix(){
@@ -768,10 +787,10 @@ void init(){
                 Point C = B+Point(0,width,0) ;
                 Point D = C+Point(-width,0,0) ;
 
-                triangle = Triangle(Vertex,A,B,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,B,C,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,C,D,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,D,A,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,A,B,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,B,C,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,C,D,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,D,A,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
         }
     }
     ///

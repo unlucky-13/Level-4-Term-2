@@ -1,0 +1,9 @@
+3
+0.5 0.3 0.4
+12
+2.3
+#######
+depends on
+values of H
+mean
+variance
