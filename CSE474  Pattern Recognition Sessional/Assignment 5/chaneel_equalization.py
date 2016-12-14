@@ -1,56 +1,68 @@
 import  random
-def viterbi(obs, states, start_p, trans_p, emit_p):
-      V = [{}]
-      for st in states:
-          V[0][st] = {"prob": start_p[st] * emit_p[st][obs[0]], "prev": None}
-      # Run Viterbi when t > 0
-      for t in range(1, len(obs)):
-          V.append({})
-          for st in states:
-              max_tr_prob = max(V[t-1][prev_st]["prob"]*trans_p[prev_st][st] for prev_st in states)
-              for prev_st in states:
-                 if V[t-1][prev_st]["prob"] * trans_p[prev_st][st] == max_tr_prob:
-                     max_prob = max_tr_prob * emit_p[st][obs[t]]
-                     V[t][st] = {"prob": max_prob, "prev": prev_st}
-                     break
-      for line in dptable(V):
-         print line
-      opt = []
-      # The highest probability
-      max_prob = max(value["prob"] for value in V[-1].values())
-      previous = None
-      # Get most probable state and its backtrack
-      for st, data in V[-1].items():
-         if data["prob"] == max_prob:
-             opt.append(st)
-             previous = st
-             break
-      # Follow the backtrack till the first observation
-      for t in range(len(V) - 2, -1, -1):
-         opt.insert(0, V[t + 1][previous]["prev"])
-         previous = V[t + 1][previous]["prev"]
+import  numpy as np
 
-      print 'The steps of states are ' + ' '.join(opt) + ' with highest probability of %s' % max_prob
+def getBit(ID,pos):                    # will return the bit at the position
+    #print  ID ," ",(1<<pos)
+    if (ID & (1<<pos))>0: return 1 # 0001  010
+    return 0
+def is_neighbour(ID1, ID2,l):  # from ID1 to ID2
+    for i in range(0, l-1):
+        if getBit(ID1, i) != getBit(ID2, i + 1): return False
 
+    return True
 
-def dptable(V):
-     # Print a table of steps from dictionary
-     yield " ".join(("%12d" % i) for i in range(len(V)))
-     for state in V[0]:
-         yield "%.7s: " % state + " ".join("%.7s" % ("%f" % v[state]["prob"]) for v in V)
+class State:
 
+   def __init__(self,ID,l):
+       self.ID = ID
+       self.l = l ;
+       self.TransmitionProbability=[]                  ## Setting up the transmition probability
+       self.ObservationProbability = []
+       count=0.0
 
+       for  i in range(0,pow(2,l)):
+          if is_neighbour(ID,i,l):
+             # print  "from ID ->",ID," to ",i
+              count+=1.0
+       #print  count
+       for i in range(0,pow(2,l)):
+           if is_neighbour(ID,i,l):
+               self.TransmitionProbability.append(1/count)
+           else:
+               self.TransmitionProbability.append(0.00)
+        ##  Observation probabilty is going to be trained
 class Channel:
     def  __init__(self,_dependsOn,H,_mean,_variance):
         self.l = _dependsOn
-        self.mean = _mean # Noise er mean
+        self.mean = _mean # Noise's mean
         self.variance=_variance # Noise er Vairance
         #Now randomly assign H
         self.H = H
 
+    def simulate(self,sequence):
+        out=np.random.normal(self.mean,self.variance)-mean  # Noise is added
+        #print len(sequence)
+        for i in range(0,len(sequence)):
+            out+=sequence[i]*H[i]
+
+
+
+        return out
+
+    def transmit(self,sequence):
+        outSequence=[]  # what for the initial sequence ??
+        for i in range(len(sequence)):
+            seq=[]
+            for k in range(i-self.l,i):
+                    if k>0: seq.append(sequence[k])
+            #print  len(seq)
+            outSequence.append(self.simulate(seq))
+        return outSequence
+
 if __name__=='__main__':
-    # Take input from file set up the channel
-    f =  open("channel_description.txt",'r')
+
+    ################################################### Channel Simulation#############################################################
+    f =  open("channel_description.in",'r')
     depends_on = int(f.readline())
     H = map(float,f.readline().split())
     mean = float(f.readline())
@@ -59,3 +71,29 @@ if __name__=='__main__':
     #print depends_on," ",H," ",variance
 
     channel = Channel(depends_on,H,mean,variance)
+    sequence = [1,-1,1,1,1,1-1,1,1,1,1,-1,1,1,1,-1,1,1,-1]
+    #print "Encoded Sequence -> ",channel.transmit(sequence)
+    #print channel.simulate([1,1,-1])
+    states = []
+    for i in range(0,pow(2,channel.l)):
+        states.append(State(i,depends_on))
+    #for i in range(len(states)):
+        #print states[i].ID
+    #0111 1110
+    #print  is_neighbour(0b000,0b000,2)
+    ####################################################Training###########################################################################
+    iterations=100
+    Len=100
+    while iterations>0:
+        iterations-=1
+        # generate a random sequence
+        sequence=[]
+        for i in range(Len):
+            val = random.randint(0,10000)
+            if val%2==0: val=1
+            else : val=-1
+            sequence.append(val)
+
+        #print  sequence
+        outSequence=channel.transmit(sequence)
+        #print  outSequence

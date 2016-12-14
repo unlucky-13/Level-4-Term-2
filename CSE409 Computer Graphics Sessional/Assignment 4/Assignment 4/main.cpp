@@ -1,16 +1,15 @@
 using namespace std ;
 #include <bits/stdc++.h>
-//#include<windows.h>
+
+///#include<windows.h>
 #include<glut.h>
 #include "bitmap_image.hpp"
 
 #define MAX_T 100000000.00
 #define EPS 1e-6
 int screen=500,drawaxes,drawgrid,recursionLevel;
-void drawSquare(double a)
-{
-    glBegin(GL_QUADS);
-    {
+void drawSquare(double a){
+    glBegin(GL_QUADS);{
         glVertex3f( a, a,0);
         glVertex3f( a,-a,0);
         glVertex3f(-a,-a,0);
@@ -18,15 +17,12 @@ void drawSquare(double a)
     }
     glEnd();
 }
-void drawGrid(){
-{
+
+void drawGrid(){{
         if(drawgrid==0) return ;
         glColor3f(0.6, 0.6, 0.6);
-        glBegin(GL_LINES);
-        {
-            for(int i=-8; i<=8; i++)
-            {
-
+        glBegin(GL_LINES);{
+            for(int i=-8; i<=8; i++){
                 if(i==0)
                     continue;
 
@@ -162,7 +158,7 @@ class Square{
         specular =0 ;
 	}
 	Square(Point Mid,Color col,double _Len,double _ambient,double _diffuse,double _reflection,double _specular){
-        N = Point(0,0,1) ; D = Mid ; Len=_Len ; diffuse = _diffuse ; reflection=_reflection ; specular=_specular ; color = col ; ambient=_ambient ;
+        N = Point(0,0,Mid.z) ; D = Mid ; Len=_Len ; diffuse = _diffuse ; reflection=_reflection ; specular=_specular ; color = col ; ambient=_ambient ;
 	}
     void P(){
         cout<<i<<" "<<j<<" "<<n<<" "<<m<<endl ;
@@ -252,7 +248,8 @@ class Light{
 public:
     Color color ;
     Point centre ;
-    double radius ;
+    double diffuse ;
+    double radius,specular ;
     Light(){
 
     }
@@ -260,6 +257,8 @@ public:
         centre = Point(x,y,z) ;
         color  = Color(1.0,1.0,1.0) ;
         radius = 3.00 ;
+        diffuse=1 ;
+        specular=1 ;
     }
     double intersect(const Ray & directionRay){
         Point Line = directionRay.P0 - centre;
@@ -290,6 +289,9 @@ public:
             }
         glPopMatrix();
     }
+    Point getNormal(Point& P){
+            return (P - centre) *radius;
+    }
 };
 ////////////////////////////////////////////////////////            Class triangle///////////////////////////////////////////////
 class Triangle{
@@ -311,85 +313,54 @@ public:
                 glVertex3f(z.x,z.y,z.z);
         glEnd();
     }
-    bool rayTriangleIntersect(
-    const Point &orig, const Point &dir,
-    const Point &v0, const Point &v1, const Point &v2,
-    float &t, float &u, float &v){
-    // compute plane's normal
-    Point v0v1 = v1 - v0;
-    Point v0v2 = v2 - v0;
-    // no need to normalize
-    Point N = v0v1.cross(v0v2); // N
-    float denom = N.dot(N);
-
-    // Step 1: finding P
-
-    // check if ray and plane are parallel ?
-    float NdotRayDirection = N.dot(dir);
-    if (fabs(NdotRayDirection) < EPS) // almost 0
-        return false; // they are parallel so they don't intersect !
-
-    // compute d parameter using equation 2
-    float d = N.dot(v0);
-
-    // compute t (equation 3)
-    t = (N.dot(orig) + d) / NdotRayDirection;
-    // check if the triangle is in behind the ray
-    if (t < 0) return false; // the triangle is behind
-
-    // compute the intersection point using equation 1
-    Point P = orig + dir*t;
-
-    // Step 2: inside-outside test
-    Point C; // vector perpendicular to triangle's plane
-
-    // edge 0
-    Point edge0 = v1 - v0;
-    Point vp0 = P - v0;
-    C = edge0.cross(vp0);
-    if (N.dot(C) < 0) return false; // P is on the right side
-
-    // edge 1
-    Point edge1 = v2 - v1;
-    Point vp1 = P - v1;
-    C = edge1.cross(vp1);
-    if ((u = N.dot(C)) < 0)  return false; // P is on the right side
-
-    // edge 2
-    Point edge2 = v0 - v2;
-    Point vp2 = P - v2;
-    C = edge2.cross(vp2);
-    if ((v = N.dot(C)) < 0) return false; // P is on the right side;
-
-    u /= denom;
-    v /= denom;
-
-    return true; // this ray hits the triangle
-}
     double intersect(Ray& directionRay){
-            float t, u, v;
-            Point orig = directionRay.P0 ;
-            Point dir = directionRay.dir ;
-            bool res = rayTriangleIntersect(orig,dir,z,y,x,t,u,v) ;
-            if(res){
-                return t ;
-            }
-            return MAX_T ;
+        Point N = getNormal(x) ;
+        double d = N.dot(directionRay.dir) ;
+        if(fabs(d)<EPS) return MAX_T ;
+        double dist = (-( N.dot( directionRay.P0)) + N.dot(x)) / d;
+        Point intersectionPoint = directionRay.P0+directionRay.dir*dist ;
+        if(inside(intersectionPoint)){
+            return dist ;
+        }
+        return MAX_T ;
     }
-    Point getNormal(Point &p){
+    int inside(Point& P){
+            Point A,B,C;
+            A=x;
+            B=y;
+            C=z;
+
+            Point u = B - A;
+            Point v = C - A;
+            Point w = P - A;
+
+            Point vCrossW = v.cross(w);
+            Point vCrossU = v.cross(u);
+
+            // Test sign of r
+            if (vCrossW.dot(vCrossU) < 0)
+                    return false;
+
+            Point uCrossW = u.cross(w);
+            Point uCrossV = u.cross(v);
+
+            // Test sign of t
+            if (uCrossW.dot(uCrossV) < 0)
+                    return false;
+
+            // At this point, we know that r and t and both > 0.
+            // Therefore, as long as their sum is <= 1, each must be less <= 1
+            double denom = uCrossV.value();
+            double r = vCrossW.value()/ denom;
+            double t = uCrossW.value() / denom;
+            return(r+t<=1.00) ;
+}
+    Point getNormal(const Point & p){
         Point v0v1 = y - x;
         Point v0v2 = z - x;
         // no need to normalize
         Point N = v0v1.cross(v0v2); // N
         return N ;
-    }
-    double area(){
-            Point AB = y-x ;
-            Point AC = z-x ;
-            //cout<<(AB.Value()*AC.Value())<<endl ;
-            if(fabs(AB.value()*AC.value())<=EPS) return 0 ; // two points are same
-            double theta = acos(AB.dot(AC)/(AB.value()*AC.value())) ;
-            return fabs(0.5*AB.value()*AC.value()*sin(theta)) ;
     }
 };
 //////////////////////////////////////////////////////              Class triangle////////////////////////////////////////////
@@ -404,6 +375,12 @@ Point getNormal(int i,int j,Point P){
     else if(i==2){
         return spheres[j].getNormal(P) ;
     }
+    else if(i==3){
+        return lights[j].getNormal(P) ;
+    }
+    else if(i==4){
+        return triangles[j].getNormal(P) ;
+    }
     return Point(0,0,0) ; /// arbirart output
 }
 double getdiffuse(int i,int j){
@@ -412,6 +389,12 @@ double getdiffuse(int i,int j){
     }
     else if(i==2){
         return spheres[j].diffuse ;
+    }
+    else if(i==3){
+        return lights[j].diffuse ;
+    }
+    else if(i==4){
+        return triangles[j].diffuse ;
     }
     return 0 ;
 }
@@ -437,6 +420,14 @@ double getspec(int i,int j){
     else if(i==2){
         return spheres[j].specular ;
     }
+
+    else if(i==3){
+        return lights[j].specular ;
+    }
+
+    else if(i==4){
+        return triangles[j].specular ;
+    }
     return 0 ;
 }
 double getReflection(int i,int j){
@@ -446,6 +437,15 @@ double getReflection(int i,int j){
     else if(i==2){
         return spheres[j].reflection ;
     }
+
+    else if(i==3){
+        return lights[j].specular ;
+    }
+
+    else if(i==4){
+        return triangles[j].specular ;
+    }
+
     return 0 ;
 }
 
@@ -473,20 +473,22 @@ void ray_tracing(Ray& directionRay,int Level,Color & col){
                 min_t=t ;
         }
     }
-    //
-    for(int i=0;i<(int)lights.size();i++){
-        double  t = lights[i].intersect(directionRay) ;
-        if(t<min_t){
-                return  ;
-                I = 3 ;
-                J = i ;
-                min_t=t ;
-        }
-    }
+
     for(int i=0;i<(int)triangles.size();i++){
         double  t = triangles[i].intersect(directionRay) ;
         if(t<min_t){
                 I = 4 ;
+                J = i ;
+                min_t=t ;
+        }
+    }
+    //
+    for(int i=0;i<(int)lights.size();i++){
+        double  t = lights[i].intersect(directionRay) ;
+        if(t<min_t){
+                col = Color(1,1,1) ;
+                return  ;
+                I = 3 ;
                 J = i ;
                 min_t=t ;
         }
@@ -548,7 +550,7 @@ void ray_tracing(Ray& directionRay,int Level,Color & col){
         ray_tracing(newRay,Level+1,newColor) ;
         col = col + newColor*getColor(I,J)*reflection ;
     }
-*/
+    */
 }
 
 void callModelViewMatrix(){
@@ -775,8 +777,7 @@ void init(){
             fscanf(fp,"%lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf %lf",&x,&y,&z,&width,&height,&r,&g,&b,&ambient,&diffuse,&specular,&reflection,&shineness) ;
            /// each pyramid is represened by 4 triangles and 1 square
                 Point Mid = Point(x+width/2,y+width/2,z) ;
-                Square sq = Square(Mid,Color(r,g,b),width,ambient,diffuse,reflection,specular) ;
-                squares.push_back(sq) ;
+
 
 
                 /////////////////////////Now the 4 triangles
@@ -787,10 +788,14 @@ void init(){
                 Point C = B+Point(0,width,0) ;
                 Point D = C+Point(-width,0,0) ;
 
-                triangle = Triangle(Vertex,A,B,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,B,C,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,C,D,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
-                triangle = Triangle(Vertex,D,A,Color(0,0,1),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,A,B,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,B,C,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,C,D,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+                triangle = Triangle(Vertex,D,A,Color(r,g,b),ambient,diffuse,reflection,specular) ; triangles.push_back(triangle) ;
+
+                Square sq = Square((A+C),Color(r,g,b),width,ambient,diffuse,reflection,specular) ;
+                //squares.push_back(sq) ;
+
         }
     }
     ///
