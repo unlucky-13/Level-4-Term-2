@@ -10,6 +10,7 @@ ID3 	                        | 80.7218969273
 * Decision stump leaner gives the least accuracy. Boosting with 30 rounds improves this. Since it collects 30 hypothesis and makes a strong hypothesis. But ID3 gives the best accuracy .Because it is a tree which allows more than 1 depth. For decision stump leaner and booting with 30 rounds it was not allowed.
 
 **Compare and analyze the ac-curacies obtained by boosting with different numbers of rounds: 5, 10, 20, 30.**
+
 K	        | Accuracy(%)
 ----------| -----------
 5	        | 73.0674157303
