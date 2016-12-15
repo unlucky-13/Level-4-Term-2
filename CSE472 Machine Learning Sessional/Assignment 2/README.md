@@ -23,7 +23,7 @@ Mean Accuracy       | Standard Deviation
 
 **Result**
   * t(absolute) = 1.4747 
-  * d.o.f = 71
+  * D.O.F = 71
   * At significance level of 0.05: t(critical) = 1.66715
   * So, t(absolute) < t(critical)
 
@@ -35,5 +35,4 @@ Mean Accuracy       | Standard Deviation
 **The Null Hypothesis cannot be rejected and the Alternative Hypothesis cannot be accepted.**
 
 
-So, with higher confidence level we can conclude that the actual mean accuracy of Naïve Bayes algorithm is at least 12% more than the actual mean accuracy of
-K-NN algorithm. Hence, Naïve Bayes is better than K-NN.
+So, with higher confidence level we can conclude that the actual mean accuracy of Naïve Bayes algorithm is at least 12% more than the actual mean accuracy of K-NN algorithm. Hence, Naïve Bayes is better than K-NN.
